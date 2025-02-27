@@ -12,8 +12,6 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
  */
 class OptionTest extends \Pollora\Colt\Tests\TestCase
 {
-    use ArraySubsetAsserts;
-
     public function test_it_can_return_all_configs_as_array()
     {
         factory(Option::class)->create([
@@ -24,7 +22,7 @@ class OptionTest extends \Pollora\Colt\Tests\TestCase
         $options = Option::asArray();
         $expected = ['foo' => 'bar'];
 
-        self::assertArraySubset($expected, $options);
+        self::assertEqualsCanonicalizing($expected, $options);
         $this->assertArrayHasKey('foo', $options);
         $this->assertEquals('bar', $options['foo']);
     }
@@ -66,7 +64,7 @@ class OptionTest extends \Pollora\Colt\Tests\TestCase
         $this->assertArrayHasKey('foo', $options);
         $this->assertIsArray($options['foo']);
         $this->assertContains($array, $options);
-        self::assertArraySubset($array, $options['foo']);
+        self::assertEqualsCanonicalizing($array, $options['foo']);
     }
 
     public function test_it_returns_null_if_not_found()
@@ -103,7 +101,7 @@ class OptionTest extends \Pollora\Colt\Tests\TestCase
             'option_value' => 'bar',
         ]);
 
-        self::assertArraySubset(['foo' => 'bar'], $option->toArray());
+        self::assertEqualsCanonicalizing(['foo' => 'bar'], $option->toArray());
     }
 
     public function test_it_can_add_new_option_using_add_static_method()
@@ -111,6 +109,6 @@ class OptionTest extends \Pollora\Colt\Tests\TestCase
         $option = Option::add('foo', 'bar');
 
         $this->assertEquals('bar', $option->value);
-        self::assertArraySubset(['foo' => 'bar'], $option->toArray());
+        self::assertEqualsCanonicalizing(['foo' => 'bar'], $option->toArray());
     }
 }

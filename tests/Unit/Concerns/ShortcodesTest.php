@@ -14,6 +14,7 @@ use Thunder\Shortcode\ShortcodeFacade;
  * Class ShortcodesTest
  *
  * @package Pollora\Colt\Tests\Unit\Concerns
+ * @author Olivier Gorzalka <olivier@amphibee.fr>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class ShortcodesTest extends TestCase
@@ -29,10 +30,8 @@ class ShortcodesTest extends TestCase
         $this->assertInstanceOf(WordpressParser::class, $value);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+    #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
     public function test_it_can_change_the_parser_in_runtime()
     {
         // Force Colt::isLaravel() returning false
