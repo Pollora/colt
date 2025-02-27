@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Concerns\AdvancedCustomFields;
-use Corcel\Concerns\MetaFields;
-use Corcel\Model;
+use Pollora\Colt\Concerns\AdvancedCustomFields;
+use Pollora\Colt\Concerns\MetaFields;
+use Pollora\Colt\Model;
 
 /**
  * Class Term.
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Term extends Model

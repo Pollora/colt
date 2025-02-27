@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Concerns;
+namespace Pollora\Colt\Concerns;
 
 /**
  * Trait CustomTimestamps
  *
- * @package Corcel\Traits
+ * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait CustomTimestamps

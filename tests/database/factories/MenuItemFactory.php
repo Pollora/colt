@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\MenuItem;
+use Pollora\Colt\Model\MenuItem;
 use Illuminate\Support\Str;
 
 $factory->define(MenuItem::class, function (Faker\Generator $faker) {

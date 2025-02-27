@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model\Builder;
+namespace Pollora\Colt\Model\Builder;
 
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class TaxonomyBuilder
  *
- * @package Corcel
+ * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  * @author Yoram de Langen <yoramdelangen@gmail.com>
  */

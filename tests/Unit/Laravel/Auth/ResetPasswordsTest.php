@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Tests\Unit\Laravel\Auth;
+namespace Pollora\Colt\Tests\Unit\Laravel\Auth;
 
-use Corcel\Laravel\Auth\ResetsPasswords;
-use Corcel\Model\User;
-use Corcel\Services\PasswordService;
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Laravel\Auth\ResetsPasswords;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Services\PasswordService;
+use Pollora\Colt\Tests\TestCase;
 use Illuminate\Routing\Controller;
 
 class ResetPasswordsTest extends TestCase

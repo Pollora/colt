@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelUsersTable extends Migration
+class CreateColtUsersTable extends Migration
 {
     /**
      * Run the Migrations.

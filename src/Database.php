@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel;
+namespace Pollora\Colt;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
  * Class Database
  *
- * @package Corcel
+ * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Database

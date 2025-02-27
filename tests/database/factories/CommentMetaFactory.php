@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\Meta\CommentMeta;
+use Pollora\Colt\Model\Meta\CommentMeta;
 
 $factory->define(CommentMeta::class, function (Faker\Generator $faker) {
     return [

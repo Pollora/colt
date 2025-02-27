@@ -1,6 +1,6 @@
 <?php
 
-namespace Corcel\Concerns;
+namespace Pollora\Colt\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 use UnexpectedValueException;
@@ -8,7 +8,7 @@ use UnexpectedValueException;
 /**
  * Trait HasMetaFields
  *
- * @package Corcel\Traits
+ * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait MetaFields
@@ -17,10 +17,10 @@ trait MetaFields
      * @var array
      */
     protected $builtInClasses = [
-        \Corcel\Model\Comment::class => \Corcel\Model\Meta\CommentMeta::class,
-        \Corcel\Model\Post::class => \Corcel\Model\Meta\PostMeta::class,
-        \Corcel\Model\Term::class => \Corcel\Model\Meta\TermMeta::class,
-        \Corcel\Model\User::class => \Corcel\Model\Meta\UserMeta::class,
+        \Pollora\Colt\Model\Comment::class => \Pollora\Colt\Model\Meta\CommentMeta::class,
+        \Pollora\Colt\Model\Post::class => \Pollora\Colt\Model\Meta\PostMeta::class,
+        \Pollora\Colt\Model\Term::class => \Pollora\Colt\Model\Meta\TermMeta::class,
+        \Pollora\Colt\Model\User::class => \Pollora\Colt\Model\Meta\UserMeta::class,
     ];
 
     /**
@@ -52,7 +52,7 @@ trait MetaFields
         }
 
         throw new UnexpectedValueException(sprintf(
-            '%s must extends one of Corcel built-in models: Comment, Post, Term or User.',
+            '%s must extends one of Colt built-in models: Comment, Post, Term or User.',
             static::class
         ));
     }
@@ -70,7 +70,7 @@ trait MetaFields
         }
 
         throw new UnexpectedValueException(sprintf(
-            '%s must extends one of Corcel built-in models: Comment, Post, Term or User.',
+            '%s must extends one of Colt built-in models: Comment, Post, Term or User.',
             static::class
         ));
     }

@@ -1,14 +1,14 @@
 <?php
 
-namespace Corcel\Tests\Unit\Laravel;
+namespace Pollora\Colt\Tests\Unit\Laravel;
 
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Tests\TestCase;
 use Thunder\Shortcode\Parser\RegularParser;
 
 /**
  * Class LaravelConfigTest
  *
- * @package Corcel\Tests\Unit\Laravel
+ * @package Pollora\Colt\Tests\Unit\Laravel
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class LaravelConfigTest extends TestCase
@@ -20,7 +20,7 @@ class LaravelConfigTest extends TestCase
 
         // Database connection
         $this->assertArrayHasKey('connection', $content);
-        $this->assertEquals('corcel', $content['connection']);
+        $this->assertEquals('colt', $content['connection']);
 
         // Post types
         $this->assertArrayHasKey('post_types', $content);

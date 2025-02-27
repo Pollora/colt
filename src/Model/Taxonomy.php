@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Model;
-use Corcel\Model\Builder\TaxonomyBuilder;
-use Corcel\Model\Meta\TermMeta;
+use Pollora\Colt\Model;
+use Pollora\Colt\Model\Builder\TaxonomyBuilder;
+use Pollora\Colt\Model\Meta\TermMeta;
 
 /**
  * Class Taxonomy
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Taxonomy extends Model

@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
 /**
  * Tag class.
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Mickael Burguet <www.rundef.com>
  */
 class Tag extends Taxonomy

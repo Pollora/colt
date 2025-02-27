@@ -1,14 +1,14 @@
 <?php
 
-namespace Corcel\Model\Meta;
+namespace Pollora\Colt\Model\Meta;
 
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Term;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class TermMeta
  *
- * @package Corcel\Model\Meta
+ * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class TermMeta extends Meta

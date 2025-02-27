@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\Option;
+use Pollora\Colt\Model\Option;
 
 $factory->define(Option::class, function (Faker\Generator $faker) {
     return [

@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Term;
 
 /**
  * Class TermTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class TermTest extends \Corcel\Tests\TestCase
+class TermTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_can_create_term_meta()
     {

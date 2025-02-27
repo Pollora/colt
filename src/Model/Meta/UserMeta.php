@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model\Meta;
+namespace Pollora\Colt\Model\Meta;
 
-use Corcel\Model\User;
+use Pollora\Colt\Model\User;
 
 /**
  * Class UserMeta
  *
- * @package Corcel\Model\Meta
+ * @package Pollora\Colt\Model\Meta
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */

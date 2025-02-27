@@ -1,10 +1,10 @@
 <?php
 
-namespace Corcel\Tests\Unit\Laravel\Auth;
+namespace Pollora\Colt\Tests\Unit\Laravel\Auth;
 
-use Corcel\Laravel\Auth\AuthUserProvider;
-use Corcel\Model\User;
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Laravel\Auth\AuthUserProvider;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Tests\TestCase;
 use Illuminate\Support\Str;
 
 class AuthUserProviderTest extends TestCase

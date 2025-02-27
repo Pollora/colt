@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\Attachment;
+use Pollora\Colt\Model\Attachment;
 
 /**
  * Class AttachmentTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class AttachmentTest extends \Corcel\Tests\TestCase
+class AttachmentTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_has_aliases()
     {

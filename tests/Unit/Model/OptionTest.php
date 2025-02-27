@@ -1,8 +1,8 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\Option;
+use Pollora\Colt\Model\Option;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
 /**
@@ -10,7 +10,7 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class OptionTest extends \Corcel\Tests\TestCase
+class OptionTest extends \Pollora\Colt\Tests\TestCase
 {
     use ArraySubsetAsserts;
 

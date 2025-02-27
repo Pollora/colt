@@ -1,17 +1,17 @@
 <?php
 
-namespace Corcel\Tests\Unit\Traits;
+namespace Pollora\Colt\Tests\Unit\Traits;
 
-use Corcel\Model\Attachment;
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Attachment;
+use Pollora\Colt\Model\Post;
 
 /**
  * Class AliasesTraitTest
  *
- * @package Corcel\Tests\Unit\Traits
+ * @package Pollora\Colt\Tests\Unit\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class AliasesTraitTest extends \Corcel\Tests\TestCase
+class AliasesTraitTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_inherits_aliases_from_parent()
     {

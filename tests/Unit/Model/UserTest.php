@@ -1,19 +1,19 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
 use Carbon\Carbon;
-use Corcel\Model\Collection\MetaCollection;
-use Corcel\Model\Comment;
-use Corcel\Model\User;
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Collection\MetaCollection;
+use Pollora\Colt\Model\Comment;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Model\Post;
 
 /**
  * Class UserTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class UserTest extends \Corcel\Tests\TestCase
+class UserTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_is_instance_of_user()
     {

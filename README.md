@@ -1,30 +1,29 @@
-<h1 align="center"><img src="https://i.imgur.com/fHMqwTF.png" width="170" alt="Corcel PHP"></h1>
+# Colt
+
+> **Note:** Colt is a fork of [Corcel](https://github.com/corcel/corcel), originally developed by [Junior Grossi](https://github.com/jgrossi).  
+> This fork is maintained by [Pollora](https://github.com/Pollora) and adapted for improved compatibility with Laravel and WordPress.
 
 **A collection of Model classes that allows you to get data directly from a WordPress database.**
 
-[![Actions Status](https://github.com/corcel/corcel/workflows/CI/badge.svg)](https://github.com/corcel/corcel/actions)
-[![Packagist](https://img.shields.io/packagist/v/jgrossi/corcel.svg)](https://packagist.org/packages/jgrossi/corcel)
-[![Packagist](https://img.shields.io/packagist/dt/jgrossi/corcel.svg)](https://github.com/jgrossi/corcel/releases)
-[![Test Coverage](https://codeclimate.com/github/corcel/corcel/badges/coverage.svg)](https://codeclimate.com/github/corcel/corcel/coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3dc8135eee70ae7da325/maintainability)](https://codeclimate.com/github/corcel/corcel/maintainability)
+[![Actions Status](https://github.com/Pollora/colt/workflows/CI/badge.svg)](https://github.com/Pollora/colt/actions)
+[![Packagist](https://img.shields.io/packagist/v/pollora/colt.svg)](https://packagist.org/packages/pollora/colt)
+[![Packagist](https://img.shields.io/packagist/dt/pollora/colt.svg)](https://github.com/Pollora/colt/releases)
 
-Corcel is a collection of PHP classes built on top of [Eloquent ORM](https://laravel.com/docs/master/eloquent) (from [Laravel](http://laravel.com) framework), that provides a fluent interface to connect and get data directly from a [WordPress](http://wordpress.org) database.
+Colt is a collection of PHP classes built on top of [Eloquent ORM](https://laravel.com/docs/master/eloquent) (from [Laravel](http://laravel.com) framework), that provides a fluent interface to connect and get data directly from a [WordPress](http://wordpress.org) database.
 
-You can use WordPress as the backend (administration panel) or CMS, for inserting posts, custom types, etc, and any other PHP app in the other side querying those data (as a Model layer). It's easier to use Corcel with Laravel, but you're free to use it with any PHP project that uses Composer.
+You can use WordPress as the backend (administration panel) or CMS, for inserting posts, custom types, etc, and any other PHP app in the other side querying those data (as a Model layer). It's easier to use Colt with Laravel, but you're free to use it with any PHP project that uses Composer.
 
-<a href="https://ko-fi.com/A36513JF" target="_blank">Buy me a Coffee</a> | 
-<a href="https://twitter.com/corcelphp" target="_blank">Follow Corcel on Twitter</a>
+<a href="https://twitter.com/pollorawp" target="_blank">Follow Pollora on Twitter</a>
 
 # Table of Contents
-# <a id="install"></a> Installing Corcel
+# <a id="install"></a> Installing Colt
 
 
 - [Version Compatibility](#version-compatibility)
-- [Installing Corcel](#installing-corcel)
+- [Installing Colt](#installing-colt)
 - [Database Setup](#database-setup)
 - [Usage](#usage)
     - [Posts](#posts)
-    - [Advanced Custom Fields (ACF) Integration](#acf)
     - [Custom Post Type](#custom-post)
     - [Single Table Inheritance](#single-tab)
     - [Taxonomies](#taxonomies)
@@ -43,47 +42,35 @@ You can use WordPress as the backend (administration panel) or CMS, for insertin
 
 # Version Compatibility
 
- Laravel  | Corcel
+ Laravel  | Colt
 :---------|:----------
- 5.1.x    | `~2.1.0`
- 5.2.x    | `~2.2.0`
- 5.3.x    | `~2.3.0`
- 5.4.x    | `~2.4.0`
- 5.5.x    | `~2.5.0`
- 5.6.x    | `~2.6.0`
- 5.7.x    | `~2.7.0`
- 5.8.x    | `~2.8.0`
- 6.0.x    | `^3.0.0`
- 7.0.x    | `^4.0.0`
- 8.0.x    | `^5.0.0`
- 9.0.x    | `^6.0.0`
- 10.0.x   | `^7.0.0`
  11.0.x   | `^8.0.0`
+ 12.0.x   | `^9.0.0`
 
-# <a id="installing-corcel"></a> Installing Corcel
+# <a id="installing-colt"></a> Installing Colt
 
-You need to use Composer to install Corcel into your project:
+You need to use Composer to install Colt into your project:
 
 ```
-composer require jgrossi/corcel
+composer require pollora/colt
 ```
 
 ## Configuring (Laravel)
 
 ### <a name="config-auto-discovery"></a> Laravel 5.5 and newer
 
-Corcel wil register itself using Laravel's [Auto Discovery](https://laravel.com/docs/5.5/packages#package-discovery).
+Colt wil register itself using Laravel's [Auto Discovery](https://laravel.com/docs/5.5/packages#package-discovery).
 
 ### <a name="config-service-loader"></a> Laravel 5.4 and older
 
-You'll have to include `CorcelServiceProvider` in your `config/app.php`:
+You'll have to include `ColtServiceProvider` in your `config/app.php`:
 
 ```php
 'providers' => [
     /*
      * Package Service Providers...
      */
-    Corcel\Laravel\CorcelServiceProvider::class,
+    Pollora\Colt\Laravel\ColtServiceProvider::class,
 ]
 ```
 
@@ -94,16 +81,16 @@ Now configure our config file to make sure your database is set correctly and to
 Run the following Artisan command in your terminal:
 
 ```
-php artisan vendor:publish --provider="Corcel\Laravel\CorcelServiceProvider"
+php artisan vendor:publish --provider="Colt\Laravel\ColtServiceProvider"
 ```
 
-Now you have a `config/corcel.php` config file, where you can set the database connection with WordPress tables and much more.
+Now you have a `config/colt.php` config file, where you can set the database connection with WordPress tables and much more.
 
 # <a id="database-setup"></a> Database Setup
 
 ## Laravel Setup
 
-Just set the database `connection` you want to be used by Corcel in `config/corcel.php`.
+Just set the database `connection` you want to be used by Colt in `config/colt.php`.
 
 Let' suppose you have those following database connections in your `config/database.php` file:
 
@@ -125,7 +112,7 @@ Let' suppose you have those following database connections in your `config/datab
         'engine'    => null,
     ],
 
-    'wordpress' => [ // for WordPress database (used by Corcel)
+    'wordpress' => [ // for WordPress database (used by Colt)
         'driver'    => 'mysql',
         'host'      => 'localhost',
         'database'  => 'mydatabase',
@@ -140,7 +127,7 @@ Let' suppose you have those following database connections in your `config/datab
 ],
 ```
 
-In this case you should want to use the `wordpress` connection for Corcel, so just set it into the Corcel config file `config/corcel.php`:
+In this case you should want to use the `wordpress` connection for Colt, so just set it into the Colt config file `config/colt.php`:
 
 ```php
 'connection' => 'wordpress',
@@ -148,7 +135,7 @@ In this case you should want to use the `wordpress` connection for Corcel, so ju
 
 ## Other PHP Framework (not Laravel) Setup
 
-Here you have to configure the database to fit the Corcel requirements. First, you should include the Composer `autoload` file if not already loaded:
+Here you have to configure the database to fit the Colt requirements. First, you should include the Composer `autoload` file if not already loaded:
 
 ```php
 require __DIR__ . '/vendor/autoload.php';
@@ -163,7 +150,7 @@ $params = [
     'password'  => 'pa$$word',
     'prefix'    => 'wp_' // default prefix is 'wp_', you can change to your own prefix
 ];
-Corcel\Database::connect($params);
+Pollora\Colt\Database::connect($params);
 ```
 
 You can specify all Eloquent params, but some are default (but you can override them).
@@ -182,7 +169,7 @@ You can specify all Eloquent params, but some are default (but you can override 
 
 > Every time you see `Post::method()`, if you're using your own Post class (where you set the connection name), like `App\Post` you should use `App\Post::method()` and not `Post::method()`. All the examples are assuming you already know this difference.
 
-> In the examples, every time you see `Post::method()` assume `Corcel\Model\Post::method()`.
+> In the examples, every time you see `Post::method()` assume `Colt\Model\Post::method()`.
 
 ```php
 // All published posts
@@ -196,18 +183,18 @@ echo $post->post_title;
 
 ## Creating your own model classes
 
-Optionally you can create your own `Post` model (or Page, or whatever) which extends `Corcel\Post`. Then set the connection name (if you want to override the Corcel's default one) you're using, in this case `foo-bar`:
+Optionally you can create your own `Post` model (or Page, or whatever) which extends `\Pollora\Colt\Post`. Then set the connection name (if you want to override the Colt's default one) you're using, in this case `foo-bar`:
 
-> Extending `Corcel\Model\Post` class can add flexibility to your project, once you can add custom methods and logic, according what you need to use from your WordPress database.
+> Extending `Pollora\Colt\Model\Post` class can add flexibility to your project, once you can add custom methods and logic, according what you need to use from your WordPress database.
 
 ```php
 <?php // File: app/Post.php
 
 namespace App;
 
-use Corcel\Model\Post as Corcel;
+use Pollora\Colt\Model\Post as Colt;
 
-class Post extends Corcel
+class Post extends Colt
 {
     protected $connection = 'foo-bar';
 
@@ -223,11 +210,11 @@ So, now you can fetch WP database data using your own class:
 $posts = App\Post::all(); // using the 'foo-bar' connection
 ```
 
-> Just remember you don't have to extends our `Post` class, you can use `Corcel\Model\Post` and all others model without any problem.
+> Just remember you don't have to extends our `Post` class, you can use `Colt\Model\Post` and all others model without any problem.
 
 ### Meta Data (Custom Fields)
 
-> NOTE: In Corcel v1 you could save meta data using the `Post::save()` method. That's not allowed anymore. Use `saveMeta()` or `createMeta()` (see below) methods to save post meta.
+> Use `saveMeta()` or `createMeta()` (see below) methods to save post meta.
 
 You can retrieve meta data from posts too.
 
@@ -312,7 +299,7 @@ $post->title === $post->post_title; // true
 If you're extending the `Post` class to create your own class you can use `$aliases` too. Just add new aliases to that static property inside your own class and it will automatically inherit all aliases from parent `Post` class:
 
 ```php
-class A extends \Corcel\Post
+class A extends \Pollora\Colt\Post
 {
     protected static $aliases = [
         'foo' => 'post_foo',
@@ -350,24 +337,6 @@ To display the pagination links just call the `links()` method:
  {{ $posts->links() }}
  ```
 
-## <a id="acf"></a>  Advanced Custom Fields (ACF)
-
-If you want to retrieve a custom field created by the [Advanced Custom Fields (ACF)](http://advancedcustomfields.com) plugin, you have to install the `corcel/acf` plugin - [click here for more information](http://github.com/corcel/acf) - and call the custom field like this:
-
-```php
-$post = Post::find(123);
-echo $post->acf->some_radio_field;
-$repeaterFields = $post->acf->my_repeater_name;
-```
-
-To avoid unnecessary SQL queries just set the field type you're requesting. Usually two SQL queries are necessary to get the field type, so if you want to specify it you're skipping those extra queries:
-
-```php
-$post = Post::find(123);
-echo $post->acf->text('text_field_name');
-echo $post->acf->boolean('boolean_field_name');
-```
-
 ## <a id="custom-post"></a> Custom Post Type
 
 You can work with custom post types too. You can use the `type(string)` method or create your own class.
@@ -377,14 +346,14 @@ You can work with custom post types too. You can use the `type(string)` method o
 $videos = Post::type('video')->status('publish')->get();
 
 // using your own class
-class Video extends Corcel\Post
+class Video extends Colt\Post
 {
     protected $postType = 'video';
 }
 $videos = Video::status('publish')->get();
 ```
 
-Using `type()` method will make Corcel to return all objects as `Corcel\Post`. Using your custom class you have the advantage to customize classes, including custom methods and properties, return all objects as `Video`, for example.
+Using `type()` method will make Colt to return all objects as `Pollora\Colt\Post`. Using your custom class you have the advantage to customize classes, including custom methods and properties, return all objects as `Video`, for example.
 
 Custom post types and meta data:
 
@@ -400,13 +369,13 @@ foreach ($stores as $store) {
 
 ### Configuring the returning Instance
 
-Every time you call something like `Post::type('video)->first()` or `Video::first()` you receive a `Corcel\Model\Post` instance.
+Every time you call something like `Post::type('video)->first()` or `Video::first()` you receive a `Pollora\Colt\Model\Post` instance.
 
 If you choose to create a new class for your custom post type, you can have this class be returned for all instances of that post type.
 
 #### Registering Post Types (the easy way)
 
-Instead of call `Post::registerPostType()` method for all custom post type you want to register, just use the Corcel's config file and map all custom posts and it's classes. They will be registered automatically for you:
+Instead of call `Post::registerPostType()` method for all custom post type you want to register, just use the Colt's config file and map all custom posts and it's classes. They will be registered automatically for you:
 
 ```php
 'post_types' => [
@@ -439,7 +408,7 @@ You can also do this for inbuilt classes, such as Page or Post. Simply register 
 
 ### From config (Laravel)
 
-You can map all shortcodes you want inside the `config/corcel.php` file, under the `'shortcodes'` key. In this case you should create your own class that `implements` the `Corcel\Shortcode` interface, that requires a `render()` method:
+You can map all shortcodes you want inside the `config/colt.php` file, under the `'shortcodes'` key. In this case you should create your own class that `implements` the `Colt\Colt\Shortcode` interface, that requires a `render()` method:
 
 ```php
 'shortcodes' => [
@@ -451,7 +420,7 @@ You can map all shortcodes you want inside the `config/corcel.php` file, under t
 This is a sample shortcode class:
 
 ```php
-class FakeShortcode implements \Corcel\Shortcode
+class FakeShortcode implements \Pollora\Colt\Shortcode
 {
     /**
      * @param ShortcodeInterface $shortcode
@@ -489,7 +458,7 @@ If you are using Laravel, we suggest adding your shortcodes handlers in `App\Pro
 
 Shortcodes are parsed with the [*thunderer/shortcode*](https://github.com/thunderer/Shortcode) library. 
 
-Several different parsers are provided. `RegularParser` is the most technically correct and is provided by default. This is suitable for most cases. However if you encounter some irregularities in your shortcode parsing, you may need to configure Corcel to use the `WordpressParser`, which more faithfully matches WordPress' shortcode regex. To do this, if you are using Laravel, edit the `config/corcel.php` file, and uncomment your preferred parser. Alternatively, you can replace this with a parser of your own.
+Several different parsers are provided. `RegularParser` is the most technically correct and is provided by default. This is suitable for most cases. However if you encounter some irregularities in your shortcode parsing, you may need to configure Colt to use the `WordpressParser`, which more faithfully matches WordPress' shortcode regex. To do this, if you are using Laravel, edit the `config/colt.php` file, and uncomment your preferred parser. Alternatively, you can replace this with a parser of your own.
 
 ```php
 'shortcode_parser' => Thunder\Shortcode\Parser\RegularParser::class,
@@ -531,11 +500,11 @@ echo $post->getFormat(); // should return something like 'video', etc
 
 ## <a id="pages"></a>Pages
 
-Pages are like custom post types. You can use `Post::type('page')` or the `Corcel\Model\Page` class.
+Pages are like custom post types. You can use `Post::type('page')` or the `\Pollora\Colt\Model\Page` class.
 
 ```php
 
-use Corcel\Model\Page;
+use Pollora\Colt\Model\Page;
 
 // Find a page by slug
 $page = Page::slug('about')->first(); // OR
@@ -587,7 +556,7 @@ Getting the thumbnail for a `Post` or `Page`.
 ```php
 $post = Post::find(1);
 
-// Retrieve an instance of Corcel\Model\Meta\ThumbnailMeta.
+// Retrieve an instance of Colt\Model\Meta\ThumbnailMeta.
 print_r($post->thumbnail);
 
 // For convenience you may also echo the thumbnail instance to get the URL of the original image.
@@ -607,7 +576,7 @@ if ($post->thumbnail !== null) {
      *     'url' => 'http://localhost/wp-content/uploads/filename-300x300.jpg',
      * ]
      */
-    print_r($post->thumbnail->size(Corcel\Model\Meta\ThumbnailMeta::SIZE_THUMBNAIL));
+    print_r($post->thumbnail->size(Pollora\Colt\Model\Meta\ThumbnailMeta::SIZE_THUMBNAIL));
 
     // http://localhost/wp-content/uploads/filename.jpg
     print_r($post->thumbnail->size('invalid_size'));
@@ -615,10 +584,6 @@ if ($post->thumbnail !== null) {
 ```
 
 ## <a id="options"></a>Options
-
-> In previous versions of Corcel this classe was called `Options` instead of `Option` (singular). So take care of using always this class in the singular form starting from `v2.0.0`.
-
-> The `Option::getAll()` method was removed in Corcel 2+, in favor of `Option::asArray($keys [])`.
 
 You can use the `Option` class to get data from `wp_options` table:
 
@@ -649,7 +614,7 @@ echo $options['home'];
 
 ## <a id="menu"></a> Menu
 
-To get a menu by its slug, use the syntax below. The menu items will be loaded in the `items` variable (it's a collection of `Corcel\Model\MenuItem` objects).
+To get a menu by its slug, use the syntax below. The menu items will be loaded in the `items` variable (it's a collection of `Colt\Model\MenuItem` objects).
 
 The currently supported menu items are: Pages, Posts, Custom Links and Categories.
 
@@ -704,15 +669,15 @@ echo $user->user_login;
 
 ### Using Laravel
 
-If you're using Laravel 5.4 or older, make sure you have the [`CorcelServiceProvider` provider registered](#config-service-loader).
+If you're using Laravel 5.4 or older, make sure you have the [`ColtServiceProvider` provider registered](#config-service-loader).
 
 And then, define the user provider in `config/auth.php` to allow Laravel to login with WordPress users:
 
 ```php
 'providers' => [
     'users' => [
-        'driver' => 'corcel',
-        'model'  => Corcel\Model\User::class,
+        'driver' => 'colt',
+        'model'  => Pollora\Colt\Model\User::class,
     ],
 ],
 ```
@@ -726,7 +691,7 @@ Auth::validate([
 ]);
 ```
 
-To make Laravel's Password Reset work with Corcel, we have to override how passwords are stored in the database. To do this, you must change `Auth/PasswordController.php` from:
+To make Laravel's Password Reset work with Colt, we have to override how passwords are stored in the database. To do this, you must change `Auth/PasswordController.php` from:
 
 ```php
 use App\Http\Controllers\Controller;
@@ -742,12 +707,12 @@ to
 ```php
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Corcel\Laravel\Auth\ResetsPasswords as CorcelResetsPasswords;
+use Pollora\Colt\Laravel\Auth\ResetsPasswords as ColtResetsPasswords;
 
 class PasswordController extends Controller
 {
-    use ResetsPasswords, CorcelResetsPasswords {
-        CorcelResetsPasswords::resetPassword insteadof ResetsPasswords;
+    use ResetsPasswords, ColtResetsPasswords {
+        ColtResetsPasswords::resetPassword insteadof ResetsPasswords;
     }
 ```
 
@@ -756,7 +721,7 @@ class PasswordController extends Controller
 You can use the `AuthUserProvider` class to manually authenticate a user :
 
 ```php
-$userProvider = new Corcel\Laravel\Auth\AuthUserProvider;
+$userProvider = new Pollora\Colt\Laravel\Auth\AuthUserProvider;
 $user = $userProvider->retrieveByCredentials(['username' => 'admin']);
 if(!is_null($user) && $userProvider->validateCredentials($user, ['password' => 'admin'])) {
     // successfully login
@@ -783,13 +748,13 @@ All tests were written using Sqlite with `:memory` database, so it runs in your 
 
 # <a id="contrib"></a> Contributing
 
-All contributions are welcome to help improve Corcel.
+All contributions are welcome to help improve Colt.
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-- Fork https://github.com/corcel/corcel in Github;
+- Fork https://github.com/Pollora/colt in Github;
 
-- Clone your forked repository (not Corcel's) locally and create your own branch based on the version you want to fix (`2.1`, `2.2`, `2.3`, `2.4` or `2.5`): `git checkout -b my-fix-branch 2.5`;
+- Clone your forked repository (not Colt's) locally and create your own branch based on the version you want to fix (`2.1`, `2.2`, `2.3`, `2.4` or `2.5`): `git checkout -b my-fix-branch 2.5`;
 
 - Make all code changes. Remember here to write at least one test case for any feature you add or any bugfix (if it's not tested yet). Our goal is to have 100% of the code covered by tests, so help us to write a better code ;-) If you don' have experience with tests it's a good opportunity to learn. Just take a look into our tests cases and you'll see how simple they are.
 
@@ -797,10 +762,14 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 - Push your new branch to your forked repository, usually `git push origin HEAD` should work;
 
-- In GitHub again, create a Pull Request (PR) from your custom `my-fix-branch` branch (from your forked repository) to the related branch (`corcel:2.5`, for example, not `corcel:master`, please;
+- In GitHub again, create a Pull Request (PR) from your custom `my-fix-branch` branch (from your forked repository) to the related branch (`colt:9.0`, for example, not `colt:main`, please;
 
 - Wait for the approval :-)
 
-## <a id="license"></a> Licence
+## <a id="license"></a> License
 
-[MIT License](http://jgrossi.mit-license.org/) © Junior Grossi
+Colt is released under the MIT License.
+
+This project is a fork of [Corcel](https://github.com/corcel/corcel), originally developed by [Junior Grossi](https://github.com/jgrossi). It continues to be distributed under the same MIT license.
+
+[MIT License](https://opensource.org/licenses/MIT) © 2019 Corcel, 2025 Pollora

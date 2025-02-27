@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelCommentmetaTable extends Migration
+class CreateColtPostmetaTable extends Migration
 {
     /**
      * Run the Migrations.
@@ -13,9 +13,9 @@ class CreateCorcelCommentmetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('commentmeta', function (Blueprint $table) {
+        Schema::create('postmeta', function (Blueprint $table) {
             $table->increments('meta_id');
-            $table->bigInteger('comment_id')->unsigned();
+            $table->bigInteger('post_id')->unsigned();
             $table->string('meta_key');
             $table->longText('meta_value');
         });
@@ -28,6 +28,6 @@ class CreateCorcelCommentmetaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commentmeta');
+        Schema::dropIfExists('postmeta');
     }
 }

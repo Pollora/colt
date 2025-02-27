@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
 use Illuminate\Support\Arr;
 
 /**
  * Class MenuItem
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class MenuItem extends Post

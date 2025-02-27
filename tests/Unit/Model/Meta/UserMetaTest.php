@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model\Meta;
+namespace Pollora\Colt\Tests\Unit\Model\Meta;
 
-use Corcel\Model\Meta\UserMeta;
-use Corcel\Model\User;
+use Pollora\Colt\Model\Meta\UserMeta;
+use Pollora\Colt\Model\User;
 
 /**
  * Class UserMetaTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class UserMetaTest extends \Corcel\Tests\TestCase
+class UserMetaTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_user_relation()
     {

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelPostmetaTable extends Migration
+class CreateColtTermsTable extends Migration
 {
     /**
      * Run the Migrations.
@@ -13,11 +13,11 @@ class CreateCorcelPostmetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('postmeta', function (Blueprint $table) {
-            $table->increments('meta_id');
-            $table->bigInteger('post_id')->unsigned();
-            $table->string('meta_key');
-            $table->longText('meta_value');
+        Schema::create('terms', function (Blueprint $table) {
+            $table->increments('term_id');
+            $table->string('name');
+            $table->string('slug');
+            $table->bigInteger('term_group');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateCorcelPostmetaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('postmeta');
+        Schema::dropIfExists('terms');
     }
 }

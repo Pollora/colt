@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model\Meta;
+namespace Pollora\Colt\Tests\Unit\Model\Meta;
 
-use Corcel\Model\Meta\PostMeta;
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Meta\PostMeta;
+use Pollora\Colt\Model\Post;
 
 /**
  * Class PostMetaTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class PostMetaTest extends \Corcel\Tests\TestCase
+class PostMetaTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_has_correct_instance_type()
     {

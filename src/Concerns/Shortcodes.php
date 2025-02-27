@@ -1,8 +1,8 @@
 <?php
 
-namespace Corcel\Concerns;
+namespace Pollora\Colt\Concerns;
 
-use Corcel\Corcel;
+use Pollora\Colt\Colt;
 use Thunder\Shortcode\Parser\ParserInterface;
 use Thunder\Shortcode\Parser\RegularParser;
 use Thunder\Shortcode\ShortcodeFacade;
@@ -10,7 +10,7 @@ use Thunder\Shortcode\ShortcodeFacade;
 /**
  * Trait ShortcodesTrait
  *
- * @package Corcel\Traits
+ * @package Pollora\Colt\Traits
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -79,7 +79,7 @@ trait Shortcodes
      */
     private function getShortcodeHandlerInstance(): ShortcodeFacade
     {
-        if (Corcel::isLaravel()) {
+        if (Colt::isLaravel()) {
             return app()->make(ShortcodeFacade::class);
         }
 
@@ -104,8 +104,8 @@ trait Shortcodes
      */
     private function parseConfigShortcodes(ShortcodeFacade $facade)
     {
-        if (Corcel::isLaravel()) {
-            $shortcodes = config('corcel.shortcodes', []);
+        if (Colt::isLaravel()) {
+            $shortcodes = config('colt.shortcodes', []);
             foreach ($shortcodes as $tag => $class) {
                 $facade->addHandler($tag, [new $class, 'render']);
             }

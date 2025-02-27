@@ -1,10 +1,10 @@
 <?php
 
-namespace Corcel\Tests\Unit;
+namespace Pollora\Colt\Tests\Unit;
 
-use Corcel\Laravel\Auth\AuthUserProvider;
-use Corcel\Model\User;
-use Corcel\Services\PasswordService;
+use Pollora\Colt\Laravel\Auth\AuthUserProvider;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Services\PasswordService;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class AuthenticationTest extends \Corcel\Tests\TestCase
+class AuthenticationTest extends \Pollora\Colt\Tests\TestCase
 {
     /** @var PasswordService */
     protected $checker;

@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Post;
 use Illuminate\Support\Str;
 
 $factory->define(Post::class, function (Faker\Generator $faker) {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Model\Meta;
+namespace Pollora\Colt\Model\Meta;
 
-use Corcel\Model;
-use Corcel\Model\Collection\MetaCollection;
+use Pollora\Colt\Model;
+use Pollora\Colt\Model\Collection\MetaCollection;
 use Exception;
 
 /**
  * Class Meta
  *
- * @package Corcel\Model\Meta
+ * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 abstract class Meta extends Model

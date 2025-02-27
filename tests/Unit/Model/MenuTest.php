@@ -1,12 +1,12 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\CustomLink;
-use Corcel\Model\Menu;
-use Corcel\Model\MenuItem;
-use Corcel\Model\Post;
-use Corcel\Model\Taxonomy;
+use Pollora\Colt\Model\CustomLink;
+use Pollora\Colt\Model\Menu;
+use Pollora\Colt\Model\MenuItem;
+use Pollora\Colt\Model\Post;
+use Pollora\Colt\Model\Taxonomy;
 
 /**
  * Class MenuTest
@@ -14,7 +14,7 @@ use Corcel\Model\Taxonomy;
  * @author Yoram de Langen <yoramdelangen@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class MenuTest extends \Corcel\Tests\TestCase
+class MenuTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_has_the_correct_class_name()
     {

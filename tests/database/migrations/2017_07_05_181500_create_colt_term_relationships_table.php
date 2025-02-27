@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelTermsTable extends Migration
+class CreateColtTermRelationshipsTable extends Migration
 {
     /**
      * Run the Migrations.
@@ -13,11 +13,10 @@ class CreateCorcelTermsTable extends Migration
      */
     public function up()
     {
-        Schema::create('terms', function (Blueprint $table) {
-            $table->increments('term_id');
-            $table->string('name');
-            $table->string('slug');
-            $table->bigInteger('term_group');
+        Schema::create('term_relationships', function (Blueprint $table) {
+            $table->bigInteger('object_id')->unsigned();
+            $table->bigInteger('term_taxonomy_id');
+            $table->integer('term_order')->default(0);
         });
     }
 
@@ -28,6 +27,6 @@ class CreateCorcelTermsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('terms');
+        Schema::dropIfExists('term_relationships');
     }
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\Comment;
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Comment;
+use Pollora\Colt\Model\Post;
 
 /**
  * Class CommentTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class CommentTest extends \Corcel\Tests\TestCase
+class CommentTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_has_the_correct_instance()
     {

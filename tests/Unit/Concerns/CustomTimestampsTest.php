@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Tests\Unit\Concerns;
+namespace Pollora\Colt\Tests\Unit\Concerns;
 
 use Carbon\Carbon;
-use Corcel\Concerns\CustomTimestamps;
-use Corcel\Model\User;
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Concerns\CustomTimestamps;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Tests\TestCase;
 
 class CustomTimestampsTest extends TestCase
 {

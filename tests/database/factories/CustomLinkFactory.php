@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\CustomLink;
+use Pollora\Colt\Model\CustomLink;
 use Illuminate\Support\Str;
 
 $factory->define(CustomLink::class, function (Faker\Generator $faker) {

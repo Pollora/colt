@@ -1,14 +1,14 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Model;
+use Pollora\Colt\Model;
 use Exception;
 
 /**
  * Option class.
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author José CI <josec89@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */

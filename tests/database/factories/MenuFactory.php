@@ -1,7 +1,7 @@
 <?php
 
-use Corcel\Model\Menu;
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Menu;
+use Pollora\Colt\Model\Term;
 
 $factory->define(Menu::class, function (Faker\Generator $faker) {
     return [

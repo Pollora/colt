@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Concerns;
+namespace Pollora\Colt\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Trait OrderedTrait
  *
- * @package Corcel\Traits
+ * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait OrderScopes

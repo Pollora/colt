@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Concerns;
+namespace Pollora\Colt\Concerns;
 
 use Illuminate\Support\Arr;
 
 /**
  * Trait AliasesTrait
  *
- * @package Corcel\Traits
+ * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait Aliases

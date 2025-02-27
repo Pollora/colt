@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Tests\Unit\Concerns;
+namespace Pollora\Colt\Tests\Unit\Concerns;
 
-use Corcel\Corcel;
-use Corcel\Model;
-use Corcel\Model\Post;
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Colt;
+use Pollora\Colt\Model;
+use Pollora\Colt\Model\Post;
+use Pollora\Colt\Tests\TestCase;
 use Thunder\Shortcode\Parser\ParserInterface;
 use Thunder\Shortcode\Parser\WordpressParser;
 use Thunder\Shortcode\ShortcodeFacade;
@@ -13,14 +13,14 @@ use Thunder\Shortcode\ShortcodeFacade;
 /**
  * Class ShortcodesTest
  *
- * @package Corcel\Tests\Unit\Concerns
+ * @package Pollora\Colt\Tests\Unit\Concerns
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class ShortcodesTest extends TestCase
 {
     public function test_it_can_change_in_the_config_file_if_laravel()
     {
-        config(['corcel.shortcode_parser' => WordpressParser::class]);
+        config(['colt.shortcode_parser' => WordpressParser::class]);
 
         $post = factory(Post::class)->create();
         $handler = $this->getHandler($post);
@@ -35,9 +35,9 @@ class ShortcodesTest extends TestCase
      */
     public function test_it_can_change_the_parser_in_runtime()
     {
-        // Force Corcel::isLaravel() returning false
-        $mockedCorcel = \Mockery::mock('alias:' . Corcel::class);
-        $mockedCorcel->shouldReceive('isLaravel')->andReturn(false);
+        // Force Colt::isLaravel() returning false
+        $mockedColt = \Mockery::mock('alias:' . Colt::class);
+        $mockedColt->shouldReceive('isLaravel')->andReturn(false);
 
         /** @var Post $post */
         $post = factory(Post::class)->create();

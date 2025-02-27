@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel\Tests\Unit;
+namespace Pollora\Colt\Tests\Unit;
 
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Post;
 
 /**
  * Class DatabaseTest
  *
- * @package Corcel\Tests\Unit
+ * @package Pollora\Colt\Tests\Unit
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class DatabaseTest extends \Corcel\Tests\TestCase
+class DatabaseTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_uses_the_default_database_connection()
     {
@@ -22,13 +22,13 @@ class DatabaseTest extends \Corcel\Tests\TestCase
         $this->assertEquals($connection, $post->getConnectionName());
     }
 
-    public function test_it_uses_corcel_connection_if_it_is_present()
+    public function test_it_uses_colt_connection_if_it_is_present()
     {
         factory(Post::class)->create();
         $post = Post::newest()->first();
         $this->assertInstanceOf(Post::class, $post);
 
-        $this->app['config']->set('corcel.connection', 'foo');
+        $this->app['config']->set('colt.connection', 'foo');
 
         $post = Post::newest()->first();
         $this->assertNull($post);

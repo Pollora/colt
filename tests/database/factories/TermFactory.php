@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Term;
 use Illuminate\Support\Str;
 
 $factory->define(Term::class, function (Faker\Generator $faker) {

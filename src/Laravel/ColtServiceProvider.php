@@ -1,22 +1,22 @@
 <?php
 
-namespace Corcel\Laravel;
+namespace Pollora\Colt\Laravel;
 
-use Corcel\Corcel;
-use Corcel\Laravel\Auth\AuthUserProvider;
+use Pollora\Colt\Colt;
+use Pollora\Colt\Laravel\Auth\AuthUserProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Thunder\Shortcode\Parser\RegularParser;
 use Thunder\Shortcode\ShortcodeFacade;
 
 /**
- * Class CorcelServiceProvider
+ * Class ColtServiceProvider
  *
- * @package Corcel\Providers\Laravel
+ * @package Pollora\Colt\Providers\Laravel
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class CorcelServiceProvider extends ServiceProvider
+class ColtServiceProvider extends ServiceProvider
 {
     /**
      * @return void
@@ -33,7 +33,7 @@ class CorcelServiceProvider extends ServiceProvider
     private function publishConfigFile()
     {
         $this->publishes([
-            __DIR__ . '/config.php' => base_path('config/corcel.php'),
+            __DIR__ . '/config.php' => base_path('config/colt.php'),
         ]);
     }
 
@@ -42,7 +42,7 @@ class CorcelServiceProvider extends ServiceProvider
      */
     private function registerAuthProvider()
     {
-        Auth::provider('corcel', function ($app, array $config) {
+        Auth::provider('colt', function ($app, array $config) {
             return new AuthUserProvider($config);
         });
     }
@@ -54,7 +54,7 @@ class CorcelServiceProvider extends ServiceProvider
     {
         $this->app->bind(ShortcodeFacade::class, function () {
             return tap(new ShortcodeFacade(), function (ShortcodeFacade $facade) {
-                $parser_class = config('corcel.shortcode_parser', RegularParser::class);
+                $parser_class = config('colt.shortcode_parser', RegularParser::class);
                 $facade->setParser(new $parser_class);
             });
         });

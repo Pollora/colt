@@ -1,18 +1,18 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model\Meta;
+namespace Pollora\Colt\Tests\Unit\Model\Meta;
 
-use Corcel\Model\Meta\PostMeta;
-use Corcel\Model\Meta\TermMeta;
-use Corcel\Model\Post;
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Meta\PostMeta;
+use Pollora\Colt\Model\Meta\TermMeta;
+use Pollora\Colt\Model\Post;
+use Pollora\Colt\Model\Term;
 
 /**
  * Class TermMetaTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class TermMetaTest extends \Corcel\Tests\TestCase
+class TermMetaTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_term_relation()
     {

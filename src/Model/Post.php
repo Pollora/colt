@@ -1,22 +1,22 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Concerns\AdvancedCustomFields;
-use Corcel\Concerns\Aliases;
-use Corcel\Concerns\CustomTimestamps;
-use Corcel\Concerns\MetaFields;
-use Corcel\Concerns\OrderScopes;
-use Corcel\Concerns\Shortcodes;
-use Corcel\Corcel;
-use Corcel\Model;
-use Corcel\Model\Builder\PostBuilder;
-use Corcel\Model\Meta\ThumbnailMeta;
+use Pollora\Colt\Concerns\AdvancedCustomFields;
+use Pollora\Colt\Concerns\Aliases;
+use Pollora\Colt\Concerns\CustomTimestamps;
+use Pollora\Colt\Concerns\MetaFields;
+use Pollora\Colt\Concerns\OrderScopes;
+use Pollora\Colt\Concerns\Shortcodes;
+use Pollora\Colt\Colt;
+use Pollora\Colt\Model;
+use Pollora\Colt\Model\Builder\PostBuilder;
+use Pollora\Colt\Model\Meta\ThumbnailMeta;
 
 /**
  * Class Post
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  * @author Mickael Burguet <www.rundef.com>
  */
@@ -145,8 +145,8 @@ class Post extends Model
         if (isset($attributes['post_type']) && $attributes['post_type']) {
             if (isset(static::$postTypes[$attributes['post_type']])) {
                 $class = static::$postTypes[$attributes['post_type']];
-            } elseif (Corcel::isLaravel()) {
-                $postTypes = config('corcel.post_types');
+            } elseif (Colt::isLaravel()) {
+                $postTypes = config('colt.post_types');
                 if (is_array($postTypes) && isset($postTypes[$attributes['post_type']])) {
                     $class = $postTypes[$attributes['post_type']];
                 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel;
+namespace Pollora\Colt;
 
 use Illuminate\Contracts\Foundation\Application;
 
 /**
- * Class Corcel
+ * Class Colt
  *
- * @package Corcel
+ * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class Corcel
+class Colt
 {
     /**
      * @return bool

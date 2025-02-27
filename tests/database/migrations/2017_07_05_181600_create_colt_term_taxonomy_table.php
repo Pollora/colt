@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelTermmetaTable extends Migration
+class CreateColtTermTaxonomyTable extends Migration
 {
     /**
      * Run the Migrations.
@@ -13,11 +13,13 @@ class CreateCorcelTermmetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('termmeta', function (Blueprint $table) {
-            $table->increments('meta_id');
+        Schema::create('term_taxonomy', function (Blueprint $table) {
+            $table->increments('term_taxonomy_id');
             $table->bigInteger('term_id')->unsigned();
-            $table->string('meta_key');
-            $table->longText('meta_value');
+            $table->string('taxonomy');
+            $table->longText('description');
+            $table->bigInteger('parent')->unsigned();
+            $table->bigInteger('count');
         });
     }
 
@@ -28,6 +30,6 @@ class CreateCorcelTermmetaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('termmeta');
+        Schema::dropIfExists('term_taxonomy');
     }
 }

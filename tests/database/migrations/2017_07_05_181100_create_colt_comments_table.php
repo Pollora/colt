@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelCommentsTable extends Migration
+class CreateColtCommentsTable extends Migration
 {
     /**
      * Run the Migrations.

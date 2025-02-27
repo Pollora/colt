@@ -1,9 +1,9 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model\Meta;
+namespace Pollora\Colt\Tests\Unit\Model\Meta;
 
-use Corcel\Model\Meta\PostMeta;
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Model\Meta\PostMeta;
+use Pollora\Colt\Tests\TestCase;
 
 class MetaTest extends TestCase
 {

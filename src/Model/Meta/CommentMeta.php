@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model\Meta;
+namespace Pollora\Colt\Model\Meta;
 
-use Corcel\Model\Comment;
+use Pollora\Colt\Model\Comment;
 
 /**
  * Class CommentMeta
  *
- * @package Corcel\Model\Meta
+ * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class CommentMeta extends Meta

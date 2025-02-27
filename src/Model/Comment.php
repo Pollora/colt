@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Concerns\CustomTimestamps;
-use Corcel\Concerns\MetaFields;
-use Corcel\Model;
-use Corcel\Model\Builder\CommentBuilder;
+use Pollora\Colt\Concerns\CustomTimestamps;
+use Pollora\Colt\Concerns\MetaFields;
+use Pollora\Colt\Model;
+use Pollora\Colt\Model\Builder\CommentBuilder;
 
 /**
  * Class Comment
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Comment extends Model

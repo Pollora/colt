@@ -1,7 +1,7 @@
 <?php
 
-use Corcel\Model\Comment;
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Comment;
+use Pollora\Colt\Model\Post;
 
 $factory->define(Comment::class, function (Faker\Generator $faker) {
     return [

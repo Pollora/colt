@@ -1,16 +1,16 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model\Meta;
+namespace Pollora\Colt\Tests\Unit\Model\Meta;
 
-use Corcel\Model\Comment;
-use Corcel\Model\Meta\CommentMeta;
+use Pollora\Colt\Model\Comment;
+use Pollora\Colt\Model\Meta\CommentMeta;
 
 /**
  * Class CommentMetaTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class CommentMetaTest extends \Corcel\Tests\TestCase
+class CommentMetaTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_comment_relation()
     {

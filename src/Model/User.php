@@ -1,19 +1,19 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Concerns\AdvancedCustomFields;
-use Corcel\Concerns\Aliases;
-use Corcel\Concerns\MetaFields;
-use Corcel\Concerns\OrderScopes;
-use Corcel\Model;
+use Pollora\Colt\Concerns\AdvancedCustomFields;
+use Pollora\Colt\Concerns\Aliases;
+use Pollora\Colt\Concerns\MetaFields;
+use Pollora\Colt\Concerns\OrderScopes;
+use Pollora\Colt\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 
 /**
  * Class User
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Ashwin Sureshkumar <ashwin.sureshkumar@gmail.com>
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>

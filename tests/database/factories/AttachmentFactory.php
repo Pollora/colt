@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\Attachment;
+use Pollora\Colt\Model\Attachment;
 use Illuminate\Support\Str;
 
 $factory->define(Attachment::class, function (Faker\Generator $faker) {

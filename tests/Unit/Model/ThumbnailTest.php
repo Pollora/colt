@@ -1,17 +1,17 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\Attachment;
-use Corcel\Model\Meta\ThumbnailMeta;
-use Corcel\Model\Post;
+use Pollora\Colt\Model\Attachment;
+use Pollora\Colt\Model\Meta\ThumbnailMeta;
+use Pollora\Colt\Model\Post;
 
 /**
  * Class ThumbnailTest
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class ThumbnailTest extends \Corcel\Tests\TestCase
+class ThumbnailTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_its_meta_belongs_to_post()
     {

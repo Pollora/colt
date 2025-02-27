@@ -1,12 +1,12 @@
 <?php
 
-namespace Corcel\Tests;
+namespace Pollora\Colt\Tests;
 
-use Corcel\Laravel\CorcelServiceProvider;
-use Corcel\Model\User;
-use Corcel\Tests\Unit\Model\FakePage;
-use Corcel\Tests\Unit\Model\FakePost;
-use Corcel\Tests\Unit\Model\FakeShortcode;
+use Pollora\Colt\Laravel\ColtServiceProvider;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Tests\Unit\Model\FakePage;
+use Pollora\Colt\Tests\Unit\Model\FakePost;
+use Pollora\Colt\Tests\Unit\Model\FakeShortcode;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
@@ -72,7 +72,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     private function configureAuthProvider($app)
     {
         $app['config']->set('auth.providers.users', [
-            'driver' => 'corcel',
+            'driver' => 'colt',
             'model' => User::class,
         ]);
     }
@@ -82,7 +82,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     private function configureCustomPostTypes($app)
     {
-        $app['config']->set('corcel.post_types', [
+        $app['config']->set('colt.post_types', [
             'fake_post' => FakePost::class,
             'fake_page' => FakePage::class,
         ]);
@@ -93,7 +93,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     public function configureShortcodes($app)
     {
-        $app['config']->set('corcel.shortcodes', [
+        $app['config']->set('colt.shortcodes', [
             'fake' => FakeShortcode::class,
         ]);
     }
@@ -105,7 +105,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app): array
     {
         return [
-            CorcelServiceProvider::class,
+            ColtServiceProvider::class,
         ];
     }
 

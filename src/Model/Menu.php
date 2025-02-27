@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
 /**
  * Class Menu
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Yoram de Langen <yoramdelangen@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */

@@ -1,4 +1,4 @@
-- Corcel Version: #.#.#
+- Colt Version: #.#.#
 - Framework Name & Version:
 - PHP Version: 
 - Database Driver & Version:

@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Services;
+namespace Pollora\Colt\Services;
 
 use Hautelook\Phpass\PasswordHash;
 
 /**
  * Class PasswordService
  *
- * @package Corcel\Services
+ * @package Pollora\Colt\Services
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */

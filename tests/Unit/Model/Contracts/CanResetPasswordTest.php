@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model\Contracts;
+namespace Pollora\Colt\Tests\Unit\Model\Contracts;
 
-use Corcel\Model\User;
-use Corcel\Tests\TestCase;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Tests\TestCase;
 use Illuminate\Contracts\Auth\CanResetPassword;
 
 /**
  * Class CanResetPasswordTest
  *
- * @package Corcel\Tests\Unit\Model\Contracts
+ * @package Pollora\Colt\Tests\Unit\Model\Contracts
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class CanResetPasswordTest extends TestCase

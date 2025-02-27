@@ -1,6 +1,6 @@
 <?php
 
-namespace Corcel;
+namespace Pollora\Colt;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 /**
  * Class Model
  *
- * @package Corcel
+ * @package Pollora\Colt
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -186,8 +186,8 @@ class Model extends Eloquent
      */
     public function getConnectionName()
     {
-        if (!isset($this->connection) && Corcel::isLaravel()) {
-            if ($connection = config('corcel.connection')) {
+        if (!isset($this->connection) && Colt::isLaravel()) {
+            if ($connection = config('colt.connection')) {
                 $this->connection = $connection;
             }
         }

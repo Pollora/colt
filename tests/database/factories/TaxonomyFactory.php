@@ -1,7 +1,7 @@
 <?php
 
-use Corcel\Model\Taxonomy;
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Taxonomy;
+use Pollora\Colt\Model\Term;
 
 $factory->define(Taxonomy::class, function (Faker\Generator $faker) {
     return [

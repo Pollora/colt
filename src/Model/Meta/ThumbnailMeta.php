@@ -1,14 +1,14 @@
 <?php
 
-namespace Corcel\Model\Meta;
+namespace Pollora\Colt\Model\Meta;
 
-use Corcel\Model\Attachment;
+use Pollora\Colt\Model\Attachment;
 use Illuminate\Support\Arr;
 
 /**
  * Class ThumbnailMeta
  *
- * @package Corcel\Model\Meta
+ * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class ThumbnailMeta extends PostMeta

@@ -1,6 +1,6 @@
 <?php
 
-use Corcel\Model\Meta\PostMeta;
+use Pollora\Colt\Model\Meta\PostMeta;
 
 $factory->define(PostMeta::class, function (Faker\Generator $faker) {
     return [

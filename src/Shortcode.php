@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel;
+namespace Pollora\Colt;
 
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 /**
  * Interface Shortcode
  *
- * @package Corcel
+ * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 interface Shortcode

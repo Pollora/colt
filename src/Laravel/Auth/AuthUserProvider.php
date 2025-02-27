@@ -1,9 +1,9 @@
 <?php
 
-namespace Corcel\Laravel\Auth;
+namespace Pollora\Colt\Laravel\Auth;
 
-use Corcel\Services\PasswordService;
-use Corcel\Model\User;
+use Pollora\Colt\Services\PasswordService;
+use Pollora\Colt\Model\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Arr;
@@ -11,7 +11,7 @@ use Illuminate\Support\Arr;
 /**
  * Class AuthUserProvider
  *
- * @package Corcel\Laravel\Auth
+ * @package Pollora\Colt\Laravel\Auth
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */

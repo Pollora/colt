@@ -1,10 +1,14 @@
 {
-    "name": "jgrossi/corcel",
-    "replace": { "juniorgrossi/corcel": "self.version" },
+    "name": "pollora/colt",
     "description": "Use WordPress backend with Laravel or any PHP framework",
-    "homepage": "http://github.com/corcel/corcel",
+    "homepage": "http://github.com/Pollora/colt",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Olivier Gorzalka",
+            "email": "olivier@amphibee.fr",
+            "homepage": "https://amphibee.fr"
+        },
         {
             "name": "Junior Grossi",
             "email": "juniorgro@gmail.com",
@@ -29,14 +33,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Corcel\\": "src/",
-            "Corcel\\Tests\\": "tests/"
+            "Pollora\\Colt\\": "src/",
+            "Pollora\\Colt\\Tests\\": "tests/"
         }
     },
     "extra": {
+        "original-author": "Junior Grossi",
+        "original-repository": "https://github.com/corcel/corcel",
         "laravel": {
             "providers": [
-                "Corcel\\Laravel\\CorcelServiceProvider"
+                "Pollora\\Colt\\Laravel\\ColtServiceProvider"
             ]
         }
     },

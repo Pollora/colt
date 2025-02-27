@@ -1,10 +1,10 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
-use Corcel\Model\Post;
-use Corcel\Model\Taxonomy;
-use Corcel\Model\Term;
+use Pollora\Colt\Model\Post;
+use Pollora\Colt\Model\Taxonomy;
+use Pollora\Colt\Model\Term;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class TaxonomyTest extends \Corcel\Tests\TestCase
+class TaxonomyTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_belongs_to_a_term()
     {

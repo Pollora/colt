@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Page
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Page extends Post

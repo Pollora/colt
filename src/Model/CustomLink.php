@@ -1,11 +1,11 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
 /**
  * Class CustomLink
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class CustomLink extends Post

@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Model;
+use Pollora\Colt\Model;
 
 /**
  * Class TermRelationship.
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class TermRelationship extends Model

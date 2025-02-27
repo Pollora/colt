@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Concerns;
+namespace Pollora\Colt\Concerns;
 
-use Corcel\Acf\AdvancedCustomFields as BaseAdvancedCustomFields;
+use Pollora\Colt\Acf\AdvancedCustomFields as BaseAdvancedCustomFields;
 
 /**
  * Trait HasAcfFields
  *
- * @package Corcel\Traits
+ * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait AdvancedCustomFields

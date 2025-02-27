@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Laravel\Auth;
+namespace Pollora\Colt\Laravel\Auth;
 
-use Corcel\Services\PasswordService;
+use Pollora\Colt\Services\PasswordService;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * Trait ResetsPasswords
  *
- * @package Corcel\Laravel\Auth
+ * @package Pollora\Colt\Laravel\Auth
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */

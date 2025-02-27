@@ -1,19 +1,19 @@
 <?php
 
-namespace Corcel\Tests\Unit\Traits;
+namespace Pollora\Colt\Tests\Unit\Traits;
 
-use Corcel\Model;
-use Corcel\Model\Post;
-use Corcel\Model\User;
+use Pollora\Colt\Model;
+use Pollora\Colt\Model\Post;
+use Pollora\Colt\Model\User;
 use Illuminate\Support\Collection;
 
 /**
  * Class HasMetaFieldsTest
  *
- * @package Corcel\Tests\Unit\Traits
+ * @package Pollora\Colt\Tests\Unit\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class HasMetaFieldsTest extends \Corcel\Tests\TestCase
+class HasMetaFieldsTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_can_update_meta()
     {

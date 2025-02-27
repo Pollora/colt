@@ -1,15 +1,15 @@
 <?php
 
-namespace Corcel\Tests\Unit\Model;
+namespace Pollora\Colt\Tests\Unit\Model;
 
 use Carbon\Carbon;
-use Corcel\Model\Collection\MetaCollection;
-use Corcel\Model\Page;
-use Corcel\Model\Post;
-use Corcel\Model\Taxonomy;
-use Corcel\Model\Term;
-use Corcel\Model\User;
-use Corcel\Shortcode;
+use Pollora\Colt\Model\Collection\MetaCollection;
+use Pollora\Colt\Model\Page;
+use Pollora\Colt\Model\Post;
+use Pollora\Colt\Model\Taxonomy;
+use Pollora\Colt\Model\Term;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Shortcode;
 use Illuminate\Support\Arr;
 use Illuminate\Pagination\Paginator;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
@@ -19,7 +19,7 @@ use Thunder\Shortcode\Shortcode\ShortcodeInterface;
  *
  * @author Junior Grossi <juniorgro@gmail.com>
  */
-class PostTest extends \Corcel\Tests\TestCase
+class PostTest extends \Pollora\Colt\Tests\TestCase
 {
     public function test_it_has_the_correct_class_name()
     {

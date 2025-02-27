@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCorcelOptionsTable extends Migration
+class CreateColtTermmetaTable extends Migration
 {
     /**
      * Run the Migrations.
@@ -13,11 +13,11 @@ class CreateCorcelOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
-            $table->increments('option_id');
-            $table->string('option_name');
-            $table->longText('option_value');
-            $table->string('autoload')->default('yes');
+        Schema::create('termmeta', function (Blueprint $table) {
+            $table->increments('meta_id');
+            $table->bigInteger('term_id')->unsigned();
+            $table->string('meta_key');
+            $table->longText('meta_value');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateCorcelOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('termmeta');
     }
 }

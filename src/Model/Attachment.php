@@ -1,13 +1,13 @@
 <?php
 
-namespace Corcel\Model;
+namespace Pollora\Colt\Model;
 
-use Corcel\Concerns\Aliases;
+use Pollora\Colt\Concerns\Aliases;
 
 /**
  * Class Attachment
  *
- * @package Corcel\Model
+ * @package Pollora\Colt\Model
  * @author José CI <josec89@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
