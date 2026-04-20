@@ -17,16 +17,16 @@
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/database": "^12.0",
-        "illuminate/filesystem": "^12.0",
-        "illuminate/support": "^12.0",
+        "illuminate/database": "^12.0 || ^13.0",
+        "illuminate/filesystem": "^12.0 || ^13.0",
+        "illuminate/support": "^12.0 || ^13.0",
         "fakerphp/faker": "^1.19",
         "bordoni/phpass": "0.3.*",
         "thunderer/shortcode": "^0.7.3"
     },
     "require-dev": {
         "laravel/legacy-factories": "^1.0",
-        "orchestra/testbench": "^10.0",
+        "orchestra/testbench": "^10.0 || ^11.0",
         "symfony/thanks": "^1.0",
         "mockery/mockery": "^1.4.4"
     },
@@ -37,6 +37,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-main": "10.x-dev"
+        },
         "original-author": "Junior Grossi",
         "original-repository": "https://github.com/corcel/corcel",
         "laravel": {
