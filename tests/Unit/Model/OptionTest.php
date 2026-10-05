@@ -1,124 +1,104 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model;
-
 use Pollora\Colt\Model\Option;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
-/**
- * Class OptionTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class OptionTest extends \Pollora\Colt\Tests\TestCase
-{
-    public function test_it_can_return_all_configs_as_array()
-    {
-        factory(Option::class)->create([
-            'option_name' => 'foo',
-            'option_value' => 'bar',
-        ]);
+test('it can return all configs as array', function () {
+    factory(Option::class)->create([
+        'option_name' => 'foo',
+        'option_value' => 'bar',
+    ]);
 
-        $options = Option::asArray();
-        $expected = ['foo' => 'bar'];
+    $options = Option::asArray();
+    $expected = ['foo' => 'bar'];
 
-        self::assertEqualsCanonicalizing($expected, $options);
-        $this->assertArrayHasKey('foo', $options);
-        $this->assertEquals('bar', $options['foo']);
-    }
+    expect($options)->toEqualCanonicalizing($expected);
+    expect($options)->toHaveKey('foo');
+    expect($options['foo'])->toEqual('bar');
+});
 
-    public function test_it_can_return_just_the_config_passing_the_keys()
-    {
-        Option::add('one', 'two');
-        Option::add('three', 'four');
-        Option::add('five', 'six');
+test('it can return just the config passing the keys', function () {
+    Option::add('one', 'two');
+    Option::add('three', 'four');
+    Option::add('five', 'six');
 
-        $options = Option::asArray(['three', 'five']);
+    $options = Option::asArray(['three', 'five']);
 
-        $this->assertCount(2, $options);
-        $this->assertArrayHasKey('three', $options);
-        $this->assertArrayHasKey('five', $options);
-        $this->assertArrayNotHasKey('one', $options);
-        $this->assertEquals('four', $options['three']);
-    }
+    expect($options)->toHaveCount(2);
+    expect($options)->toHaveKey('three');
+    expect($options)->toHaveKey('five');
+    expect($options)->not->toHaveKey('one');
+    expect($options['three'])->toEqual('four');
+});
 
-    public function test_it_has_a_countable_as_array_method()
-    {
-        factory(Option::class, 2)->create();
+test('it has a countable as array method', function () {
+    factory(Option::class, 2)->create();
 
-        $options = Option::asArray();
+    $options = Option::asArray();
 
-        $this->assertIsArray($options);
-        $this->assertGreaterThan(0, count($options));
-    }
+    expect($options)->toBeArray();
+    expect(count($options))->toBeGreaterThan(0);
+});
 
-    public function test_it_can_have_serialized_data()
-    {
-        factory(Option::class)->create([
-            'option_name' => 'foo',
-            'option_value' => serialize($array = ['foo', 'bar']),
-        ]);
+test('it can have serialized data', function () {
+    factory(Option::class)->create([
+        'option_name' => 'foo',
+        'option_value' => serialize($array = ['foo', 'bar']),
+    ]);
 
-        $options = Option::asArray();
+    $options = Option::asArray();
 
-        $this->assertArrayHasKey('foo', $options);
-        $this->assertIsArray($options['foo']);
-        $this->assertContains($array, $options);
-        self::assertEqualsCanonicalizing($array, $options['foo']);
-    }
+    expect($options)->toHaveKey('foo');
+    expect($options['foo'])->toBeArray();
+    expect($options)->toContain($array);
+    expect($options['foo'])->toEqualCanonicalizing($array);
+});
 
-    public function test_it_returns_null_if_not_found()
-    {
-        $value = Option::get('b03e3fd');
+test('it returns null if not found', function () {
+    $value = Option::get('b03e3fd');
 
-        $this->assertNull($value);
-    }
+    expect($value)->toBeNull();
+});
 
-    public function test_it_has_simple_value_attribute()
-    {
-        $option = factory(Option::class)->create([
-            'option_name' => 'foo',
-            'option_value' => 'bar',
-        ]);
+test('it has simple value attribute', function () {
+    $option = factory(Option::class)->create([
+        'option_name' => 'foo',
+        'option_value' => 'bar',
+    ]);
 
-        $this->assertEquals('bar', $option->value);
-    }
+    expect($option->value)->toEqual('bar');
+});
 
-    public function test_it_can_unserialize_data_if_necessary()
-    {
-        $option = factory(Option::class)->create([
-            'option_name' => 'foo',
-            'option_value' => serialize($array = [1, 2, 3]),
-        ]);
+test('it can unserialize data if necessary', function () {
+    $option = factory(Option::class)->create([
+        'option_name' => 'foo',
+        'option_value' => serialize($array = [1, 2, 3]),
+    ]);
 
-        $this->assertEquals($array, $option->value);
-    }
+    expect($option->value)->toEqual($array);
+});
 
-    public function test_it_never_instantiates_serialized_objects()
-    {
-        $option = factory(Option::class)->create([
-            'option_name' => 'foo',
-            'option_value' => serialize(new \ArrayObject([1])),
-        ]);
+test('it never instantiates serialized objects', function () {
+    $option = factory(Option::class)->create([
+        'option_name' => 'foo',
+        'option_value' => serialize(new \ArrayObject([1])),
+    ]);
 
-        $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $option->value);
-    }
+    expect($option->value)->toBeInstanceOf(\__PHP_Incomplete_Class::class);
+});
 
-    public function test_it_can_be_converted_to_simple_array()
-    {
-        $option = factory(Option::class)->create([
-            'option_name' => 'foo',
-            'option_value' => 'bar',
-        ]);
+test('it can be converted to simple array', function () {
+    $option = factory(Option::class)->create([
+        'option_name' => 'foo',
+        'option_value' => 'bar',
+    ]);
 
-        self::assertEqualsCanonicalizing(['foo' => 'bar'], $option->toArray());
-    }
+    expect($option->toArray())->toEqualCanonicalizing(['foo' => 'bar']);
+});
 
-    public function test_it_can_add_new_option_using_add_static_method()
-    {
-        $option = Option::add('foo', 'bar');
+test('it can add new option using add static method', function () {
+    $option = Option::add('foo', 'bar');
 
-        $this->assertEquals('bar', $option->value);
-        self::assertEqualsCanonicalizing(['foo' => 'bar'], $option->toArray());
-    }
-}
+    expect($option->value)->toEqual('bar');
+    expect($option->toArray())->toEqualCanonicalizing(['foo' => 'bar']);
+});

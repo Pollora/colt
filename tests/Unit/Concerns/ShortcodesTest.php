@@ -1,66 +1,59 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Concerns;
-
+use Illuminate\Container\Container;
 use Pollora\Colt\Colt;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Post;
-use Pollora\Colt\Tests\TestCase;
 use Thunder\Shortcode\Parser\ParserInterface;
 use Thunder\Shortcode\Parser\WordpressParser;
 use Thunder\Shortcode\ShortcodeFacade;
 
-/**
- * Class ShortcodesTest
- *
- * @package Pollora\Colt\Tests\Unit\Concerns
- * @author Olivier Gorzalka <olivier@amphibee.fr>
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class ShortcodesTest extends TestCase
+test('it can change in the config file if laravel', function () {
+    config(['colt.shortcode_parser' => WordpressParser::class]);
+
+    $post = factory(Post::class)->create();
+    $handler = getHandler($post);
+    $value = getParserValue($handler);
+
+    expect($value)->toBeInstanceOf(WordpressParser::class);
+});
+
+test('it can change the parser in runtime', function () {
+    /** @var Post $post */
+    $post = factory(Post::class)->create();
+    $post->setShortcodeParser(new WordpressParser());
+
+    // Outside Laravel: app() returns a container that is not a Laravel application.
+    Container::setInstance(new class extends Container {
+        public function version(): string
+        {
+            return 'standalone';
+        }
+    });
+
+    try {
+        expect(Colt::isLaravel())->toBeFalse();
+
+        $handler = getHandler($post);
+    } finally {
+        Container::setInstance($this->app);
+    }
+
+    expect(getParserValue($handler))->toBeInstanceOf(WordpressParser::class);
+});
+
+function getHandler(Model $post): ShortcodeFacade
 {
-    public function test_it_can_change_in_the_config_file_if_laravel()
-    {
-        config(['colt.shortcode_parser' => WordpressParser::class]);
+    $method = new \ReflectionMethod($post, 'getShortcodeHandlerInstance');
+    $method->setAccessible(true);
 
-        $post = factory(Post::class)->create();
-        $handler = $this->getHandler($post);
-        $value = $this->getParserValue($handler);
+    return $method->invoke($post);
+}
 
-        $this->assertInstanceOf(WordpressParser::class, $value);
-    }
+function getParserValue(ShortcodeFacade $handler): ParserInterface
+{
+    $property = new \ReflectionProperty($handler, 'parser');
+    $property->setAccessible(true);
 
-    #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
-    #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
-    public function test_it_can_change_the_parser_in_runtime()
-    {
-        // Force Colt::isLaravel() returning false
-        $mockedColt = \Mockery::mock('alias:' . Colt::class);
-        $mockedColt->shouldReceive('isLaravel')->andReturn(false);
-
-        /** @var Post $post */
-        $post = factory(Post::class)->create();
-        $post->setShortcodeParser(new WordpressParser());
-
-        $handler = $this->getHandler($post);
-        $value = $this->getParserValue($handler);
-
-        $this->assertInstanceOf(WordpressParser::class, $value);
-    }
-
-    private function getHandler(Model $post): ShortcodeFacade
-    {
-        $method = new \ReflectionMethod($post, 'getShortcodeHandlerInstance');
-        $method->setAccessible(true);
-
-        return $method->invoke($post);
-    }
-
-    private function getParserValue(ShortcodeFacade $handler): ParserInterface
-    {
-        $property = new \ReflectionProperty($handler, 'parser');
-        $property->setAccessible(true);
-
-        return $property->getValue($handler);
-    }
+    return $property->getValue($handler);
 }

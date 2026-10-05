@@ -3,6 +3,7 @@
 namespace Pollora\Colt\Tests\WordPress;
 
 use Pollora\Colt\Laravel\ColtServiceProvider;
+use Pollora\Colt\Model\Post;
 
 /**
  * Base of the integration suite: Colt and WordPress share the database
@@ -10,6 +11,41 @@ use Pollora\Colt\Laravel\ColtServiceProvider;
  */
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
+    /**
+     * @var array<int, callable>
+     */
+    private array $cleanups = [];
+
+    protected function tearDown(): void
+    {
+        foreach (array_reverse($this->cleanups) as $cleanup) {
+            $cleanup();
+        }
+
+        $this->cleanups = [];
+
+        parent::tearDown();
+    }
+
+    /**
+     * Runs after the test, whether it passed or not.
+     */
+    protected function cleanup(callable $cleanup): void
+    {
+        $this->cleanups[] = $cleanup;
+    }
+
+    /**
+     * Inserts a published post with WordPress and returns it as a Colt model.
+     */
+    protected function createPost(): Post
+    {
+        $postId = wp_insert_post(['post_title' => 'Colt', 'post_status' => 'publish']);
+        $this->cleanup(fn () => wp_delete_post($postId, true));
+
+        return Post::find($postId);
+    }
+
     /**
      * @param \Illuminate\Foundation\Application $app
      */

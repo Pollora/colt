@@ -1,35 +1,25 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model\Meta;
-
 use Pollora\Colt\Model\Meta\PostMeta;
-use Pollora\Colt\Tests\TestCase;
 
-class MetaTest extends TestCase
-{
-    public function test_it_unserialize_serialized_values()
-    {
-        $meta = factory(PostMeta::class)->create(['meta_value' => serialize('foo')]);
-        $this->assertEquals('foo', $meta->value);
-    }
+test('it unserialize serialized values', function () {
+    $meta = factory(PostMeta::class)->create(['meta_value' => serialize('foo')]);
+    expect($meta->value)->toEqual('foo');
+});
 
-    public function test_it_also_works_with_unserialized_values()
-    {
-        $meta = factory(PostMeta::class)->create(['meta_value' => 'foo']);
-        $this->assertEquals('foo', $meta->value);
-    }
+test('it also works with unserialized values', function () {
+    $meta = factory(PostMeta::class)->create(['meta_value' => 'foo']);
+    expect($meta->value)->toEqual('foo');
+});
 
-    public function test_it_never_instantiates_serialized_objects()
-    {
-        $meta = factory(PostMeta::class)->create(['meta_value' => serialize(new \ArrayObject([1]))]);
+test('it never instantiates serialized objects', function () {
+    $meta = factory(PostMeta::class)->create(['meta_value' => serialize(new \ArrayObject([1]))]);
 
-        $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $meta->value);
-    }
+    expect($meta->value)->toBeInstanceOf(\__PHP_Incomplete_Class::class);
+});
 
-    public function test_it_keeps_a_serialized_false()
-    {
-        $meta = factory(PostMeta::class)->create(['meta_value' => serialize(false)]);
+test('it keeps a serialized false', function () {
+    $meta = factory(PostMeta::class)->create(['meta_value' => serialize(false)]);
 
-        $this->assertFalse($meta->value);
-    }
-}
+    expect($meta->value)->toBeFalse();
+});

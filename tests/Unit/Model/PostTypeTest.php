@@ -1,98 +1,71 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model;
-
-use Pollora\Colt\Model\Post;
 use Illuminate\Support\Facades\Event;
 
-/**
- * Class PostTypeTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class PostTypeTest extends \Pollora\Colt\Tests\TestCase
-{
-    public function test_it_still_has_post_type()
-    {
-        /** @var Post $post */
-        $post = factory(Post::class)->create([
-            'post_type' => 'video',
-        ]);
+use Pollora\Colt\Tests\Unit\Model\FakePage;
+use Pollora\Colt\Tests\Unit\Model\FakePost;
+use Pollora\Colt\Tests\Unit\Model\Video;
+use Pollora\Colt\Model\Post;
 
-        $this->assertInstanceOf(Post::class, $post);
-    }
+test('it still has post type', function () {
+    /** @var Post $post */
+    $post = factory(Post::class)->create([
+        'post_type' => 'video',
+    ]);
 
-    public function test_it_has_custom_instance_name()
-    {
-        Post::registerPostType('video', Video::class);
-        factory(Post::class)->create(['post_type' => 'video']);
+    expect($post)->toBeInstanceOf(Post::class);
+});
 
-        $post = Post::newest()->first();
+test('it has custom instance name', function () {
+    Post::registerPostType('video', Video::class);
+    factory(Post::class)->create(['post_type' => 'video']);
 
-        $this->assertInstanceOf(Video::class, $post);
-        $this->assertEquals('video', $post->getPostType());
-    }
+    $post = Post::newest()->first();
 
-    public function test_it_has_meta_fields_using_custom_class()
-    {
-        factory(Post::class)->create(['post_type' => 'fake_post']);
-        $fake = Post::newest()->first();
+    expect($post)->toBeInstanceOf(Video::class);
+    expect($post->getPostType())->toEqual('video');
+});
 
-        $this->assertInstanceOf(FakePost::class, $fake);
+test('it has meta fields using custom class', function () {
+    factory(Post::class)->create(['post_type' => 'fake_post']);
+    $fake = Post::newest()->first();
 
-        $fake->createMeta('foo', 'bar');
+    expect($fake)->toBeInstanceOf(FakePost::class);
 
-        $this->assertEquals('bar', $fake->meta->foo);
-    }
+    $fake->createMeta('foo', 'bar');
 
-    public function test_it_has_custom_instance_using_custom_class_builder()
-    {
-        Post::registerPostType('video', Video::class);
-        factory(Post::class)->create(['post_type' => 'video']);
+    expect($fake->meta->foo)->toEqual('bar');
+});
 
-        $video = Video::first();
+test('it has custom instance using custom class builder', function () {
+    Post::registerPostType('video', Video::class);
+    factory(Post::class)->create(['post_type' => 'video']);
 
-        $this->assertInstanceOf(Video::class, $video);
-        $this->assertEquals('video', $video->post_type);
-    }
+    $video = Video::first();
 
-    public function test_it_has_fire_retrieved_event_using_custom_class_builder()
-    {
-        Event::fake();
-        Post::registerPostType('video', Video::class);
-        factory(Post::class)->create(['post_type' => 'video']);
+    expect($video)->toBeInstanceOf(Video::class);
+    expect($video->post_type)->toEqual('video');
+});
 
-        Video::first();
+test('it has fire retrieved event using custom class builder', function () {
+    Event::fake();
+    Post::registerPostType('video', Video::class);
+    factory(Post::class)->create(['post_type' => 'video']);
 
-        Event::assertDispatched('eloquent.retrieved: ' . Video::class, 1);
-        Event::assertNotDispatched('eloquent.retrieved: ' . Post::class);
-    }
+    Video::first();
 
-    public function test_it_is_configurable_by_the_config_file()
-    {
-        factory(Post::class)->create(['post_type' => 'fake_post']);
-        $post = Post::type('fake_post')->first();
-        $this->assertNotNull($post);
-        $this->assertInstanceOf(FakePost::class, $post);
+    Event::assertDispatched('eloquent.retrieved: ' . Video::class, 1);
+    Event::assertNotDispatched('eloquent.retrieved: ' . Post::class);
+});
 
-        factory(Post::class)->create(['post_type' => 'fake_page']);
-        $post = Post::type('fake_page')->first();
-        $this->assertNotNull($post);
-        $this->assertInstanceOf(FakePage::class, $post);
-    }
-}
+test('it is configurable by the config file', function () {
+    factory(Post::class)->create(['post_type' => 'fake_post']);
+    $post = Post::type('fake_post')->first();
+    expect($post)->not->toBeNull();
+    expect($post)->toBeInstanceOf(FakePost::class);
 
-class Video extends Post
-{
-    protected $postType = 'video';
-}
-
-class FakePost extends Post
-{
-    protected $postType = 'fake_post';
-}
-
-class FakePage extends Post
-{
-    protected $postType = 'fake_page';
-}
+    factory(Post::class)->create(['post_type' => 'fake_page']);
+    $post = Post::type('fake_page')->first();
+    expect($post)->not->toBeNull();
+    expect($post)->toBeInstanceOf(FakePage::class);
+});

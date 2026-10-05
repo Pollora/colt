@@ -28,7 +28,8 @@
         "laravel/legacy-factories": "^1.0",
         "orchestra/testbench": "^10.0 || ^11.0",
         "symfony/thanks": "^1.0",
-        "mockery/mockery": "^1.4.4"
+        "mockery/mockery": "^1.4.4",
+        "pestphp/pest": "^3.8"
     },
     "autoload": {
         "psr-4": {
@@ -37,8 +38,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "test:wordpress": "@php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/phpunit -c phpunit.wordpress.xml"
+        "test": "pest",
+        "test:wordpress": "@php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/pest -c phpunit.wordpress.xml"
     },
     "extra": {
         "branch-alias": {
@@ -54,7 +55,8 @@
     },
     "config": {
         "allow-plugins": {
-            "symfony/thanks": true
+            "symfony/thanks": true,
+            "pestphp/pest-plugin": true
         }
     }
 }
