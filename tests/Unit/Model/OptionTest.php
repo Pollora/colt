@@ -94,6 +94,16 @@ class OptionTest extends \Pollora\Colt\Tests\TestCase
         $this->assertEquals($array, $option->value);
     }
 
+    public function test_it_never_instantiates_serialized_objects()
+    {
+        $option = factory(Option::class)->create([
+            'option_name' => 'foo',
+            'option_value' => serialize(new \ArrayObject([1])),
+        ]);
+
+        $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $option->value);
+    }
+
     public function test_it_can_be_converted_to_simple_array()
     {
         $option = factory(Option::class)->create([

@@ -2,7 +2,6 @@
 
 namespace Pollora\Colt\Model;
 
-use Pollora\Colt\Concerns\AdvancedCustomFields;
 use Pollora\Colt\Concerns\Aliases;
 use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Concerns\OrderScopes;
@@ -23,7 +22,6 @@ class User extends Model implements Authenticatable, CanResetPassword
     const CREATED_AT = 'user_registered';
     const UPDATED_AT = null;
 
-    use AdvancedCustomFields;
     use Aliases;
     use MetaFields;
     use OrderScopes;

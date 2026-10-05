@@ -42,7 +42,7 @@ class ThumbnailMeta extends PostMeta
             return $this->attachment->url;
         }
 
-        $meta = unserialize($this->attachment->meta->_wp_attachment_metadata);
+        $meta = $this->maybeUnserialize($this->attachment->meta->_wp_attachment_metadata);
         $sizes = Arr::get($meta, 'sizes');
 
         if (!isset($sizes[$size])) {

@@ -2,8 +2,8 @@
 
 namespace Pollora\Colt\Model;
 
+use Pollora\Colt\Concerns\SafeUnserialize;
 use Pollora\Colt\Model;
-use Exception;
 
 /**
  * Option class.
@@ -14,6 +14,8 @@ use Exception;
  */
 class Option extends Model
 {
+    use SafeUnserialize;
+
     /**
      * @var string
      */
@@ -48,15 +50,7 @@ class Option extends Model
      */
     public function getValueAttribute()
     {
-        try {
-            $value = unserialize($this->option_value);
-
-            return $value === false && $this->option_value !== false ?
-                $this->option_value :
-                $value;
-        } catch (Exception $ex) {
-            return $this->option_value;
-        }
+        return $this->maybeUnserialize($this->option_value);
     }
 
     /**
