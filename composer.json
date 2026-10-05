@@ -36,6 +36,10 @@
             "Pollora\\Colt\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "phpunit",
+        "test:wordpress": "@php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/phpunit -c phpunit.wordpress.xml"
+    },
     "extra": {
         "branch-alias": {
             "dev-main": "10.x-dev"
