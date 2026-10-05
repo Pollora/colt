@@ -1,37 +1,24 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Laravel;
-
-use Pollora\Colt\Tests\TestCase;
 use Thunder\Shortcode\Parser\RegularParser;
 
-/**
- * Class LaravelConfigTest
- *
- * @package Pollora\Colt\Tests\Unit\Laravel
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class LaravelConfigTest extends TestCase
-{
-    public function test_it_has_all_necessary_keys()
-    {
-        $file = __DIR__ . '/../../../src/Laravel/config.php';
-        $content = require $file;
+test('it has all necessary keys', function () {
+    $file = __DIR__ . '/../../../src/Laravel/config.php';
+    $content = require $file;
 
-        // Database connection
-        $this->assertArrayHasKey('connection', $content);
-        $this->assertEquals('colt', $content['connection']);
+    // Database connection
+    expect($content)->toHaveKey('connection');
+    expect($content['connection'])->toEqual('colt');
 
-        // Post types
-        $this->assertArrayHasKey('post_types', $content);
-        $this->assertEmpty($content['post_types']);
+    // Post types
+    expect($content)->toHaveKey('post_types');
+    expect($content['post_types'])->toBeEmpty();
 
-        // Shortcodes
-        $this->assertArrayHasKey('shortcodes', $content);
-        $this->assertEmpty($content['shortcodes']);
+    // Shortcodes
+    expect($content)->toHaveKey('shortcodes');
+    expect($content['shortcodes'])->toBeEmpty();
 
-        // Shortcode parser
-        $this->assertArrayHasKey('shortcode_parser', $content);
-        $this->assertEquals(RegularParser::class, $content['shortcode_parser']);
-    }
-}
+    // Shortcode parser
+    expect($content)->toHaveKey('shortcode_parser');
+    expect($content['shortcode_parser'])->toEqual(RegularParser::class);
+});

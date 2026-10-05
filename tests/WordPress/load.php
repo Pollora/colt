@@ -3,7 +3,7 @@
 /**
  * Loads WordPress for the integration suite, through PHP's auto_prepend_file:
  *
- *     php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/phpunit -c phpunit.wordpress.xml
+ *     php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/pest -c phpunit.wordpress.xml
  *
  * WordPress has to come first and at global scope: it and Laravel both declare
  * __(), and Laravel only skips its own when WordPress's already exists, while

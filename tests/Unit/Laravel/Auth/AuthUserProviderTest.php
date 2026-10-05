@@ -1,62 +1,51 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Laravel\Auth;
-
 use Pollora\Colt\Laravel\Auth\AuthUserProvider;
 use Pollora\Colt\Model\User;
-use Pollora\Colt\Tests\TestCase;
 use Illuminate\Support\Str;
 
-class AuthUserProviderTest extends TestCase
-{
-    public function test_it_can_retrieve_users_by_id()
-    {
-        $user = factory(User::class)->create();
+test('it can retrieve users by id', function () {
+    $user = factory(User::class)->create();
 
-        $provider = new AuthUserProvider();
-        $new_user = $provider->retrieveById($user->ID);
+    $provider = new AuthUserProvider();
+    $new_user = $provider->retrieveById($user->ID);
 
-        $this->assertEquals($user->fresh(), $new_user);
-    }
+    expect($new_user)->toEqual($user->fresh());
+});
 
-    public function test_it_can_retrieve_users_by_token()
-    {
-        /** @var User $user */
-        $user = factory(User::class)->create();
-        $user->saveMeta('remember_token', $token = Str::random());
+test('it can retrieve users by token', function () {
+    /** @var User $user */
+    $user = factory(User::class)->create();
+    $user->saveMeta('remember_token', $token = Str::random());
 
-        $provider = new AuthUserProvider();
-        $new_user = $provider->retrieveByToken($user->ID, $token);
-        
-        $this->assertEquals($user->fresh(), $new_user);
-    }
+    $provider = new AuthUserProvider();
+    $new_user = $provider->retrieveByToken($user->ID, $token);
 
-    public function test_it_can_update_remember_token()
-    {
-        $user = factory(User::class)->create();
-        $provider = new AuthUserProvider();
+    expect($new_user)->toEqual($user->fresh());
+});
 
-        $provider->updateRememberToken($user, $token = Str::random());
-        $new_user = $provider->retrieveByToken($user->ID, $token);
+test('it can update remember token', function () {
+    $user = factory(User::class)->create();
+    $provider = new AuthUserProvider();
 
-        $this->assertEquals($user->fresh(), $new_user);
-    }
+    $provider->updateRememberToken($user, $token = Str::random());
+    $new_user = $provider->retrieveByToken($user->ID, $token);
 
-    public function test_it_returns_null_if_credentials_do_not_match()
-    {
-        $provider = new AuthUserProvider();
+    expect($new_user)->toEqual($user->fresh());
+});
 
-        $user = $provider->retrieveByCredentials(['foo' => 'bar']);
+test('it returns null if credentials do not match', function () {
+    $provider = new AuthUserProvider();
 
-        $this->assertNull($user);
-    }
+    $user = $provider->retrieveByCredentials(['foo' => 'bar']);
 
-    public function test_it_returns_false_if_there_is_no_password_on_validation()
-    {
-        $user = factory(User::class)->create();
+    expect($user)->toBeNull();
+});
 
-        $provider = new AuthUserProvider();
+test('it returns false if there is no password on validation', function () {
+    $user = factory(User::class)->create();
 
-        $this->assertFalse($provider->validateCredentials($user, ['username' => $user->username]));
-    }
-}
+    $provider = new AuthUserProvider();
+
+    expect($provider->validateCredentials($user, ['username' => $user->username]))->toBeFalse();
+});

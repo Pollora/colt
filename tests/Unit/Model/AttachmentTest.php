@@ -1,48 +1,36 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model;
-
 use Pollora\Colt\Model\Attachment;
 
-/**
- * Class AttachmentTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class AttachmentTest extends \Pollora\Colt\Tests\TestCase
+test('it has aliases', function () {
+    $attachment = createAttachmentWithMeta();
+
+    expect($attachment->title)->toEqual($attachment->post_title);
+    expect($attachment->url)->toEqual($attachment->guid);
+    expect($attachment->type)->toEqual($attachment->post_mime_type);
+    expect($attachment->description)->toEqual($attachment->post_content);
+    expect($attachment->caption)->toEqual($attachment->post_excerpt);
+    expect($attachment->alt)->toEqual($attachment->meta->_wp_attachment_image_alt);
+});
+
+test('its to array method has all appends property values', function () {
+    $attachment = createAttachmentWithMeta();
+
+    $array = $attachment->toArray();
+
+    expect($array)->toHaveKey('title');
+    expect($array)->toHaveKey('url');
+    expect($array)->toHaveKey('type');
+    expect($array)->toHaveKey('description');
+    expect($array)->toHaveKey('caption');
+    expect($array)->toHaveKey('alt');
+});
+
+function createAttachmentWithMeta()
 {
-    public function test_it_has_aliases()
-    {
-        $attachment = $this->createAttachmentWithMeta();
+    $attachment = factory(Attachment::class)->create();
 
-        $this->assertEquals($attachment->post_title, $attachment->title);
-        $this->assertEquals($attachment->guid, $attachment->url);
-        $this->assertEquals($attachment->post_mime_type, $attachment->type);
-        $this->assertEquals($attachment->post_content, $attachment->description);
-        $this->assertEquals($attachment->post_excerpt, $attachment->caption);
-        $this->assertEquals($attachment->meta->_wp_attachment_image_alt, $attachment->alt);
-    }
+    $attachment->saveMeta('_wp_attachment_image_alt', 'foobar');
 
-    public function test_its_to_array_method_has_all_appends_property_values()
-    {
-        $attachment = $this->createAttachmentWithMeta();
-
-        $array = $attachment->toArray();
-
-        $this->assertArrayHasKey('title', $array);
-        $this->assertArrayHasKey('url', $array);
-        $this->assertArrayHasKey('type', $array);
-        $this->assertArrayHasKey('description', $array);
-        $this->assertArrayHasKey('caption', $array);
-        $this->assertArrayHasKey('alt', $array);
-    }
-
-    private function createAttachmentWithMeta()
-    {
-        $attachment = factory(Attachment::class)->create();
-
-        $attachment->saveMeta('_wp_attachment_image_alt', 'foobar');
-
-        return $attachment;
-    }
+    return $attachment;
 }

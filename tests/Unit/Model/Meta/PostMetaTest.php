@@ -1,143 +1,121 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model\Meta;
-
 use Pollora\Colt\Model\Meta\PostMeta;
 use Pollora\Colt\Model\Post;
 
+test('it has correct instance type', function () {
+    $meta = factory(PostMeta::class)->create();
+
+    expect($meta)->toBeInstanceOf(PostMeta::class);
+});
+
+test('its id is an integer', function () {
+    $meta = factory(PostMeta::class)->create();
+
+    expect($meta)->not->toBeNull();
+    expect($meta->meta_id)->toBeInt();
+});
+
+test('it has post relation', function () {
+    $meta = createMetaWithPost();
+
+    expect($meta->post)->toBeInstanceOf(Post::class);
+});
+
+test('it has meta key and value', function () {
+    $meta = factory(PostMeta::class)->create();
+
+    expect($meta)->not->toBeNull();
+    expect($meta->meta_key)->not->toBeNull();
+    expect($meta->meta_value)->not->toBeNull();
+});
+
+test('its value has the same value than post meta value', function () {
+    $meta = createMetaWithPost();
+
+    $post = $meta->post;
+    $key = $meta->meta_key;
+
+    expect($post->meta->$key)->toEqual($meta->meta_value);
+});
+
+test('its value can be reached by value property', function () {
+    $meta = factory(PostMeta::class)->create();
+
+    expect($meta->value)->not->toBeNull();
+    expect($meta->value)->toEqual($meta->meta_value);
+});
+
+test('its value can be serialized', function () {
+    $meta = factory(PostMeta::class)->create();
+
+    $meta->meta_value = serialize($expected = ['foo' => 'bar']);
+
+    expect($meta->value)->toEqual($expected);
+});
+
+test('it has has meta scope', function () {
+    $post = factory(Post::class)->create();
+    $post->saveMeta('one', 'two');
+    $post->saveMeta('three', 'four');
+
+    $newPost = Post::hasMeta('one')->first();
+    expect($newPost->ID)->toEqual($post->ID);
+
+    $newPost = Post::hasMeta('one', 'two')->first();
+    expect($newPost->ID)->toEqual($post->ID);
+});
+
+test('its has meta scope accepts array as parameter', function () {
+    $post = factory(Post::class)->create();
+    $post->saveMeta('one', 'two');
+    $post->saveMeta('three', 'four');
+
+    $newPost = Post::hasMeta(['one' => 'two'])->first();
+
+    expect($newPost)->not->toBeNull();
+    expect($newPost->title)->toEqual($post->title);
+    expect($newPost->ID)->toEqual($post->ID);
+
+    $newPost = Post::hasMeta([
+        'one' => 'two',
+        'three' => 'four',
+    ])->first();
+
+    expect($newPost)->not->toBeNull();
+    expect($newPost->title)->toEqual($post->title);
+    expect($newPost->ID)->toEqual($post->ID);
+});
+
+test('its has meta scope can have array with only values', function () {
+    $post = factory(Post::class)->create();
+    $post->saveMeta('one', 'two');
+    $post->saveMeta('three', 'four');
+
+    $newPost = Post::hasMeta(['one', 'three'])->first();
+
+    expect($newPost)->not->toBeNull();
+    expect($newPost->title)->toEqual($post->title);
+    expect($newPost->ID)->toEqual($post->ID);
+});
+
+test('higher order functions can be executed', function () {
+    $post = factory(Post::class)->create();
+    $post->saveMeta('one', 'two');
+    $post->saveMeta('three', 'four');
+
+    expect([1, 2])->toEqual($post->meta->map->getQueueableId()->all());
+    expect('two')->toEqual($post->meta->one);
+});
+
 /**
- * Class PostMetaTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
+ * @return PostMeta
  */
-class PostMetaTest extends \Pollora\Colt\Tests\TestCase
+function createMetaWithPost()
 {
-    public function test_it_has_correct_instance_type()
-    {
-        $meta = factory(PostMeta::class)->create();
-
-        $this->assertInstanceOf(PostMeta::class, $meta);
-    }
-
-    public function test_its_id_is_an_integer()
-    {
-        $meta = factory(PostMeta::class)->create();
-
-        $this->assertNotNull($meta);
-        $this->assertIsInt($meta->meta_id);
-    }
-
-    public function test_it_has_post_relation()
-    {
-        $meta = $this->createMetaWithPost();
-
-        $this->assertInstanceOf(Post::class, $meta->post);
-    }
-
-    public function test_it_has_meta_key_and_value()
-    {
-        $meta = factory(PostMeta::class)->create();
-
-        $this->assertNotNull($meta);
-        $this->assertNotNull($meta->meta_key);
-        $this->assertNotNull($meta->meta_value);
-    }
-
-    public function test_its_value_has_the_same_value_than_post_meta_value()
-    {
-        $meta = $this->createMetaWithPost();
-
-        $post = $meta->post;
-        $key = $meta->meta_key;
-
-        $this->assertEquals($meta->meta_value, $post->meta->$key);
-    }
-
-    public function test_its_value_can_be_reached_by_value_property()
-    {
-        $meta = factory(PostMeta::class)->create();
-
-        $this->assertNotNull($meta->value);
-        $this->assertEquals($meta->meta_value, $meta->value);
-    }
-
-    public function test_its_value_can_be_serialized()
-    {
-        $meta = factory(PostMeta::class)->create();
-
-        $meta->meta_value = serialize($expected = ['foo' => 'bar']);
-
-        $this->assertEquals($expected, $meta->value);
-    }
-
-    public function test_it_has_has_meta_scope()
-    {
-        $post = factory(Post::class)->create();
-        $post->saveMeta('one', 'two');
-        $post->saveMeta('three', 'four');
-
-        $newPost = Post::hasMeta('one')->first();
-        $this->assertEquals($post->ID, $newPost->ID);
-
-        $newPost = Post::hasMeta('one', 'two')->first();
-        $this->assertEquals($post->ID, $newPost->ID);
-    }
-
-    public function test_its_has_meta_scope_accepts_array_as_parameter()
-    {
-        $post = factory(Post::class)->create();
-        $post->saveMeta('one', 'two');
-        $post->saveMeta('three', 'four');
-
-        $newPost = Post::hasMeta(['one' => 'two'])->first();
-
-        $this->assertNotNull($newPost);
-        $this->assertEquals($post->title, $newPost->title);
-        $this->assertEquals($post->ID, $newPost->ID);
-
-        $newPost = Post::hasMeta([
-            'one' => 'two',
-            'three' => 'four',
-        ])->first();
-
-        $this->assertNotNull($newPost);
-        $this->assertEquals($post->title, $newPost->title);
-        $this->assertEquals($post->ID, $newPost->ID);
-    }
-
-    public function test_its_has_meta_scope_can_have_array_with_only_values()
-    {
-        $post = factory(Post::class)->create();
-        $post->saveMeta('one', 'two');
-        $post->saveMeta('three', 'four');
-
-        $newPost = Post::hasMeta(['one', 'three'])->first();
-
-
-        $this->assertNotNull($newPost);
-        $this->assertEquals($post->title, $newPost->title);
-        $this->assertEquals($post->ID, $newPost->ID);
-    }
-
-    public function test_higher_order_functions_can_be_executed()
-    {
-        $post = factory(Post::class)->create();
-        $post->saveMeta('one', 'two');
-        $post->saveMeta('three', 'four');
-
-        $this->assertEquals($post->meta->map->getQueueableId()->all(), [1, 2]);
-        $this->assertEquals($post->meta->one, 'two');
-    }
-
-    /**
-     * @return PostMeta
-     */
-    private function createMetaWithPost()
-    {
-        return factory(PostMeta::class)->create([
-            'post_id' => function () {
-                return factory(Post::class)->create()->ID;
-            },
-        ]);
-    }
+    return factory(PostMeta::class)->create([
+        'post_id' => function () {
+            return factory(Post::class)->create()->ID;
+        },
+    ]);
 }

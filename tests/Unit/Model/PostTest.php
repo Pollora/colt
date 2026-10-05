@@ -1,7 +1,5 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model;
-
 use Carbon\Carbon;
 use Pollora\Colt\Model\Collection\MetaCollection;
 use Pollora\Colt\Model\Page;
@@ -14,612 +12,545 @@ use Illuminate\Support\Arr;
 use Illuminate\Pagination\Paginator;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
-/**
- * Class PostTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class PostTest extends \Pollora\Colt\Tests\TestCase
+test('it has the correct class name', function () {
+    $post = factory(Post::class)->create();
+
+    expect($post)->toBeInstanceOf(Post::class);
+});
+
+test('it has an integer id', function () {
+    $post = factory(Post::class)->create();
+
+    expect($post->ID)->toBeInt();
+    expect($post->ID)->toBeGreaterThan(0);
+});
+
+test('it has status scope', function () {
+    factory(Post::class)->create(['post_status' => 'foo']);
+
+    $posts = Post::status('foo')->get();
+
+    expect($posts)->not->toBeNull();
+    expect($posts)->toHaveCount(1);
+});
+
+test('it has has meta scope', function () {
+    $post = factory(Post::class)->create();
+    $post->saveMeta('foo', 'bar');
+
+    $posts = Post::hasMeta('foo')->get();
+
+    expect($posts)->toHaveCount(1);
+    expect($posts->first())->toBeInstanceOf(Post::class);
+
+    $newPost = Post::hasMeta('foo', 'bar')->first();
+    expect($newPost->title)->toEqual($post->title);
+    expect($newPost->ID)->toEqual($post->ID);
+});
+
+test('it has published scope', function () {
+    factory(Post::class)->create(['post_status' => 'publish']);
+
+    $posts = Post::published()->get();
+
+    expect($posts)->not->toBeNull();
+    expect($posts->count())->toBeGreaterThan(0);
+});
+
+test('it has type scope', function () {
+    factory(Post::class)->create(['post_type' => 'foo']);
+
+    $posts = Post::type('foo')->get();
+
+    expect($posts)->not->toBeNull();
+    expect($posts)->toHaveCount(1);
+});
+
+test('it has type in scope', function () {
+    factory(Post::class)->create(['post_type' => 'blue']);
+    factory(Post::class)->create(['post_type' => 'red']);
+    factory(Post::class)->create(['post_type' => 'yellow']);
+
+    $posts = Post::typeIn(['blue', 'yellow'])->get();
+
+    expect($posts)->not->toBeNull();
+    expect($posts)->toHaveCount(2);
+});
+
+test('it has slug scope', function () {
+    factory(Post::class)->create(['post_name' => 'my-fake-post-slug']);
+
+    $posts = Post::slug('my-fake-post-slug')->get();
+
+    expect($posts)->not->toBeNull();
+    expect($posts)->toHaveCount(1);
+});
+
+test('it has taxonomy scope', function () {
+    createPostWithTaxonomiesAndTerms();
+
+    $posts = Post::taxonomy('foo', 'bar')->get();
+    expect($posts)->not->toBeNull();
+    expect($posts->count())->toBeGreaterThan(0);
+
+    $posts = Post::taxonomy('foo', ['bar'])->get();
+    expect($posts)->not->toBeNull();
+    expect($posts->count())->toBeGreaterThan(0);
+});
+
+test('it has children relation', function () {
+    $post = factory(Post::class)->create();
+    factory(Post::class)->create(['post_parent' => $post->ID]);
+    factory(Post::class)->create(['post_parent' => $post->ID]);
+    factory(Post::class)->create(['post_parent' => $post->ID]);
+
+    $children = $post->children;
+
+    expect($children)->toHaveCount(3);
+    expect($children->first())->toBeInstanceOf(Post::class);
+    expect($children->first()->post_parent)->toEqual($post->ID);
+});
+
+test('it can be ordered', function () {
+    $older = Carbon::now()->subYears(10);
+
+    $firstPost = factory(Post::class)->create(['post_date' => $older]);
+    factory(Post::class)->create(['post_date' => $older->addMonths(1)]);
+    $lastPost = factory(Post::class)->create(['post_date' => $older->addMonths(2)]);
+
+    $newest = Post::newest()->first();
+    $oldest = Post::oldest()->first();
+
+    expect($oldest->post_name)->toEqual($firstPost->post_name);
+    expect($oldest->post_title)->toEqual($firstPost->post_title);
+    expect($newest->post_name)->toEqual($lastPost->post_name);
+    expect($newest->post_title)->toEqual($lastPost->post_title);
+});
+
+test('it can have different post type', function () {
+    $page = factory(Post::class)->create(['post_type' => 'page']);
+
+    expect('page')->toEqual($page->post_type);
+});
+
+test('it has aliases', function () {
+    $post = factory(Post::class)->create();
+
+    expect($post->title)->toEqual($post->post_title);
+    expect($post->slug)->toEqual($post->post_name);
+    expect($post->content)->toEqual($post->post_content);
+    expect($post->type)->toEqual($post->post_type);
+    expect($post->mime_type)->toEqual($post->post_mime_type);
+    expect($post->url)->toEqual($post->guid);
+    expect($post->author_id)->toEqual($post->post_author);
+    expect($post->parent_id)->toEqual($post->post_parent);
+    expect($post->created_at)->toEqual($post->post_date);
+    expect($post->updated_at)->toEqual($post->post_modified);
+    expect($post->excerpt)->toEqual($post->post_excerpt);
+    expect($post->status)->toEqual($post->post_status);
+});
+
+test('it has isset method working', function () {
+    $post = factory(Post::class)->create();
+    $post->createMeta('foo', 'bar');
+
+    expect(isset($post->meta->foo))->toBeTrue();
+});
+
+test('it can add alias in runtime', function () {
+    $post = factory(Post::class)->create();
+    $post->saveMeta('foo', 'bar');
+
+    $post->addAlias('baz', ['meta' => 'foo']);
+    expect($post->baz)->toEqual('bar');
+    expect($post->meta->foo)->toEqual($post->baz);
+
+    Post::addAlias('fee', ['meta' => 'foo']);
+    expect($post->fee)->toEqual('bar');
+    expect($post->meta->foo)->toEqual($post->fee);
+});
+
+test('it can accept unicode chars', function () {
+    $post = factory(Post::class)->create([
+        'post_content' => 'test utf8 é à',
+        'post_excerpt' => 'test chinese characters お問い合わせ',
+    ]);
+
+    expect($post->post_content)->toEqual('test utf8 é à');
+    expect($post->post_excerpt)->toEqual('test chinese characters お問い合わせ');
+});
+
+test('it can have custom fields', function () {
+    $post = factory(Post::class)->create();
+
+    $post->meta()->create([
+        'meta_key' => 'foo',
+        'meta_value' => 'bar',
+    ]);
+
+    expect($post->meta)->not->toBeEmpty();
+    expect($post->fields)->not->toBeEmpty();
+    expect($post->meta)->toBeInstanceOf(MetaCollection::class);
+});
+
+test('it can add custom fields', function () {
+    $post = factory(Post::class)->create();
+
+    $post->saveMeta('foo', 'bar');
+    $meta = $post->meta()->orderBy('meta_id', 'desc')->first();
+
+    expect($meta->meta_key)->toEqual('foo');
+    expect($meta->meta_value)->toEqual('bar');
+});
+
+test('it can add custom fields using save field method', function () {
+    $post = factory(Post::class)->create();
+
+    $post->saveField('foo', 'bar');
+    $meta = $post->meta->first();
+
+    expect($meta->meta_key)->toEqual('foo');
+    expect($meta->meta_value)->toEqual('bar');
+});
+
+test('it can save multiple meta at the same time', function () {
+    $post = factory(Post::class)->create();
+
+    $post->saveMeta([
+        'foo' => 'bar',
+        'fee' => 'baz',
+    ]);
+
+    expect($post->meta)->toHaveCount(2);
+    expect($post->meta->foo)->toEqual('bar');
+    expect($post->meta->fee)->toEqual('baz');
+});
+
+test('they can be ordered ascending', function () {
+    factory(Post::class, 2)->create();
+
+    $posts = Post::query()->orderBy('post_date', 'asc')->get();
+    $first = $posts->first();
+    $last = $posts->last();
+
+    expect($first->post_date->lessThanOrEqualTo($last->post_date))->toBeTrue();
+    expect($last->post_date->greaterThanOrEqualTo($first->post_date))->toBeTrue();
+});
+
+test('they can be ordered descending', function () {
+    factory(Post::class, 2)->create();
+
+    $posts = Post::orderBy('post_date', 'desc')->get();
+    $last = $posts->first();
+    $first = $posts->last();
+
+    expect($first->post_date->lessThanOrEqualTo($last->post_date))->toBeTrue();
+    expect($last->post_date->greaterThanOrEqualTo($first->post_date))->toBeTrue();
+});
+
+test('it can be paginated', function () {
+    Paginator::useBootstrap();
+    $post = factory(Post::class)->create();
+    factory(Post::class)->create();
+    factory(Post::class)->create();
+
+    /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
+    $paginator = Post::paginate(2);
+    $firstPost = Arr::first($paginator->items());
+
+    expect($paginator->perPage())->toEqual(2);
+    expect($paginator->count())->toEqual(2);
+    expect($paginator->total())->toEqual(3);
+    expect($firstPost)->toBeInstanceOf(Post::class);
+    expect($firstPost->post_title)->toEqual($post->post_title);
+    expect($paginator->toHtml())->toMatch('/\<nav\>\s*\<ul class="pagination/');
+});
+
+test('it can have taxonomy', function () {
+    $post = createPostWithTaxonomiesAndTerms();
+
+    expect($post->taxonomies->count())->toEqual(1);
+    expect($post->taxonomies->first()->taxonomy)->toEqual('foo');
+});
+
+test('it can have taxonomy and terms', function () {
+    $createdPost = createPostWithTaxonomiesAndTerms();
+
+    $post = Post::orderBy('ID', 'desc')
+        ->taxonomy('foo', ['bar'])->first();
+
+    expect($post)->not->toBeNull();
+    expect($post->ID)->toEqual($createdPost->ID);
+
+    $post = Post::orderBy('ID', 'desc')
+        ->taxonomy('foo', 'bar')->first();
+
+    expect($post)->not->toBeNull();
+    expect($post->ID)->toEqual($createdPost->ID);
+});
+
+test('it can have term', function () {
+    $post = createPostWithTaxonomiesAndTerms();
+
+    expect($post->hasTerm('foo', 'bar'))->toEqual(true);
+    expect($post->hasTerm('foo', 'baz'))->toEqual(false);
+    expect($post->hasTerm('fee', 'bar'))->toEqual(false);
+    expect($post->hasTerm('fee', 'baz'))->toEqual(false);
+    expect($post->main_category)->toEqual('Bar');
+    expect($post->keywords)->toEqual(['Bar']);
+    expect($post->keywords_str)->toEqual('Bar');
+});
+
+test('it can have author relation', function () {
+    $post = createPostWithAuthor();
+
+    expect($post->author->display_name)->toEqual('Administrator');
+    expect($post->author->user_email)->toEqual('admin@example.com');
+});
+
+test('it has the correct instance name if it is a custom post type', function () {
+    factory(Post::class)->create(['post_type' => 'page']);
+    Post::registerPostType('page', Page::class);
+
+    $page = Post::orderBy('ID', 'desc')->first();
+
+    expect($page)->toBeInstanceOf(Page::class);
+});
+
+test('it has its instance name back to post after clearing post types', function () {
+    factory(Post::class)->create([
+        'post_type' => 'page',
+        'post_name' => 'foo2',
+    ]);
+    Post::registerPostType('page', Page::class);
+    Post::clearRegisteredPostTypes();
+
+    $page = Post::where('post_name', 'foo2')->first();
+
+    expect($page)->toBeInstanceOf(Post::class);
+});
+
+test('its relation can have different database connection', function () {
+    $post = factory(Post::class)->make();
+    $post->setConnection('foo');
+    $post->author()->associate(factory(User::class)->create());
+    $post->save();
+
+    expect($post->author->getConnectionName())->toEqual('foo');
+});
+
+test('its type is fillable', function () {
+    $post = factory(Post::class)->create(['post_type' => 'video']);
+
+    expect($post->post_type)->toEqual('video');
+});
+
+test('its parent does not return null when it is zero', function () {
+    $post = factory(Post::class)->create(['post_parent' => 0]);
+
+    expect($post->post_parent)->not->toBeNull();
+    expect($post->post_parent)->toEqual(0);
+});
+
+test('parent relation', function () {
+    $parent = factory(Post::class)->create();
+    $post = factory(Post::class)->create(['post_parent' => $parent->ID]);
+
+    expect($post->parent)->toEqual($parent->fresh());
+});
+
+test('attachment relation', function () {
+    $parent = factory(Post::class)->create();
+    $attachment = factory(Post::class)->create([
+        'post_parent' => $parent->ID,
+        'post_type' => 'attachment',
+    ]);
+
+    expect($parent->attachment->first())->toEqual($attachment->fresh());
+});
+
+test('revision relation', function () {
+    $parent = factory(Post::class)->create();
+    $revision = factory(Post::class)->create([
+        'post_parent' => $parent->ID,
+        'post_type' => 'revision',
+    ]);
+
+    $revisions = $parent->revision;
+    expect($revisions->first())->toEqual($revision->fresh());
+});
+
+test('it can have shortcode', function () {
+    registerFooShortcode();
+
+    $post = factory(Post::class)->create([
+        'post_content' => 'test [foo a="bar" b="baz"]',
+    ]);
+
+    expect('test foo.bar.baz')->toEqual($post->content);
+});
+
+test('it can have shortcode from config file', function () {
+    $post = factory(Post::class)->create([
+        'post_content' => 'foo [fake one="two"]',
+    ]);
+
+    expect($post->content)->toEqual('foo html-for-shortcode-fake-two');
+});
+
+test('its content can have multiple shortcodes', function () {
+    registerFooShortcode();
+
+    $post = factory(Post::class)->create([
+        'post_content' => '1~[foo a="bar" b="baz"] 2~[foo a="baz" b="bar"]',
+    ]);
+
+    expect('1~foo.bar.baz 2~foo.baz.bar')->toEqual($post->content);
+});
+
+test('its shortcode can be removed', function () {
+    registerFooShortcode();
+    Post::removeShortcode('foo');
+
+    $post = factory(Post::class)->create([
+        'post_content' => 'test [foo a="bar" b="baz"]',
+    ]);
+
+    expect('test [foo a="bar" b="baz"]')->toEqual($post->content);
+});
+
+test('it can have post format', function () {
+    $post = createPostWithPostFormatTaxonomy();
+
+    expect($post->getFormat())->toEqual('foo');
+});
+
+test('it can have false post format', function () {
+    $post = factory(Post::class)->create();
+
+    expect($post->getFormat())->toBeFalse();
+});
+
+test('it has correct post type with callback in where', function () {
+    $query = Page::where(function ($q) {
+        $q->where('foo', 'bar');
+    });
+
+    $expectedQuery = 'select * from "wp_posts" where "post_type" = ? and ("foo" = ?)';
+    $expectedBindings = ['page', 'bar'];
+
+    expect($query->toSql())->toEqual($expectedQuery);
+    expect($query->getBindings())->toBe($expectedBindings);
+});
+
+test('its search has correct empty word query', function () {
+    $emptyWord = Post::search();
+
+    $expectedEmptyWordQuery = 'select * from "wp_posts"';
+    $expectedEmptyWordBindings = [];
+
+    expect($emptyWord->toSql())->toEqual($expectedEmptyWordQuery);
+    expect($emptyWord->getBindings())->toBe($expectedEmptyWordBindings);
+});
+
+test('its search has correct single word query', function () {
+    $singleWord = Post::search('foo');
+
+    $expectedSingleWordQuery = 'select * from "wp_posts" where ("post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
+    $expectedSingleWordBindings = ['%foo%', '%foo%', '%foo%'];
+
+    expect($singleWord->toSql())->toEqual($expectedSingleWordQuery);
+    expect($singleWord->getBindings())->toBe($expectedSingleWordBindings);
+});
+
+test('its search has correct multiple word query', function () {
+    $multipleWord = Post::search('foo bar');
+
+    $expectedMultipleWordQuery = 'select * from "wp_posts" where ("post_title" like ? or "post_excerpt" like ? or "post_content" like ? or "post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
+    $expectedMultipleWordBindings = ['%foo%', '%foo%', '%foo%', '%bar%', '%bar%', '%bar%'];
+
+    expect($multipleWord->toSql())->toEqual($expectedMultipleWordQuery);
+    expect($multipleWord->getBindings())->toBe($expectedMultipleWordBindings);
+});
+
+test('its search has correct multiple word in array query', function () {
+    $multipleWordArray = Post::search(['foo', 'bar']);
+
+    $expectedMultipleWordQuery = 'select * from "wp_posts" where ("post_title" like ? or "post_excerpt" like ? or "post_content" like ? or "post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
+    $expectedMultipleWordBindings = ['%foo%', '%foo%', '%foo%', '%bar%', '%bar%', '%bar%'];
+
+    expect($multipleWordArray->toSql())->toEqual($expectedMultipleWordQuery);
+    expect($multipleWordArray->getBindings())->toBe($expectedMultipleWordBindings);
+});
+
+test('its search for different post types is correct', function () {
+    $singleWord = Page::search('foo');
+    $multipleWord = Page::search('foo bar');
+
+    $expectedSingleWordQuery = 'select * from "wp_posts" where "post_type" = ? and ("post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
+    $expectedMultipleWordQuery = 'select * from "wp_posts" where "post_type" = ? and ("post_title" like ? or "post_excerpt" like ? or "post_content" like ? or "post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
+
+    expect($singleWord->toSql())->toEqual($expectedSingleWordQuery);
+    expect($multipleWord->toSql())->toEqual($expectedMultipleWordQuery);
+});
+
+function createPostWithTaxonomiesAndTerms(): Post
 {
-    public function test_it_has_the_correct_class_name()
-    {
-        $post = factory(Post::class)->create();
-
-        $this->assertInstanceOf(Post::class, $post);
-    }
-
-    public function test_it_has_an_integer_id()
-    {
-        $post = factory(Post::class)->create();
-
-        $this->assertIsInt($post->ID);
-        $this->assertGreaterThan(0, $post->ID);
-    }
-
-    public function test_it_has_status_scope()
-    {
-        factory(Post::class)->create(['post_status' => 'foo']);
-
-        $posts = Post::status('foo')->get();
-
-        $this->assertNotNull($posts);
-        $this->assertCount(1, $posts);
-    }
-
-    public function test_it_has_has_meta_scope()
-    {
-        $post = factory(Post::class)->create();
-        $post->saveMeta('foo', 'bar');
-
-        $posts = Post::hasMeta('foo')->get();
-
-        $this->assertCount(1, $posts);
-        $this->assertInstanceOf(Post::class, $posts->first());
-
-        $newPost = Post::hasMeta('foo', 'bar')->first();
-        $this->assertEquals($post->title, $newPost->title);
-        $this->assertEquals($post->ID, $newPost->ID);
-    }
-
-    public function test_it_has_published_scope()
-    {
-        factory(Post::class)->create(['post_status' => 'publish']);
-
-        $posts = Post::published()->get();
-
-        $this->assertNotNull($posts);
-        $this->assertGreaterThan(0, $posts->count());
-    }
-
-    public function test_it_has_type_scope()
-    {
-        factory(Post::class)->create(['post_type' => 'foo']);
-
-        $posts = Post::type('foo')->get();
-
-        $this->assertNotNull($posts);
-        $this->assertCount(1, $posts);
-    }
-
-    public function test_it_has_type_in_scope()
-    {
-        factory(Post::class)->create(['post_type' => 'blue']);
-        factory(Post::class)->create(['post_type' => 'red']);
-        factory(Post::class)->create(['post_type' => 'yellow']);
-
-        $posts = Post::typeIn(['blue', 'yellow'])->get();
-
-        $this->assertNotNull($posts);
-        $this->assertCount(2, $posts);
-    }
-
-    public function test_it_has_slug_scope()
-    {
-        factory(Post::class)->create(['post_name' => 'my-fake-post-slug']);
-
-        $posts = Post::slug('my-fake-post-slug')->get();
-
-        $this->assertNotNull($posts);
-        $this->assertCount(1, $posts);
-    }
-
-    public function test_it_has_taxonomy_scope()
-    {
-        $this->createPostWithTaxonomiesAndTerms();
-
-        $posts = Post::taxonomy('foo', 'bar')->get();
-        $this->assertNotNull($posts);
-        $this->assertGreaterThan(0, $posts->count());
-
-        $posts = Post::taxonomy('foo', ['bar'])->get();
-        $this->assertNotNull($posts);
-        $this->assertGreaterThan(0, $posts->count());
-    }
-
-    public function test_it_has_children_relation()
-    {
-        $post = factory(Post::class)->create();
-        factory(Post::class)->create(['post_parent' => $post->ID]);
-        factory(Post::class)->create(['post_parent' => $post->ID]);
-        factory(Post::class)->create(['post_parent' => $post->ID]);
-
-        $children = $post->children;
-
-        $this->assertCount(3, $children);
-        $this->assertInstanceOf(Post::class, $children->first());
-        $this->assertEquals($post->ID, $children->first()->post_parent);
-    }
-
-    public function test_it_can_be_ordered()
-    {
-        $older = Carbon::now()->subYears(10);
-
-        $firstPost = factory(Post::class)->create(['post_date' => $older]);
-        factory(Post::class)->create(['post_date' => $older->addMonths(1)]);
-        $lastPost = factory(Post::class)->create(['post_date' => $older->addMonths(2)]);
-
-        $newest = Post::newest()->first();
-        $oldest = Post::oldest()->first();
-
-        $this->assertEquals($firstPost->post_name, $oldest->post_name);
-        $this->assertEquals($firstPost->post_title, $oldest->post_title);
-        $this->assertEquals($lastPost->post_name, $newest->post_name);
-        $this->assertEquals($lastPost->post_title, $newest->post_title);
-    }
-
-    public function test_it_can_have_different_post_type()
-    {
-        $page = factory(Post::class)->create(['post_type' => 'page']);
-
-        $this->assertEquals($page->post_type, 'page');
-    }
-
-    public function test_it_has_aliases()
-    {
-        $post = factory(Post::class)->create();
-
-        $this->assertEquals($post->post_title, $post->title);
-        $this->assertEquals($post->post_name, $post->slug);
-        $this->assertEquals($post->post_content, $post->content);
-        $this->assertEquals($post->post_type, $post->type);
-        $this->assertEquals($post->post_mime_type, $post->mime_type);
-        $this->assertEquals($post->guid, $post->url);
-        $this->assertEquals($post->post_author, $post->author_id);
-        $this->assertEquals($post->post_parent, $post->parent_id);
-        $this->assertEquals($post->post_date, $post->created_at);
-        $this->assertEquals($post->post_modified, $post->updated_at);
-        $this->assertEquals($post->post_excerpt, $post->excerpt);
-        $this->assertEquals($post->post_status, $post->status);
-    }
-
-    public function test_it_has_isset_method_working()
-    {
-        $post = factory(Post::class)->create();
-        $post->createMeta('foo', 'bar');
-
-        $this->assertTrue(isset($post->meta->foo));
-    }
-
-    public function test_it_can_add_alias_in_runtime()
-    {
-        $post = factory(Post::class)->create();
-        $post->saveMeta('foo', 'bar');
-
-        $post->addAlias('baz', ['meta' => 'foo']);
-        $this->assertEquals('bar', $post->baz);
-        $this->assertEquals($post->baz, $post->meta->foo);
-
-        Post::addAlias('fee', ['meta' => 'foo']);
-        $this->assertEquals('bar', $post->fee);
-        $this->assertEquals($post->fee, $post->meta->foo);
-    }
-
-    public function test_it_can_accept_unicode_chars()
-    {
-        $post = factory(Post::class)->create([
-            'post_content' => 'test utf8 é à',
-            'post_excerpt' => 'test chinese characters お問い合わせ',
-        ]);
-
-        $this->assertEquals('test utf8 é à', $post->post_content);
-        $this->assertEquals('test chinese characters お問い合わせ', $post->post_excerpt);
-    }
-
-    public function test_it_can_have_custom_fields()
-    {
-        $post = factory(Post::class)->create();
-
-        $post->meta()->create([
-            'meta_key' => 'foo',
-            'meta_value' => 'bar',
-        ]);
-
-        $this->assertNotEmpty($post->meta);
-        $this->assertNotEmpty($post->fields);
-        $this->assertInstanceOf(MetaCollection::class, $post->meta);
-    }
-
-    public function test_it_can_add_custom_fields()
-    {
-        $post = factory(Post::class)->create();
-
-        $post->saveMeta('foo', 'bar');
-        $meta = $post->meta()->orderBy('meta_id', 'desc')->first();
-
-        $this->assertEquals('foo', $meta->meta_key);
-        $this->assertEquals('bar', $meta->meta_value);
-    }
-
-    public function test_it_can_add_custom_fields_using_save_field_method()
-    {
-        $post = factory(Post::class)->create();
-
-        $post->saveField('foo', 'bar');
-        $meta = $post->meta->first();
-
-        $this->assertEquals('foo', $meta->meta_key);
-        $this->assertEquals('bar', $meta->meta_value);
-    }
-
-    public function test_it_can_save_multiple_meta_at_the_same_time()
-    {
-        $post = factory(Post::class)->create();
-
-        $post->saveMeta([
-            'foo' => 'bar',
-            'fee' => 'baz',
-        ]);
-
-        $this->assertCount(2, $post->meta);
-        $this->assertEquals('bar', $post->meta->foo);
-        $this->assertEquals('baz', $post->meta->fee);
-    }
-
-    public function test_they_can_be_ordered_ascending()
-    {
-        factory(Post::class, 2)->create();
-
-        $posts = Post::query()->orderBy('post_date', 'asc')->get();
-        $first = $posts->first();
-        $last = $posts->last();
-
-        $this->assertTrue($first->post_date->lessThanOrEqualTo($last->post_date));
-        $this->assertTrue($last->post_date->greaterThanOrEqualTo($first->post_date));
-    }
-
-    public function test_they_can_be_ordered_descending()
-    {
-        factory(Post::class, 2)->create();
-
-        $posts = Post::orderBy('post_date', 'desc')->get();
-        $last = $posts->first();
-        $first = $posts->last();
-
-        $this->assertTrue($first->post_date->lessThanOrEqualTo($last->post_date));
-        $this->assertTrue($last->post_date->greaterThanOrEqualTo($first->post_date));
-    }
-
-    public function test_it_can_be_paginated()
-    {
-        Paginator::useBootstrap();
-        $post = factory(Post::class)->create();
-        factory(Post::class)->create();
-        factory(Post::class)->create();
-
-        /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
-        $paginator = Post::paginate(2);
-        $firstPost = Arr::first($paginator->items());
-
-        $this->assertEquals(2, $paginator->perPage());
-        $this->assertEquals(2, $paginator->count());
-        $this->assertEquals(3, $paginator->total());
-        $this->assertInstanceOf(Post::class, $firstPost);
-        $this->assertEquals($post->post_title, $firstPost->post_title);
-        $this->assertMatchesRegularExpression('/\<nav\>\s*\<ul class="pagination/', $paginator->toHtml());
-    }
-    
-    public function test_it_can_have_taxonomy()
-    {
-        $post = $this->createPostWithTaxonomiesAndTerms();
-
-        $this->assertEquals(1, $post->taxonomies->count());
-        $this->assertEquals('foo', $post->taxonomies->first()->taxonomy);
-    }
-
-    public function test_it_can_have_taxonomy_and_terms()
-    {
-        $createdPost = $this->createPostWithTaxonomiesAndTerms();
-
-        $post = Post::orderBy('ID', 'desc')
-            ->taxonomy('foo', ['bar'])->first();
-
-        $this->assertNotNull($post);
-        $this->assertEquals($createdPost->ID, $post->ID);
-
-        $post = Post::orderBy('ID', 'desc')
-            ->taxonomy('foo', 'bar')->first();
-
-        $this->assertNotNull($post);
-        $this->assertEquals($createdPost->ID, $post->ID);
-    }
-
-    public function test_it_can_have_term()
-    {
-        $post = $this->createPostWithTaxonomiesAndTerms();
-
-        $this->assertEquals(true, $post->hasTerm('foo', 'bar'));
-        $this->assertEquals(false, $post->hasTerm('foo', 'baz'));
-        $this->assertEquals(false, $post->hasTerm('fee', 'bar'));
-        $this->assertEquals(false, $post->hasTerm('fee', 'baz'));
-        $this->assertEquals('Bar', $post->main_category);
-        $this->assertEquals(['Bar'], $post->keywords);
-        $this->assertEquals('Bar', $post->keywords_str);
-    }
-
-    public function test_it_can_have_author_relation()
-    {
-        $post = $this->createPostWithAuthor();
-
-        $this->assertEquals('Administrator', $post->author->display_name);
-        $this->assertEquals('admin@example.com', $post->author->user_email);
-    }
-
-    public function test_it_has_the_correct_instance_name_if_it_is_a_custom_post_type()
-    {
-        factory(Post::class)->create(['post_type' => 'page']);
-        Post::registerPostType('page', Page::class);
-
-        $page = Post::orderBy('ID', 'desc')->first();
-
-        $this->assertInstanceOf(Page::class, $page);
-    }
-
-    public function test_it_has_its_instance_name_back_to_post_after_clearing_post_types()
-    {
-        factory(Post::class)->create([
-            'post_type' => 'page',
-            'post_name' => 'foo2',
-        ]);
-        Post::registerPostType('page', Page::class);
-        Post::clearRegisteredPostTypes();
-
-        $page = Post::where('post_name', 'foo2')->first();
-
-        $this->assertInstanceOf(Post::class, $page);
-    }
-
-    public function test_its_relation_can_have_different_database_connection()
-    {
-        $post = factory(Post::class)->make();
-        $post->setConnection('foo');
-        $post->author()->associate(factory(User::class)->create());
-        $post->save();
-
-        $this->assertEquals('foo', $post->author->getConnectionName());
-    }
-
-    public function test_its_type_is_fillable()
-    {
-        $post = factory(Post::class)->create(['post_type' => 'video']);
-
-        $this->assertEquals('video', $post->post_type);
-    }
-
-    public function test_its_parent_does_not_return_null_when_it_is_zero()
-    {
-        $post = factory(Post::class)->create(['post_parent' => 0]);
-
-        $this->assertNotNull($post->post_parent);
-        $this->assertEquals(0, $post->post_parent);
-    }
-
-    public function test_parent_relation()
-    {
-        $parent = factory(Post::class)->create();
-        $post = factory(Post::class)->create(['post_parent' => $parent->ID]);
-
-        $this->assertEquals($parent->fresh(), $post->parent);
-    }
-
-    public function test_attachment_relation()
-    {
-        $parent = factory(Post::class)->create();
-        $attachment = factory(Post::class)->create([
-            'post_parent' => $parent->ID,
-            'post_type' => 'attachment',
-        ]);
-
-        $this->assertEquals($attachment->fresh(), $parent->attachment->first());
-    }
-
-    public function test_revision_relation()
-    {
-        $parent = factory(Post::class)->create();
-        $revision = factory(Post::class)->create([
-            'post_parent' => $parent->ID,
-            'post_type' => 'revision',
-        ]);
-
-        $revisions = $parent->revision;
-        $this->assertEquals($revision->fresh(), $revisions->first());
-    }
-
-    public function test_it_can_have_shortcode()
-    {
-        $this->registerFooShortcode();
-
-        $post = factory(Post::class)->create([
-            'post_content' => 'test [foo a="bar" b="baz"]',
-        ]);
-
-        $this->assertEquals($post->content, 'test foo.bar.baz');
-    }
-
-    public function test_it_can_have_shortcode_from_config_file()
-    {
-        $post = factory(Post::class)->create([
-            'post_content' => 'foo [fake one="two"]',
-        ]);
-
-        $this->assertEquals('foo html-for-shortcode-fake-two', $post->content);
-    }
-
-    public function test_its_content_can_have_multiple_shortcodes()
-    {
-        $this->registerFooShortcode();
-
-        $post = factory(Post::class)->create([
-            'post_content' => '1~[foo a="bar" b="baz"] 2~[foo a="baz" b="bar"]',
-        ]);
-
-        $this->assertEquals($post->content, '1~foo.bar.baz 2~foo.baz.bar');
-    }
-
-    public function test_its_shortcode_can_be_removed()
-    {
-        $this->registerFooShortcode();
-        Post::removeShortcode('foo');
-
-        $post = factory(Post::class)->create([
-            'post_content' => 'test [foo a="bar" b="baz"]',
-        ]);
-
-        $this->assertEquals($post->content, 'test [foo a="bar" b="baz"]');
-    }
-
-    public function test_it_can_have_post_format()
-    {
-        $post = $this->createPostWithPostFormatTaxonomy();
-
-        $this->assertEquals('foo', $post->getFormat());
-    }
-
-    public function test_it_can_have_false_post_format()
-    {
-        $post = factory(Post::class)->create();
-
-        $this->assertFalse($post->getFormat());
-    }
-
-    public function test_it_has_correct_post_type_with_callback_in_where()
-    {
-        $query = Page::where(function ($q) {
-            $q->where('foo', 'bar');
-        });
-
-        $expectedQuery = 'select * from "wp_posts" where "post_type" = ? and ("foo" = ?)';
-        $expectedBindings = ['page', 'bar'];
-
-        $this->assertEquals($expectedQuery, $query->toSql());
-        $this->assertSame($expectedBindings, $query->getBindings());
-    }
-
-    public function test_its_search_has_correct_empty_word_query()
-    {
-        $emptyWord = Post::search();
-
-        $expectedEmptyWordQuery = 'select * from "wp_posts"';
-        $expectedEmptyWordBindings = [];
-
-        $this->assertEquals($expectedEmptyWordQuery, $emptyWord->toSql());
-        $this->assertSame($expectedEmptyWordBindings, $emptyWord->getBindings());
-    }
-
-    public function test_its_search_has_correct_single_word_query()
-    {
-        $singleWord = Post::search('foo');
-
-        $expectedSingleWordQuery = 'select * from "wp_posts" where ("post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
-        $expectedSingleWordBindings = ['%foo%', '%foo%', '%foo%'];
-
-        $this->assertEquals($expectedSingleWordQuery, $singleWord->toSql());
-        $this->assertSame($expectedSingleWordBindings, $singleWord->getBindings());
-    }
-
-    public function test_its_search_has_correct_multiple_word_query()
-    {
-        $multipleWord = Post::search('foo bar');
-
-        $expectedMultipleWordQuery = 'select * from "wp_posts" where ("post_title" like ? or "post_excerpt" like ? or "post_content" like ? or "post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
-        $expectedMultipleWordBindings = ['%foo%', '%foo%', '%foo%', '%bar%', '%bar%', '%bar%'];
-
-        $this->assertEquals($expectedMultipleWordQuery, $multipleWord->toSql());
-        $this->assertSame($expectedMultipleWordBindings, $multipleWord->getBindings());
-    }
-
-    public function test_its_search_has_correct_multiple_word_in_array_query()
-    {
-        $multipleWordArray = Post::search(['foo', 'bar']);
-
-        $expectedMultipleWordQuery = 'select * from "wp_posts" where ("post_title" like ? or "post_excerpt" like ? or "post_content" like ? or "post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
-        $expectedMultipleWordBindings = ['%foo%', '%foo%', '%foo%', '%bar%', '%bar%', '%bar%'];
-
-        $this->assertEquals($expectedMultipleWordQuery, $multipleWordArray->toSql());
-        $this->assertSame($expectedMultipleWordBindings, $multipleWordArray->getBindings());
-    }
-
-    public function test_its_search_for_different_post_types_is_correct()
-    {
-        $singleWord = Page::search('foo');
-        $multipleWord = Page::search('foo bar');
-
-        $expectedSingleWordQuery = 'select * from "wp_posts" where "post_type" = ? and ("post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
-        $expectedMultipleWordQuery = 'select * from "wp_posts" where "post_type" = ? and ("post_title" like ? or "post_excerpt" like ? or "post_content" like ? or "post_title" like ? or "post_excerpt" like ? or "post_content" like ?)';
-
-        $this->assertEquals($expectedSingleWordQuery, $singleWord->toSql());
-        $this->assertEquals($expectedMultipleWordQuery, $multipleWord->toSql());
-    }
-
-    private function createPostWithTaxonomiesAndTerms(): Post
-    {
-        $post = factory(Post::class)->create();
-
-        $post->taxonomies()->attach(
-            factory(Taxonomy::class)->create([
-                'taxonomy' => 'foo',
-            ])->term_taxonomy_id,
-            [
-                'term_order' => 0,
-            ]
-        );
-
-        return $post;
-    }
-
-    private function createPostWithAuthor(): Post
-    {
-        $post = factory(Post::class)->create();
-
-        $post->author()->associate(
-            factory(User::class)->create()
-        );
-
-        return $post;
-    }
-
-    private function registerFooShortcode(): void
-    {
-        Post::addShortcode('foo', function (ShortcodeInterface $shortcode) {
-            return sprintf(
-                '%s.%s.%s',
-                $shortcode->getName(),
-                $shortcode->getParameter('a'),
-                $shortcode->getParameter('b')
-            );
-        });
-    }
-
-    private function createPostWithPostFormatTaxonomy(): Post
-    {
-        $post = factory(Post::class)->create();
-
-        $post->taxonomies()->attach(
-            factory(Taxonomy::class)->create([
-                'taxonomy' => 'post_format',
-                'term_id' => function () {
-                    return factory(Term::class)->create([
-                        'name' => $name = 'post-format-foo',
-                        'slug' => $name,
-                    ])->term_id;
-                },
-            ])->term_taxonomy_id,
-            [
-                'term_order' => 0,
-            ]
-        );
-
-        return $post;
-    }
+    $post = factory(Post::class)->create();
+
+    $post->taxonomies()->attach(
+        factory(Taxonomy::class)->create([
+            'taxonomy' => 'foo',
+        ])->term_taxonomy_id,
+        [
+            'term_order' => 0,
+        ]
+    );
+
+    return $post;
 }
 
-class FakeShortcode implements Shortcode
+function createPostWithAuthor(): Post
 {
-    public function render(ShortcodeInterface $shortcode): string
-    {
+    $post = factory(Post::class)->create();
+
+    $post->author()->associate(
+        factory(User::class)->create()
+    );
+
+    return $post;
+}
+
+function registerFooShortcode(): void
+{
+    Post::addShortcode('foo', function (ShortcodeInterface $shortcode) {
         return sprintf(
-            'html-for-shortcode-%s-%s',
+            '%s.%s.%s',
             $shortcode->getName(),
-            $shortcode->getParameter('one')
+            $shortcode->getParameter('a'),
+            $shortcode->getParameter('b')
         );
-    }
+    });
+}
+
+function createPostWithPostFormatTaxonomy(): Post
+{
+    $post = factory(Post::class)->create();
+
+    $post->taxonomies()->attach(
+        factory(Taxonomy::class)->create([
+            'taxonomy' => 'post_format',
+            'term_id' => function () {
+                return factory(Term::class)->create([
+                    'name' => $name = 'post-format-foo',
+                    'slug' => $name,
+                ])->term_id;
+            },
+        ])->term_taxonomy_id,
+        [
+            'term_order' => 0,
+        ]
+    );
+
+    return $post;
 }

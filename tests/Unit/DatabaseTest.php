@@ -1,39 +1,26 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit;
-
 use Pollora\Colt\Model\Post;
 
-/**
- * Class DatabaseTest
- *
- * @package Pollora\Colt\Tests\Unit
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class DatabaseTest extends \Pollora\Colt\Tests\TestCase
-{
-    public function test_it_uses_the_default_database_connection()
-    {
-        factory(Post::class)->create();
+test('it uses the default database connection', function () {
+    factory(Post::class)->create();
 
-        $connection = config('database.default');
-        $post = Post::newest()->first();
+    $connection = config('database.default');
+    $post = Post::newest()->first();
 
-        $this->assertEquals($connection, $post->getConnectionName());
-    }
+    expect($post->getConnectionName())->toEqual($connection);
+});
 
-    public function test_it_uses_colt_connection_if_it_is_present()
-    {
-        factory(Post::class)->create();
-        $post = Post::newest()->first();
-        $this->assertInstanceOf(Post::class, $post);
+test('it uses colt connection if it is present', function () {
+    factory(Post::class)->create();
+    $post = Post::newest()->first();
+    expect($post)->toBeInstanceOf(Post::class);
 
-        $this->app['config']->set('colt.connection', 'foo');
+    $this->app['config']->set('colt.connection', 'foo');
 
-        $post = Post::newest()->first();
-        $this->assertNull($post);
+    $post = Post::newest()->first();
+    expect($post)->toBeNull();
 
-        $post = factory(Post::class)->create();
-        $this->assertEquals('foo', $post->getConnectionName());
-    }
-}
+    $post = factory(Post::class)->create();
+    expect($post->getConnectionName())->toEqual('foo');
+});

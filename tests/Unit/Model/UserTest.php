@@ -1,201 +1,171 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model;
-
 use Carbon\Carbon;
+use Pollora\Colt\Tests\Unit\Model\Customer;
+use Pollora\Colt\Model\User;
 use Pollora\Colt\Model\Collection\MetaCollection;
 use Pollora\Colt\Model\Comment;
-use Pollora\Colt\Model\User;
 use Pollora\Colt\Model\Post;
 
-/**
- * Class UserTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
- */
-class UserTest extends \Pollora\Colt\Tests\TestCase
-{
-    public function test_it_is_instance_of_user()
-    {
-        $user = factory(User::class)->create();
+test('it is instance of user', function () {
+    $user = factory(User::class)->create();
 
-        $this->assertInstanceOf(User::class, $user);
-    }
+    expect($user)->toBeInstanceOf(User::class);
+});
 
-    public function test_it_has_the_correct_id()
-    {
-        $user = factory(User::class)->create(['ID' => 20]);
+test('it has the correct id', function () {
+    $user = factory(User::class)->create(['ID' => 20]);
 
-        $this->assertNotNull($user);
-        $this->assertEquals(20, $user->ID);
-    }
+    expect($user)->not->toBeNull();
+    expect($user->ID)->toEqual(20);
+});
 
-    public function test_it_can_be_ordered()
-    {
-        $date = Carbon::now()->subYear();
+test('it can be ordered', function () {
+    $date = Carbon::now()->subYear();
 
-        $first = factory(User::class)->create(['user_registered' => $date]);
-        $last = factory(User::class)->create(['user_registered' => $date->addMonth()]);
+    $first = factory(User::class)->create(['user_registered' => $date]);
+    $last = factory(User::class)->create(['user_registered' => $date->addMonth()]);
 
-        $newest = User::newest()->first();
-        $oldest = User::oldest()->first();
+    $newest = User::newest()->first();
+    $oldest = User::oldest()->first();
 
-        $this->assertEquals($first->ID, $oldest->ID);
-        $this->assertEquals($last->ID, $newest->ID);
-    }
+    expect($oldest->ID)->toEqual($first->ID);
+    expect($newest->ID)->toEqual($last->ID);
+});
 
-    public function test_it_has_multiple_property_aliases()
-    {
-        $user = factory(User::class)->create();
-        $user->saveMeta('nickname', 'foo');
-        $user->saveMeta('first_name', 'bar');
-        $user->saveMeta('last_name', 'baz');
+test('it has multiple property aliases', function () {
+    $user = factory(User::class)->create();
+    $user->saveMeta('nickname', 'foo');
+    $user->saveMeta('first_name', 'bar');
+    $user->saveMeta('last_name', 'baz');
 
-        $this->assertEquals($user->last_name, 'baz');
-        $this->assertEquals($user->user_login, $user->login);
-        $this->assertEquals($user->user_email, $user->email);
-        $this->assertEquals($user->user_nicename, $user->slug);
-        $this->assertEquals($user->user_url, $user->url);
-        $this->assertEquals($user->meta->nickname, $user->nickname);
-        $this->assertEquals($user->meta->first_name, $user->first_name);
-        $this->assertEquals($user->meta->last_name, $user->last_name);
-        $this->assertEquals($user->user_registered, $user->created_at);
-    }
+    expect('baz')->toEqual($user->last_name);
+    expect($user->login)->toEqual($user->user_login);
+    expect($user->email)->toEqual($user->user_email);
+    expect($user->slug)->toEqual($user->user_nicename);
+    expect($user->url)->toEqual($user->user_url);
+    expect($user->nickname)->toEqual($user->meta->nickname);
+    expect($user->first_name)->toEqual($user->meta->first_name);
+    expect($user->last_name)->toEqual($user->meta->last_name);
+    expect($user->created_at)->toEqual($user->user_registered);
+});
 
-    public function test_it_has_the_correct_auth_identifier()
-    {
-        $user = factory(User::class)->create();
+test('it has the correct auth identifier', function () {
+    $user = factory(User::class)->create();
 
-        $this->assertEquals($user->ID, $user->getAuthIdentifier());
-    }
+    expect($user->getAuthIdentifier())->toEqual($user->ID);
+});
 
-    public function test_it_can_add_meta()
-    {
-        $user = factory(User::class)->create();
+test('it can add meta', function () {
+    $user = factory(User::class)->create();
 
-        $user->saveMeta('foo', 'bar');
+    $user->saveMeta('foo', 'bar');
 
-        $this->assertNotEmpty($user->meta);
-        $this->assertNotEmpty($user->fields);
-        $this->assertInstanceOf(MetaCollection::class, $user->meta);
-    }
+    expect($user->meta)->not->toBeEmpty();
+    expect($user->fields)->not->toBeEmpty();
+    expect($user->meta)->toBeInstanceOf(MetaCollection::class);
+});
 
-    public function test_it_can_update_meta()
-    {
-        $user = factory(User::class)->create();
+test('it can update meta', function () {
+    $user = factory(User::class)->create();
 
-        $user->saveMeta('foo', 'bar');
-        $user->saveField('foo', 'baz');
+    $user->saveMeta('foo', 'bar');
+    $user->saveField('foo', 'baz');
 
-        $this->assertEquals($user->meta->foo, 'baz');
-    }
+    expect('baz')->toEqual($user->meta->foo);
+});
 
-    public function test_it_can_update_multiples_metas()
-    {
-        $user = factory(User::class)->create();
+test('it can update multiples metas', function () {
+    $user = factory(User::class)->create();
 
-        $user->createMeta(['foo' => 'bar', 'fee' => 'baz']);
+    $user->createMeta(['foo' => 'bar', 'fee' => 'baz']);
 
-        $this->assertEquals('bar', $user->meta->foo);
-        $this->assertEquals('baz', $user->meta->fee);
+    expect($user->meta->foo)->toEqual('bar');
+    expect($user->meta->fee)->toEqual('baz');
 
-        $user->saveMeta(['foo' => 'baz', 'fee' => 'bar']);
+    $user->saveMeta(['foo' => 'baz', 'fee' => 'bar']);
 
-        $this->assertEquals('baz', $user->meta->foo);
-        $this->assertEquals('bar', $user->meta->fee);
-    }
+    expect($user->meta->foo)->toEqual('baz');
+    expect($user->meta->fee)->toEqual('bar');
+});
 
-    public function test_it_can_have_a_different_database_connection()
-    {
-        $user = factory(User::class)->make();
-        $user->setConnection('foo');
-        $user->save();
+test('it can have a different database connection', function () {
+    $user = factory(User::class)->make();
+    $user->setConnection('foo');
+    $user->save();
 
-        $user->createMeta('fee', 'baz');
+    $user->createMeta('fee', 'baz');
 
-        $this->assertEquals('foo', $user->getConnectionName());
+    expect($user->getConnectionName())->toEqual('foo');
 
-        $user->meta->each(function ($meta) {
-            $this->assertEquals('foo', $meta->getConnectionName());
-        });
-    }
+    $user->meta->each(function ($meta) {
+        expect($meta->getConnectionName())->toEqual('foo');
+    });
+});
 
-    public function test_it_has_meta_scope_with_empty_meta()
-    {
-        $id = factory(User::class)->create()->ID;
+test('it has meta scope with empty meta', function () {
+    $id = factory(User::class)->create()->ID;
 
-        $user = (new User())->newQuery()
-            ->where('ID', $id)
-            ->hasMeta('foo', 'bar')
-            ->first();
+    $user = (new User())->newQuery()
+        ->where('ID', $id)
+        ->hasMeta('foo', 'bar')
+        ->first();
 
-        $this->assertEmpty($user);
-    }
+    expect($user)->toBeEmpty();
+});
 
-    public function test_it_has_meta_scope_with_valid_meta()
-    {
-        $user = factory(User::class)->create();
-        $user->saveMeta('foo', 'bar');
+test('it has meta scope with valid meta', function () {
+    $user = factory(User::class)->create();
+    $user->saveMeta('foo', 'bar');
 
-        $validUser = (new User())->newQuery()
-            ->where('ID', $user->ID)
-            ->hasMeta('foo', 'bar')
-            ->first();
+    $validUser = (new User())->newQuery()
+        ->where('ID', $user->ID)
+        ->hasMeta('foo', 'bar')
+        ->first();
 
-        $this->assertNotEmpty($validUser);
-    }
+    expect($validUser)->not->toBeEmpty();
+});
 
-    public function test_it_has_avatar()
-    {
-        $user = factory(User::class)->create();
+test('it has avatar', function () {
+    $user = factory(User::class)->create();
 
-        $this->assertEquals('//secure.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?d=mm', $user->avatar);
-    }
+    expect($user->avatar)->toEqual('//secure.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?d=mm');
+});
 
-    public function test_it_has_not_avatar()
-    {
-        $user = factory(User::class)->create(['user_email' => '']);
+test('it has not avatar', function () {
+    $user = factory(User::class)->create(['user_email' => '']);
 
-        $this->assertEquals('//secure.gravatar.com/avatar/?d=mm', $user->avatar);
-    }
+    expect($user->avatar)->toEqual('//secure.gravatar.com/avatar/?d=mm');
+});
 
-    public function test_it_children_has_correct_meta_relation()
-    {
-        $post = factory(Post::class)->create();
-        $post->createMeta('foo', 'bar');
-        $user = factory(User::class)->create();
-        $user->createMeta('bar', 'foo');
+test('it children has correct meta relation', function () {
+    $post = factory(Post::class)->create();
+    $post->createMeta('foo', 'bar');
+    $user = factory(User::class)->create();
+    $user->createMeta('bar', 'foo');
 
-        $customer = new Customer();
-        $customer->ID = $user->ID;
+    $customer = new Customer();
+    $customer->ID = $user->ID;
 
-        // post ID and customer ID are same
-        $this->assertEquals($post->ID, $customer->ID);
-        $this->assertEquals('foo', $customer->meta->bar);
-        $this->assertNull($customer->meta->foo);
-    }
+    // post ID and customer ID are same
+    expect($customer->ID)->toEqual($post->ID);
+    expect($customer->meta->bar)->toEqual('foo');
+    expect($customer->meta->foo)->toBeNull();
+});
 
-    public function test_missing_relations()
-    {
-        $user = factory(User::class)->create();
+test('missing relations', function () {
+    $user = factory(User::class)->create();
 
-        factory(Post::class, 2)->create(['post_author' => $user->ID]);
-        factory(Comment::class, 3)->create(['user_id' => $user->ID]);
+    factory(Post::class, 2)->create(['post_author' => $user->ID]);
+    factory(Comment::class, 3)->create(['user_id' => $user->ID]);
 
-        $this->assertCount(2, $user->posts);
-        $this->assertCount(3, $user->comments);
-    }
+    expect($user->posts)->toHaveCount(2);
+    expect($user->comments)->toHaveCount(3);
+});
 
-    public function test_timestamps_methods()
-    {
-        $user = factory(User::class)->create();
+test('timestamps methods', function () {
+    $user = factory(User::class)->create();
 
-        $this->assertEmpty($user->setUpdatedAtAttribute('foo'));
-        $this->assertEmpty($user->setUpdatedAt('foo'));
-    }
-}
-
-class Customer extends User
-{
-    //
-}
+    expect($user->setUpdatedAtAttribute('foo'))->toBeEmpty();
+    expect($user->setUpdatedAt('foo'))->toBeEmpty();
+});

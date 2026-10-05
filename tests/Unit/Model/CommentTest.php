@@ -1,184 +1,161 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Model;
-
 use Pollora\Colt\Model\Comment;
 use Pollora\Colt\Model\Post;
 
+test('it has the correct instance', function () {
+    $comment = factory(Comment::class)->create();
+
+    expect($comment)->not->toBeNull();
+    expect($comment)->toBeInstanceOf(Comment::class);
+});
+
+test('its id is an integer', function () {
+    $comment = factory(Comment::class)->create();
+
+    expect($comment->comment_ID)->toBeInt();
+});
+
+test('it has approved scope', function () {
+    factory(Comment::class)->create(['comment_approved' => 0]);
+    $lastComment = Comment::orderBy('created_at', 'desc')->approved()->first();
+    expect($lastComment)->toBeNull();
+
+    $comment = factory(Comment::class)->create(['comment_approved' => 1]);
+    $lastComment = Comment::orderBy('created_at', 'desc')->approved()->first();
+    expect($lastComment)->not->toBeNull();
+    expect($lastComment->comment_ID)->toEqual($comment->comment_ID);
+    expect($lastComment->comment_author)->toEqual($comment->comment_author);
+    expect($lastComment->comment_date)->toEqual($comment->comment_date);
+});
+
+test('it has post relation', function () {
+    $comment = factory(Comment::class)->create();
+
+    expect($post = $comment->post)->not->toBeNull();
+    expect($post)->toBeInstanceOf(Post::class);
+    expect($post->ID)->toBeInt();
+});
+
+test('it can query post by id', function () {
+    $post = createPostWithComments();
+    $comments = Comment::findByPostId($post->ID);
+
+    expect($comments->count())->toEqual(2);
+    expect($comments->first())->toBeInstanceOf(Comment::class);
+    expect($comments->first()->post->ID)->toEqual($post->ID);
+});
+
+test('it has parent', function () {
+    $comment = createCommentWithParent();
+
+    expect($comment->original)->toBeInstanceOf(Comment::class);
+    expect($comment->original->comment_ID)->toEqual($comment->comment_parent);
+});
+
+test('it is approved', function () {
+    $comment = factory(Comment::class)->create();
+
+    expect($comment->isApproved())->toBeBool();
+    expect($comment->isApproved())->toBeTrue();
+});
+
+test('it can be a reply', function () {
+    $comment = createCommentWithReplies();
+
+    expect($comment->replies)->toHaveCount(3);
+    expect($comment->replies->first())->toBeInstanceOf(Comment::class);
+    expect($comment->replies->first()->isReply())->toBeBool();
+    expect($comment->replies->first()->isReply())->toBeTrue();
+});
+
+test('it has replies', function () {
+    $comment = createCommentWithReplies();
+
+    expect($comment->hasReplies())->toBeTrue();
+    expect($comment->hasReplies())->toBeBool();
+});
+
+test('it can have a different database connection name', function () {
+    $comment = factory(Comment::class)->make();
+    $comment->setConnection('foo');
+    $comment->save();
+
+    $post = factory(Post::class)->create();
+    $comment->post()->associate($post);
+    $comment->save();
+
+    expect($comment->getConnectionName())->toEqual('foo');
+    expect($comment->post->getConnectionName())->toEqual('foo');
+});
+
+test('it can have meta fields', function () {
+    $comment = factory(Comment::class)->create();
+
+    $comment->saveField('foo', 'bar');
+
+    expect($comment->meta->foo)->toEqual('bar');
+});
+
+test('it can update meta', function () {
+    $comment = factory(Comment::class)->create();
+    $comment->saveMeta('foo', 'bar');
+
+    expect($comment->meta->foo)->toEqual('bar');
+
+    $comment->saveField('foo', 'baz');
+
+    expect($comment->meta->foo)->toEqual('baz');
+});
+
+test('it has meta', function () {
+    factory(Comment::class)->create()
+        ->saveMeta('foo', 'bar');
+
+    $comment = Comment::hasMeta('foo', 'bar')->first();
+
+    expect($comment)->toBeInstanceOf(Comment::class);
+});
+
 /**
- * Class CommentTest
- *
- * @author Junior Grossi <juniorgro@gmail.com>
+ * @return Post
  */
-class CommentTest extends \Pollora\Colt\Tests\TestCase
+function createPostWithComments()
 {
-    public function test_it_has_the_correct_instance()
-    {
-        $comment = factory(Comment::class)->create();
+    $post = factory(Post::class)->create();
 
-        $this->assertNotNull($comment);
-        $this->assertInstanceOf(Comment::class, $comment);
-    }
+    $post->comments()->saveMany([
+        factory(Comment::class)->make(),
+        factory(Comment::class)->make(),
+    ]);
 
-    public function test_its_id_is_an_integer()
-    {
-        $comment = factory(Comment::class)->create();
+    return $post;
+}
 
-        $this->assertIsInt($comment->comment_ID);
-    }
+/**
+ * @return Comment
+ */
+function createCommentWithParent()
+{
+    return factory(Comment::class)->create([
+        'comment_parent' => function () {
+            return factory(Comment::class)->create()->comment_ID;
+        }
+    ]);
+}
 
-    public function test_it_has_approved_scope()
-    {
-        factory(Comment::class)->create(['comment_approved' => 0]);
-        $lastComment = Comment::orderBy('created_at', 'desc')->approved()->first();
-        $this->assertNull($lastComment);
+/**
+ * @return Comment
+ */
+function createCommentWithReplies()
+{
+    $comment = factory(Comment::class)->create();
 
-        $comment = factory(Comment::class)->create(['comment_approved' => 1]);
-        $lastComment = Comment::orderBy('created_at', 'desc')->approved()->first();
-        $this->assertNotNull($lastComment);
-        $this->assertEquals($comment->comment_ID, $lastComment->comment_ID);
-        $this->assertEquals($comment->comment_author, $lastComment->comment_author);
-        $this->assertEquals($comment->comment_date, $lastComment->comment_date);
-    }
+    $comment->replies()->saveMany([
+        factory(Comment::class)->make(),
+        factory(Comment::class)->make(),
+        factory(Comment::class)->make(),
+    ]);
 
-    public function test_it_has_post_relation()
-    {
-        $comment = factory(Comment::class)->create();
-
-        $this->assertNotNull($post = $comment->post);
-        $this->assertInstanceOf(Post::class, $post);
-        $this->assertIsInt($post->ID);
-    }
-
-    public function test_it_can_query_post_by_id()
-    {
-        $post = $this->createPostWithComments();
-        $comments = Comment::findByPostId($post->ID);
-
-        $this->assertEquals(2, $comments->count());
-        $this->assertInstanceOf(Comment::class, $comments->first());
-        $this->assertEquals($post->ID, $comments->first()->post->ID);
-    }
-
-    public function test_it_has_parent()
-    {
-        $comment = $this->createCommentWithParent();
-
-        $this->assertInstanceOf(Comment::class, $comment->original);
-        $this->assertEquals($comment->comment_parent, $comment->original->comment_ID);
-    }
-
-    public function test_it_is_approved()
-    {
-        $comment = factory(Comment::class)->create();
-
-        $this->assertIsBool($comment->isApproved());
-        $this->assertTrue($comment->isApproved());
-    }
-
-    public function test_it_can_be_a_reply()
-    {
-        $comment = $this->createCommentWithReplies();
-
-        $this->assertCount(3, $comment->replies);
-        $this->assertInstanceOf(Comment::class, $comment->replies->first());
-        $this->assertIsBool($comment->replies->first()->isReply());
-        $this->assertTrue($comment->replies->first()->isReply());
-    }
-
-    public function test_it_has_replies()
-    {
-        $comment = $this->createCommentWithReplies();
-
-        $this->assertTrue($comment->hasReplies());
-        $this->assertIsBool($comment->hasReplies());
-    }
-
-    public function test_it_can_have_a_different_database_connection_name()
-    {
-        $comment = factory(Comment::class)->make();
-        $comment->setConnection('foo');
-        $comment->save();
-
-        $post = factory(Post::class)->create();
-        $comment->post()->associate($post);
-        $comment->save();
-
-        $this->assertEquals('foo', $comment->getConnectionName());
-        $this->assertEquals('foo', $comment->post->getConnectionName());
-    }
-
-    public function test_it_can_have_meta_fields()
-    {
-        $comment = factory(Comment::class)->create();
-
-        $comment->saveField('foo', 'bar');
-
-        $this->assertEquals('bar', $comment->meta->foo);
-    }
-
-    public function test_it_can_update_meta()
-    {
-        $comment = factory(Comment::class)->create();
-        $comment->saveMeta('foo', 'bar');
-
-        $this->assertEquals('bar', $comment->meta->foo);
-
-        $comment->saveField('foo', 'baz');
-
-        $this->assertEquals('baz', $comment->meta->foo);
-    }
-
-    public function test_it_has_meta()
-    {
-        factory(Comment::class)->create()
-            ->saveMeta('foo', 'bar');
-
-        $comment = Comment::hasMeta('foo', 'bar')->first();
-
-        $this->assertInstanceOf(Comment::class, $comment);
-    }
-
-    /**
-     * @return Post
-     */
-    private function createPostWithComments()
-    {
-        $post = factory(Post::class)->create();
-
-        $post->comments()->saveMany([
-            factory(Comment::class)->make(),
-            factory(Comment::class)->make(),
-        ]);
-
-        return $post;
-    }
-
-    /**
-     * @return Comment
-     */
-    private function createCommentWithParent()
-    {
-        return factory(Comment::class)->create([
-            'comment_parent' => function () {
-                return factory(Comment::class)->create()->comment_ID;
-            }
-        ]);
-    }
-
-    /**
-     * @return Comment
-     */
-    private function createCommentWithReplies()
-    {
-        $comment = factory(Comment::class)->create();
-
-        $comment->replies()->saveMany([
-            factory(Comment::class)->make(),
-            factory(Comment::class)->make(),
-            factory(Comment::class)->make(),
-        ]);
-
-        return $comment;
-    }
+    return $comment;
 }

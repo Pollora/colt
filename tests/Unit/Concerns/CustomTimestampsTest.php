@@ -1,31 +1,16 @@
 <?php
 
-namespace Pollora\Colt\Tests\Unit\Concerns;
-
 use Carbon\Carbon;
-use Pollora\Colt\Concerns\CustomTimestamps;
 use Pollora\Colt\Model\User;
-use Pollora\Colt\Tests\TestCase;
+use Pollora\Colt\Tests\Unit\Concerns\FakeUser;
 
-class CustomTimestampsTest extends TestCase
-{
-    public function test_it_overrides_the_default_timestamps_fields()
-    {
-        $fake = new FakeUser();
-        $fake->setCreatedAt($created_at = Carbon::now()->toDateTimeString());
-        $fake->setUpdatedAt($updated_at = Carbon::now()->toDateTimeString());
+test('it overrides the default timestamps fields', function () {
+    $fake = new FakeUser();
+    $fake->setCreatedAt($created_at = Carbon::now()->toDateTimeString());
+    $fake->setUpdatedAt($updated_at = Carbon::now()->toDateTimeString());
 
-        $this->assertEquals($created_at, $fake->foo_created);
-        $this->assertEquals($created_at, $fake->foo_created_gmt);
-        $this->assertEquals($updated_at, $fake->foo_updated_gmt);
-        $this->assertEquals($updated_at, $fake->foo_updated_gmt);
-    }
-}
-
-class FakeUser extends User
-{
-    const CREATED_AT = 'foo_created';
-    const UPDATED_AT = 'foo_updated';
-
-    use CustomTimestamps;
-}
+    expect($fake->foo_created)->toEqual($created_at);
+    expect($fake->foo_created_gmt)->toEqual($created_at);
+    expect($fake->foo_updated_gmt)->toEqual($updated_at);
+    expect($fake->foo_updated_gmt)->toEqual($updated_at);
+});
