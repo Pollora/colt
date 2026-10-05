@@ -2,9 +2,9 @@
 
 namespace Pollora\Colt\Model\Meta;
 
+use Pollora\Colt\Concerns\SafeUnserialize;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Collection\MetaCollection;
-use Exception;
 
 /**
  * Class Meta
@@ -14,6 +14,8 @@ use Exception;
  */
 abstract class Meta extends Model
 {
+    use SafeUnserialize;
+
     /**
      * @var string
      */
@@ -34,15 +36,7 @@ abstract class Meta extends Model
      */
     public function getValueAttribute()
     {
-        try {
-            $value = unserialize($this->meta_value);
-
-            return $value === false && $this->meta_value !== false ?
-                $this->meta_value :
-                $value;
-        } catch (Exception $ex) {
-            return $this->meta_value;
-        }
+        return $this->maybeUnserialize($this->meta_value);
     }
 
     /**

@@ -151,6 +151,15 @@ trait MetaFields
      */
     private function saveOneMeta($key, $value)
     {
+        if ($this->usesWordPressMetaApi()) {
+            $type = $this->getMetaType();
+            $result = update_metadata($type, $this->getKey(), wp_slash($key), wp_slash($value));
+            $this->load('meta');
+
+            // update_metadata() also returns false when the stored value is already the same.
+            return $result !== false || get_metadata($type, $this->getKey(), $key, true) == $value;
+        }
+
         $meta = $this->meta()->where('meta_key', $key)
             ->firstOrNew(['meta_key' => $key]);
 
@@ -189,10 +198,17 @@ trait MetaFields
     /**
      * @param string $key
      * @param mixed $value
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
     private function createOneMeta($key, $value)
     {
+        if ($this->usesWordPressMetaApi()) {
+            $metaId = add_metadata($this->getMetaType(), $this->getKey(), wp_slash($key), wp_slash($value));
+            $this->load('meta');
+
+            return $metaId === false ? null : $this->meta->firstWhere('meta_id', $metaId);
+        }
+
         $meta =  $this->meta()->create([
             'meta_key' => $key,
             'meta_value' => $value,
@@ -200,6 +216,26 @@ trait MetaFields
         $this->load('meta');
 
         return $meta;
+    }
+
+    /**
+     * Writes go through WordPress's meta API when it is loaded, so that
+     * sanitize callbacks, meta hooks and the object cache all apply.
+     *
+     * @return bool
+     */
+    protected function usesWordPressMetaApi(): bool
+    {
+        return function_exists('update_metadata');
+    }
+
+    /**
+     * @return string post, term, user or comment, as WordPress's meta API names them
+     * @throws \UnexpectedValueException
+     */
+    protected function getMetaType(): string
+    {
+        return substr($this->getMetaForeignKey(), 0, -3);
     }
 
     /**

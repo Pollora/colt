@@ -18,4 +18,18 @@ class MetaTest extends TestCase
         $meta = factory(PostMeta::class)->create(['meta_value' => 'foo']);
         $this->assertEquals('foo', $meta->value);
     }
+
+    public function test_it_never_instantiates_serialized_objects()
+    {
+        $meta = factory(PostMeta::class)->create(['meta_value' => serialize(new \ArrayObject([1]))]);
+
+        $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $meta->value);
+    }
+
+    public function test_it_keeps_a_serialized_false()
+    {
+        $meta = factory(PostMeta::class)->create(['meta_value' => serialize(false)]);
+
+        $this->assertFalse($meta->value);
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace Pollora\Colt\Model;
 
-use Pollora\Colt\Concerns\AdvancedCustomFields;
 use Pollora\Colt\Concerns\Aliases;
 use Pollora\Colt\Concerns\CustomTimestamps;
 use Pollora\Colt\Concerns\MetaFields;
@@ -23,7 +22,6 @@ use Pollora\Colt\Model\Meta\ThumbnailMeta;
 class Post extends Model
 {
     use Aliases;
-    use AdvancedCustomFields;
     use MetaFields;
     use Shortcodes;
     use OrderScopes;

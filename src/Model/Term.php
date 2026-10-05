@@ -2,7 +2,6 @@
 
 namespace Pollora\Colt\Model;
 
-use Pollora\Colt\Concerns\AdvancedCustomFields;
 use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Model;
 
@@ -15,7 +14,6 @@ use Pollora\Colt\Model;
 class Term extends Model
 {
     use MetaFields;
-    use AdvancedCustomFields;
 
     /**
      * @var string
