@@ -1,109 +1,75 @@
-# Colt
+<p align="center">
+  <a href="https://pollora.dev">
+    <img src="https://raw.githubusercontent.com/Pollora/.github/main/brand/banners/colt.png" width="100%" alt="Colt: Eloquent models for the WordPress database">
+  </a>
+</p>
 
-> **Note:** Colt is a fork of [Corcel](https://github.com/corcel/corcel), originally developed by [Junior Grossi](https://github.com/jgrossi).  
-> This fork is maintained by [Pollora](https://github.com/Pollora) and adapted for improved compatibility with Laravel and WordPress.
+<p align="center">
+  <a href="https://packagist.org/packages/pollora/colt"><img src="https://img.shields.io/packagist/v/pollora/colt" alt="Latest version"></a>
+  <a href="https://packagist.org/packages/pollora/colt"><img src="https://img.shields.io/packagist/dt/pollora/colt" alt="Total downloads"></a>
+  <a href="https://github.com/Pollora/colt/actions/workflows/ci.yml"><img src="https://github.com/Pollora/colt/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/Pollora/colt" alt="License"></a>
+</p>
 
-**A collection of Model classes that allows you to get data directly from a WordPress database.**
+Colt is a set of [Eloquent](https://laravel.com/docs/eloquent) models that read and write a WordPress database directly: posts, pages, custom post types, meta, taxonomies, menus, options and users. Use WordPress as the admin and content store, and query its data from Laravel (or any Composer-based PHP app) with the query builder you already know, without loading WordPress.
 
-[![Actions Status](https://github.com/Pollora/colt/workflows/CI/badge.svg)](https://github.com/Pollora/colt/actions)
-[![Packagist](https://img.shields.io/packagist/v/pollora/colt.svg)](https://packagist.org/packages/pollora/colt)
-[![Packagist](https://img.shields.io/packagist/dt/pollora/colt.svg)](https://github.com/Pollora/colt/releases)
+> Colt is a fork of [Corcel](https://github.com/corcel/corcel), created by [Junior Grossi](https://github.com/jgrossi), kept up to date with current Laravel releases. Corcel's API is preserved, under the `Pollora\Colt` namespace.
 
-Colt is a collection of PHP classes built on top of [Eloquent ORM](https://laravel.com/docs/master/eloquent) (from [Laravel](http://laravel.com) framework), that provides a fluent interface to connect and get data directly from a [WordPress](http://wordpress.org) database.
+> Part of [Pollora](https://pollora.dev), the Laravel framework for WordPress. In a Pollora project it is already installed: use the `Pollora\Models\*` models (`Post`, `Page`, `Term`, `User`…), which extend Colt's.
 
-You can use WordPress as the backend (administration panel) or CMS, for inserting posts, custom types, etc, and any other PHP app in the other side querying those data (as a Model layer). It's easier to use Colt with Laravel, but you're free to use it with any PHP project that uses Composer.
+## Installation
 
-<a href="https://twitter.com/pollorawp" target="_blank">Follow Pollora on Twitter</a>
-
-# Table of Contents
-# <a id="install"></a> Installing Colt
-
-
-- [Version Compatibility](#version-compatibility)
-- [Installing Colt](#installing-colt)
-- [Database Setup](#database-setup)
-- [Usage](#usage)
-    - [Posts](#posts)
-    - [Custom Post Type](#custom-post)
-    - [Single Table Inheritance](#single-tab)
-    - [Taxonomies](#taxonomies)
-    - [Post Format](#post-format)
-    - [Pages](#pages)
-    - [Categories & Taxonomies](#cats)
-    - [Attachments & Revision](#attachments)
-    - [Thumbnails](#thumbnails)
-    - [Options](#options)
-    - [Menu](#menu)
-    - [Users](#users)
-    - [Authentication](#auth)
-    - [Running Tests](#tests)
-- [Contributing](#contrib)
-- [License](#license)
-
-# Version Compatibility
-
- Laravel  | Colt
-:---------|:----------
- 11.0.x   | `^8.0.0`
- 12.0.x   | `^9.0.0`
-
-# <a id="installing-colt"></a> Installing Colt
-
-You need to use Composer to install Colt into your project:
-
-```
+```bash
 composer require pollora/colt
 ```
 
-## Configuring (Laravel)
+Requires PHP 8.2+.
 
-### <a name="config-auto-discovery"></a> Laravel 5.5 and newer
+| Laravel | Colt |
+|:--------|:-----|
+| 13.x    | `^10.0` |
+| 12.x    | `^10.0` or `^9.0` |
 
-Colt wil register itself using Laravel's [Auto Discovery](https://laravel.com/docs/5.5/packages#package-discovery).
+Laravel 11 is covered by the `8.0` branch only (no tagged release). For older Laravel versions, use [Corcel](https://github.com/corcel/corcel).
 
-### <a name="config-service-loader"></a> Laravel 5.4 and older
-
-You'll have to include `ColtServiceProvider` in your `config/app.php`:
-
-```php
-'providers' => [
-    /*
-     * Package Service Providers...
-     */
-    Pollora\Colt\Laravel\ColtServiceProvider::class,
-]
-```
-
-### <a name="config-publish"></a> Publishing the configuration file
-
-Now configure our config file to make sure your database is set correctly and to allow you to register custom post types and shortcodes in a very easy way:
-
-Run the following Artisan command in your terminal:
-
-```
-php artisan vendor:publish --provider="Colt\Laravel\ColtServiceProvider"
-```
-
-Now you have a `config/colt.php` config file, where you can set the database connection with WordPress tables and much more.
-
-# <a id="database-setup"></a> Database Setup
-
-## Laravel Setup
-
-Just set the database `connection` you want to be used by Colt in `config/colt.php`.
-
-Let' suppose you have those following database connections in your `config/database.php` file:
+## Quick start
 
 ```php
-// File: /config/database.php
+use Pollora\Colt\Model\Post;
+
+// All published posts
+$posts = Post::published()->get();
+
+// A specific post, its title and a custom field
+$post = Post::find(31);
+echo $post->title;      // alias of post_title
+echo $post->meta->link; // value of the "link" post meta
+```
+
+## Configuration
+
+### Laravel
+
+Colt registers its service provider through package auto-discovery. Publish the configuration file:
+
+```bash
+php artisan vendor:publish --provider="Pollora\Colt\Laravel\ColtServiceProvider"
+```
+
+This creates `config/colt.php`, where you set the database connection used for the WordPress tables, and register custom post types and shortcodes.
+
+Suppose `config/database.php` has a connection for WordPress next to the application one:
+
+```php
+// config/database.php
 
 'connections' => [
 
-    'mysql' => [ // for Laravel database
+    'mysql' => [ // Laravel database
         'driver'    => 'mysql',
         'host'      => 'localhost',
         'database'  => 'mydatabase',
-        'username'  => 'admin'
+        'username'  => 'admin',
         'password'  => 'secret',
         'charset'   => 'utf8',
         'collation' => 'utf8_unicode_ci',
@@ -112,7 +78,7 @@ Let' suppose you have those following database connections in your `config/datab
         'engine'    => null,
     ],
 
-    'wordpress' => [ // for WordPress database (used by Colt)
+    'wordpress' => [ // WordPress database, used by Colt
         'driver'    => 'mysql',
         'host'      => 'localhost',
         'database'  => 'mydatabase',
@@ -127,49 +93,42 @@ Let' suppose you have those following database connections in your `config/datab
 ],
 ```
 
-In this case you should want to use the `wordpress` connection for Colt, so just set it into the Colt config file `config/colt.php`:
+Then point Colt at it in `config/colt.php`:
 
 ```php
 'connection' => 'wordpress',
 ```
 
-## Other PHP Framework (not Laravel) Setup
+### Other PHP frameworks
 
-Here you have to configure the database to fit the Colt requirements. First, you should include the Composer `autoload` file if not already loaded:
+Load the Composer autoloader if it is not already loaded, then connect to the WordPress database:
 
 ```php
 require __DIR__ . '/vendor/autoload.php';
+
+Pollora\Colt\Database::connect([
+    'database' => 'database_name',
+    'username' => 'username',
+    'password' => 'pa$$word',
+    'prefix'   => 'wp_', // default is 'wp_'
+]);
 ```
 
-Now you must set your WordPress database params:
-
-```php
-$params = [
-    'database'  => 'database_name',
-    'username'  => 'username',
-    'password'  => 'pa$$word',
-    'prefix'    => 'wp_' // default prefix is 'wp_', you can change to your own prefix
-];
-Pollora\Colt\Database::connect($params);
-```
-
-You can specify all Eloquent params, but some are default (but you can override them).
+You can pass any Eloquent connection parameter. These have defaults you can override:
 
 ```php
 'driver'    => 'mysql',
 'host'      => 'localhost',
 'charset'   => 'utf8',
 'collation' => 'utf8_unicode_ci',
-'prefix'    => 'wp_', // Specify the prefix for WordPress tables, default prefix is 'wp_'
+'prefix'    => 'wp_',
 ```
 
-# <a id="usage"></a>  Usage
+## Usage
 
-## <a id="posts"></a> Posts
+The examples below use the models of the `Pollora\Colt\Model` namespace (`Post`, `Page`, `Taxonomy`, `Menu`, `Option`, `User`…). If you extend them with your own classes, call your class instead (`App\Models\Post::published()`).
 
-> Every time you see `Post::method()`, if you're using your own Post class (where you set the connection name), like `App\Post` you should use `App\Post::method()` and not `Post::method()`. All the examples are assuming you already know this difference.
-
-> In the examples, every time you see `Post::method()` assume `Colt\Model\Post::method()`.
+### Posts
 
 ```php
 // All published posts
@@ -181,125 +140,104 @@ $post = Post::find(31);
 echo $post->post_title;
 ```
 
-## Creating your own model classes
+### Your own model classes
 
-Optionally you can create your own `Post` model (or Page, or whatever) which extends `\Pollora\Colt\Post`. Then set the connection name (if you want to override the Colt's default one) you're using, in this case `foo-bar`:
-
-> Extending `Pollora\Colt\Model\Post` class can add flexibility to your project, once you can add custom methods and logic, according what you need to use from your WordPress database.
+Extending `Pollora\Colt\Model\Post` lets you add your own methods and, if needed, use another connection than Colt's default one:
 
 ```php
-<?php // File: app/Post.php
+namespace App\Models;
 
-namespace App;
+use Pollora\Colt\Model\Post as ColtPost;
 
-use Pollora\Colt\Model\Post as Colt;
-
-class Post extends Colt
+class Post extends ColtPost
 {
     protected $connection = 'foo-bar';
 
-    public function customMethod() {
+    public function customMethod()
+    {
         //
     }
 }
 ```
 
-So, now you can fetch WP database data using your own class:
-
 ```php
-$posts = App\Post::all(); // using the 'foo-bar' connection
+$posts = App\Models\Post::all(); // uses the 'foo-bar' connection
 ```
 
-> Just remember you don't have to extends our `Post` class, you can use `Colt\Model\Post` and all others model without any problem.
+Extending is optional: the Colt models work as they are.
 
-### Meta Data (Custom Fields)
+### Meta data (custom fields)
 
-> Use `saveMeta()` or `createMeta()` (see below) methods to save post meta.
-
-You can retrieve meta data from posts too.
+Read meta values from any post:
 
 ```php
-// Get a custom meta value (like 'link' or whatever) from a post (any type)
 $post = Post::find(31);
-echo $post->meta->link; // OR
-echo $post->fields->link;
-echo $post->link; // OR
+echo $post->meta->link; // or
+echo $post->fields->link; // or
+echo $post->link;
 ```
 
-To create or update meta data form a User just use the `saveMeta()` or `saveField()` methods. They return `bool` like the Eloquent `save()` method.
+Create or update meta with `saveMeta()` or `saveField()`. They return a `bool`, like Eloquent's `save()`:
 
 ```php
 $post = Post::find(1);
 $post->saveMeta('username', 'jgrossi');
-```
 
-You can save many meta data at the same time too:
-
-```php
-$post = Post::find(1);
+// Several at once
 $post->saveMeta([
     'username' => 'jgrossi',
     'url' => 'http://jgrossi.com',
 ]);
 ```
 
-You also have the `createMeta()` and `createField()` methods, that work like the `saveX()` methods, but they are used only for creation and return the `PostMeta` created instance, instead of `bool`.
+`createMeta()` and `createField()` only create, and return the `PostMeta` instance instead of a `bool`:
 
 ```php
 $post = Post::find(1);
-$postMeta = $post->createMeta('foo', 'bar'); // instance of PostMeta class
-$trueOrFalse = $post->saveMeta('foo', 'baz'); // boolean
+$postMeta = $post->createMeta('foo', 'bar'); // PostMeta instance
+$trueOrFalse = $post->saveMeta('foo', 'baz'); // bool
 ```
 
-### Querying Posts by Custom Fields (Meta)
+### Querying by meta
 
-There are multiples possibilities to query posts by their custom fields (meta) by using scopes on a `Post` (or another other model which uses the `HasMetaFields` trait) class:
+Any model using the `MetaFields` trait (`Post`, `User`, `Term`, `Comment`…) has meta scopes.
 
-To check if a meta key exists, use the `hasMeta()` scope:
-```
-// Finds a published post with a meta flag.
+```php
+// A published post that has a meta key
 $post = Post::published()->hasMeta('featured_article')->first();
-```
 
-If you want to precisely match a meta-field, you can use the `hasMeta()` scope with a value.
-
-```php
-// Find a published post which matches both meta_key and meta_value.
+// Matching both key and value
 $post = Post::published()->hasMeta('username', 'jgrossi')->first();
-```
 
-If you need to match multiple meta-fields, you can also use the `hasMeta()` scope passing an array as parameter:
-
-```php
+// Several fields, or just several keys
 $post = Post::hasMeta(['username' => 'jgrossi'])->first();
 $post = Post::hasMeta(['username' => 'jgrossi', 'url' => 'jgrossi.com'])->first();
-// Or just passing the keys
 $post = Post::hasMeta(['username', 'url'])->first();
 ```
 
-If you need to match a case-insensitive string, or match with wildcards, you can use the `hasMetaLike()` scope with a value. This uses an SQL `LIKE` operator, so use '%' as a wildcard operator.
+`hasMetaLike()` uses SQL `LIKE`: matching is case-insensitive and `%` is a wildcard.
 
 ```php
-// Will match: 'J Grossi', 'J GROSSI', and 'j grossi'.
+// Matches 'J Grossi', 'J GROSSI' and 'j grossi'
 $post = Post::published()->hasMetaLike('author', 'J GROSSI')->first();
 
-// Using % as a wildcard will match: 'J Grossi', 'J GROSSI', 'j grossi', 'Junior Grossi' etc.
+// Also matches 'Junior Grossi'
 $post = Post::published()->hasMetaLike('author', 'J%GROSSI')->first();
 ```
 
-### Fields Aliases
+### Field aliases
 
-The `Post` class has support to "aliases", so if you check the `Post` class you should note some aliases defined in the static `$aliases` array, like `title` for `post_title` and `content` for `post_content`.
+`Post` defines aliases in its static `$aliases` array, such as `title` for `post_title` and `content` for `post_content`:
 
 ```php
 $post = Post::find(1);
 $post->title === $post->post_title; // true
 ```
 
-If you're extending the `Post` class to create your own class you can use `$aliases` too. Just add new aliases to that static property inside your own class and it will automatically inherit all aliases from parent `Post` class:
+Subclasses can add their own; they inherit the parent's:
 
 ```php
-class A extends \Pollora\Colt\Post
+class A extends \Pollora\Colt\Model\Post
 {
     protected static $aliases = [
         'foo' => 'post_foo',
@@ -308,262 +246,143 @@ class A extends \Pollora\Colt\Post
 
 $a = A::find(1);
 echo $a->foo;
-echo $a->title; // from Post class
+echo $a->title; // from Post
 ```
 
-### Custom Scopes
+### Ordering and pagination
 
-To order posts you can use `newest()` and `oldest()` scopes, for both `Post` and `User` classes:
+`Post` and `User` have `newest()` and `oldest()` scopes:
 
 ```php
 $newest = Post::newest()->first();
 $oldest = Post::oldest()->first();
 ```
 
-### Pagination
-
-To order posts just use Eloquent `paginate()` method:
+Paginate with Eloquent's `paginate()`:
 
 ```php
 $posts = Post::published()->paginate(5);
-foreach ($posts as $post) {
-    // ...
-}
 ```
 
-To display the pagination links just call the `links()` method:
+```blade
+{{ $posts->links() }}
+```
 
- ```php
- {{ $posts->links() }}
- ```
+### Custom post types
 
-## <a id="custom-post"></a> Custom Post Type
-
-You can work with custom post types too. You can use the `type(string)` method or create your own class.
+Use the `type()` scope, or a class of your own:
 
 ```php
-// using type() method
+// With type()
 $videos = Post::type('video')->status('publish')->get();
 
-// using your own class
-class Video extends Colt\Post
+// With your own class
+class Video extends \Pollora\Colt\Model\Post
 {
     protected $postType = 'video';
 }
+
 $videos = Video::status('publish')->get();
 ```
 
-Using `type()` method will make Colt to return all objects as `Pollora\Colt\Post`. Using your custom class you have the advantage to customize classes, including custom methods and properties, return all objects as `Video`, for example.
-
-Custom post types and meta data:
+`type()` returns `Pollora\Colt\Model\Post` objects; your own class returns `Video` objects, with your methods and properties. Meta works the same way:
 
 ```php
-// Get 3 posts with custom post type (store) and show its address
 $stores = Post::type('store')->status('publish')->take(3)->get();
+
 foreach ($stores as $store) {
-    $storeAddress = $store->address; // option 1
-    $storeAddress = $store->meta->address; // option 2
-    $storeAddress = $store->fields->address; // option 3
+    $storeAddress = $store->address; // or $store->meta->address, or $store->fields->address
 }
 ```
 
-### Configuring the returning Instance
+#### Returning your class for a post type
 
-Every time you call something like `Post::type('video)->first()` or `Video::first()` you receive a `Pollora\Colt\Model\Post` instance.
+By default, `Post::type('video')->first()` returns a `Post`. Map post types to classes and Colt returns your class for that type everywhere, which matters when a collection mixes types (the items of a menu, for example).
 
-If you choose to create a new class for your custom post type, you can have this class be returned for all instances of that post type.
-
-#### Registering Post Types (the easy way)
-
-Instead of call `Post::registerPostType()` method for all custom post type you want to register, just use the Colt's config file and map all custom posts and it's classes. They will be registered automatically for you:
+In `config/colt.php`:
 
 ```php
 'post_types' => [
-    'video' => App\Video::class,
-    'foo' => App\Foo::class,
-]
-```
-
-So every time you query a custom post type the mapped instance will be returned.
-
-> This is particular useful when you are intending to get a Collection of Posts of different types (e.g. when fetching the posts defined in a menu).
-
-#### Registering Post Types (the hard way)
-
-```php
-//all objects in the $videos Collection will be instances of Post
-$videos = Post::type('video')->status('publish')->get();
-
-// register the video custom post type and its particular class
-Post::registerPostType('video', '\App\Video')
-
-
-//now all objects in the $videos Collection will be instances of Video
-$videos = Post::type('video')->status('publish')->get();
-```
-
-You can also do this for inbuilt classes, such as Page or Post. Simply register the Page or Post class with the associated post type string, and that object will be returned instead of the default one.
-
-## <a id="shortcodes"></a> Shortcodes
-
-### From config (Laravel)
-
-You can map all shortcodes you want inside the `config/colt.php` file, under the `'shortcodes'` key. In this case you should create your own class that `implements` the `Colt\Colt\Shortcode` interface, that requires a `render()` method:
-
-```php
-'shortcodes' => [
-    'foo' => App\Shortcodes\FooShortcode::class,
-    'bar' => App\Shortcodes\BarShortcode::class,
+    'video' => App\Models\Video::class,
+    'foo' => App\Models\Foo::class,
 ],
 ```
 
-This is a sample shortcode class:
+Or at runtime:
 
 ```php
-class FakeShortcode implements \Pollora\Colt\Shortcode
-{
-    /**
-     * @param ShortcodeInterface $shortcode
-     * @return string
-     */
-    public function render(ShortcodeInterface $shortcode)
-    {
-        return sprintf(
-            'html-for-shortcode-%s-%s',
-            $shortcode->getName(),
-            $shortcode->getParameter('one')
-        );
-    }
-}
+Post::registerPostType('video', App\Models\Video::class);
+
+// Every item is now a Video instance
+$videos = Post::type('video')->status('publish')->get();
 ```
 
-### In runtime
+This also works for the built-in types: register your own class for `page` or `post`.
 
-You can add [shortcodes](https://codex.wordpress.org/Shortcode_API) by calling the `addShortcode` method on the `Post` model :
+### Pages
 
-```php
-// [gallery id="1"]
-Post::addShortcode('gallery', function ($shortcode) {
-    return $shortcode->getName() . '.' . $shortcode->getParameter('id');
-});
-$post = Post::find(1);
-echo $post->content;
-```
-
-> Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider
-
-If you are using Laravel, we suggest adding your shortcodes handlers in `App\Providers\AppServiceProvider`, in the `boot` method.
-
-### Shortcode Parsing
-
-Shortcodes are parsed with the [*thunderer/shortcode*](https://github.com/thunderer/Shortcode) library. 
-
-Several different parsers are provided. `RegularParser` is the most technically correct and is provided by default. This is suitable for most cases. However if you encounter some irregularities in your shortcode parsing, you may need to configure Colt to use the `WordpressParser`, which more faithfully matches WordPress' shortcode regex. To do this, if you are using Laravel, edit the `config/colt.php` file, and uncomment your preferred parser. Alternatively, you can replace this with a parser of your own.
+Pages are a post type: use `Post::type('page')` or the `Page` class.
 
 ```php
-'shortcode_parser' => Thunder\Shortcode\Parser\RegularParser::class,
-// 'shortcode_parser' => Thunder\Shortcode\Parser\WordpressParser::class,
-```
-
-If you are not using Laravel, you can to do this in runtime, calling the `setShortcodeParser()` method from any class which uses the `Shortcodes` trait, such as `Post`, for example.
-
-```php
-$post->setShortcodeParser(new WordpressParser());
-echo $post->content; // content parsed with "WordpressParser" class
-```
-
-For more information about the shortcode package, [click here](https://github.com/thunderer/Shortcode).
-
-## <a id="taxonomies"></a>Taxonomies
-
-You can get taxonomies for a specific post like:
-
-```php
-$post = Post::find(1);
-$taxonomy = $post->taxonomies()->first();
-echo $taxonomy->taxonomy;
-```
-
-Or you can search for posts using its taxonomies:
-
-```php
-$post = Post::taxonomy('category', 'php')->first();
-```
-
-## <a id="post-format"></a>Post Format
-
-You can also get the post format, like the WordPress function `get_post_format()`:
-
-```php
-echo $post->getFormat(); // should return something like 'video', etc
-```
-
-## <a id="pages"></a>Pages
-
-Pages are like custom post types. You can use `Post::type('page')` or the `\Pollora\Colt\Model\Page` class.
-
-```php
-
 use Pollora\Colt\Model\Page;
 
-// Find a page by slug
-$page = Page::slug('about')->first(); // OR
+$page = Page::slug('about')->first(); // or
 $page = Post::type('page')->slug('about')->first();
 echo $page->post_title;
 ```
 
-## <a id="cats"></a>Categories and Taxonomies
-
-Get a category or taxonomy or load posts from a certain category. There are multiple ways
-to achieve it.
+### Taxonomies and categories
 
 ```php
-// all categories
-$cat = Taxonomy::category()->slug('uncategorized')->posts->first();
-echo "<pre>"; print_r($cat->name); echo "</pre>";
+// Taxonomies of a post
+$post = Post::find(1);
+$taxonomy = $post->taxonomies()->first();
+echo $taxonomy->taxonomy;
 
-// only all categories and posts connected with it
-$cat = Taxonomy::where('taxonomy', 'category')->with('posts')->get();
-$cat->each(function($category) {
-    echo $category->name;
-});
+// Posts in a term
+$post = Post::taxonomy('category', 'php')->first();
 
-// clean and simple all posts from a category
-$cat = Category::slug('uncategorized')->posts->first();
-$cat->posts->each(function($post) {
+// A category and its posts
+$category = Taxonomy::category()->slug('uncategorized')->first();
+$category->posts->each(function ($post) {
     echo $post->post_title;
 });
+
+// All categories with their posts
+$categories = Taxonomy::where('taxonomy', 'category')->with('posts')->get();
 ```
 
-## <a id="attachments"></a>Attachment and Revision
+### Post format
 
-Getting the attachment and/or revision from a `Post` or `Page`.
+Like WordPress's `get_post_format()`:
+
+```php
+echo $post->getFormat(); // 'video', etc.
+```
+
+### Attachments and revisions
 
 ```php
 $page = Page::slug('about')->with('attachment')->first();
-// get feature image from page or post
-print_r($page->attachment);
+print_r($page->attachment); // featured image
 
 $post = Post::slug('test')->with('revision')->first();
-// get all revisions from a post or page
-print_r($post->revision);
+print_r($post->revision); // all revisions
 ```
 
-## <a id="thumbnails"></a>Thumbnails
-
-Getting the thumbnail for a `Post` or `Page`.
+### Thumbnails
 
 ```php
 $post = Post::find(1);
 
-// Retrieve an instance of Colt\Model\Meta\ThumbnailMeta.
+// A Pollora\Colt\Model\Meta\ThumbnailMeta instance
 print_r($post->thumbnail);
 
-// For convenience you may also echo the thumbnail instance to get the URL of the original image.
+// Cast to string, it is the URL of the original image
 echo $post->thumbnail;
 ```
 
-To retrieve a particular thumbnail size you may call the `->size()` method on the thumbnail object and pass in a thumbnail size string parameter (e.g. `thumbnail` or `medium`). If the thumbnail has been generated, this method returns an array of image metadata, otherwise the original image URL will be returned as a fallback.
+`size()` returns the metadata of a generated size (e.g. `thumbnail` or `medium`), or the original image URL when that size does not exist:
 
 ```php
 if ($post->thumbnail !== null) {
@@ -583,95 +402,125 @@ if ($post->thumbnail !== null) {
 }
 ```
 
-## <a id="options"></a>Options
+### Shortcodes
 
-You can use the `Option` class to get data from `wp_options` table:
+Registered shortcodes in `post_content` are rendered when you read `$post->content`.
+
+#### From the configuration (Laravel)
+
+Map shortcodes to classes under the `shortcodes` key of `config/colt.php`. Each class implements `Pollora\Colt\Shortcode`, which requires a `render()` method:
+
+```php
+'shortcodes' => [
+    'foo' => App\Shortcodes\FooShortcode::class,
+    'bar' => App\Shortcodes\BarShortcode::class,
+],
+```
+
+```php
+use Thunder\Shortcode\Shortcode\ShortcodeInterface;
+
+class FooShortcode implements \Pollora\Colt\Shortcode
+{
+    public function render(ShortcodeInterface $shortcode)
+    {
+        return sprintf(
+            'html-for-shortcode-%s-%s',
+            $shortcode->getName(),
+            $shortcode->getParameter('one')
+        );
+    }
+}
+```
+
+#### At runtime
+
+```php
+// [gallery id="1"]
+Post::addShortcode('gallery', function ($shortcode) {
+    return $shortcode->getName() . '.' . $shortcode->getParameter('id');
+});
+
+$post = Post::find(1);
+echo $post->content;
+```
+
+In Laravel, register runtime shortcodes in the `boot()` method of a service provider, such as `App\Providers\AppServiceProvider`.
+
+#### Parser
+
+Shortcodes are parsed with [thunderer/shortcode](https://github.com/thunderer/Shortcode). The default `RegularParser` suits most cases. If parsing looks off, switch to `WordpressParser`, which follows WordPress's shortcode regex more closely, or to a parser of your own, in `config/colt.php`:
+
+```php
+'shortcode_parser' => Thunder\Shortcode\Parser\RegularParser::class,
+// 'shortcode_parser' => Thunder\Shortcode\Parser\WordpressParser::class,
+```
+
+Outside Laravel, call `setShortcodeParser()` on any model using the `Shortcodes` trait, such as `Post`:
+
+```php
+$post->setShortcodeParser(new WordpressParser());
+echo $post->content; // parsed with WordpressParser
+```
+
+### Options
+
+`Option` reads and writes the `wp_options` table:
 
 ```php
 $siteUrl = Option::get('siteurl');
-```
 
-You can also add new options:
+Option::add('foo', 'bar'); // stored as a string
+Option::add('baz', ['one' => 'two']); // serialized
 
-```php
-Option::add('foo', 'bar'); // stored as string
-Option::add('baz', ['one' => 'two']); // this will be serialized and saved
-```
-
-You can get all options in a simple array:
-
-```php
 $options = Option::asArray();
 echo $options['siteurl'];
-```
 
-Or you can specify only the keys you want to get:
-
-```php
 $options = Option::asArray(['siteurl', 'home', 'blogname']);
 echo $options['home'];
 ```
 
-## <a id="menu"></a> Menu
+### Menus
 
-To get a menu by its slug, use the syntax below. The menu items will be loaded in the `items` variable (it's a collection of `Colt\Model\MenuItem` objects).
-
-The currently supported menu items are: Pages, Posts, Custom Links and Categories.
-
-Once you'll have instances of `MenuItem` class, if you want to use the original instance (like the original Page or Term, for example), just call the `MenuItem::instance()` method. The `MenuItem` object is just a post with `post_type` equals `nav_menu_item`:
+Get a menu by its slug. Its `items` are a collection of `MenuItem` objects (posts of type `nav_menu_item`). Supported items are pages, posts, custom links and categories; `instance()` returns the object behind an item:
 
 ```php
 $menu = Menu::slug('primary')->first();
 
 foreach ($menu->items as $item) {
-    echo $item->instance()->title; // if it's a Post
-    echo $item->instance()->name; // if it's a Term
-    echo $item->instance()->link_text; // if it's a custom link
+    echo $item->instance()->title;     // a Post
+    echo $item->instance()->name;      // a Term
+    echo $item->instance()->link_text; // a custom link
 }
 ```
 
-The `instance()` method will return the matching object:
+`instance()` returns a `Post` for `post` items, a `Page` for `page` items, a `CustomLink` for `custom` items and a `Term` for `category` items.
 
-- `Post` instance for `post` menu item;
-- `Page` instance for `page` menu item;
-- `CustomLink` instance for `custom` menu item;
-- `Term` instance for `category` menu item.
+#### Multi-level menus
 
-### Multi-levels Menus
-
-To handle multi-levels menus, loop through all the menu items to put them on the right levels, for example.
-
-You can use the `MenuItem::parent()` method to retrieve the parent instance of that menu item:
+`MenuItem::parent()` returns the parent of an item (`Post`, `Page`, `CustomLink` or `Term`):
 
 ```php
 $items = Menu::slug('foo')->first()->items;
-$parent = $items->first()->parent(); // Post, Page, CustomLink or Term (category)
+$parent = $items->first()->parent();
 ```
 
-To group menu items according their parents, you can use the `->groupBy()` method in the `$menu->items` collection, grouping menu items by their `$item->parent()->ID`.
+To build levels, group the items by parent with the collection's [`groupBy()`](https://laravel.com/docs/collections#method-groupby), on `$item->parent()->ID`.
 
-To read more about the `groupBy()` method [take a look on the Laravel documentation](https://laravel.com/docs/5.4/collections#method-groupby).
-
-## <a id="users"></a> Users
-
-You can manipulate users in the same manner you work with posts:
+### Users
 
 ```php
-// All users
 $users = User::get();
 
-// A specific user
 $user = User::find(1);
 echo $user->user_login;
 ```
 
-## <a id="auth"></a>Authentication
+### Authentication
 
-### Using Laravel
+#### With Laravel
 
-If you're using Laravel 5.4 or older, make sure you have the [`ColtServiceProvider` provider registered](#config-service-loader).
-
-And then, define the user provider in `config/auth.php` to allow Laravel to login with WordPress users:
+Colt registers a `colt` user provider. Declare it in `config/auth.php` so Laravel logs in WordPress users:
 
 ```php
 'providers' => [
@@ -682,94 +531,61 @@ And then, define the user provider in `config/auth.php` to allow Laravel to logi
 ],
 ```
 
-Now you can use the `Auth` facade to authenticate users:
-
 ```php
 Auth::validate([
-    'email' => 'admin@example.com', // or using 'username' too
+    'email' => 'admin@example.com', // or 'username'
     'password' => 'secret',
 ]);
 ```
 
-To make Laravel's Password Reset work with Colt, we have to override how passwords are stored in the database. To do this, you must change `Auth/PasswordController.php` from:
+For password resets, the `Pollora\Colt\Laravel\Auth\ResetsPasswords` trait provides a `resetPassword()` method that stores the new password with WordPress's hashing. Use it in the class that resets passwords, in place of Laravel's own implementation:
 
 ```php
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
-
-class PasswordController extends Controller
-{
-    use ResetsPasswords;
-```
-
-to
-
-```php
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use Pollora\Colt\Laravel\Auth\ResetsPasswords as ColtResetsPasswords;
 
-class PasswordController extends Controller
+class ResetPasswordController extends Controller
 {
     use ResetsPasswords, ColtResetsPasswords {
         ColtResetsPasswords::resetPassword insteadof ResetsPasswords;
     }
+}
 ```
 
-### Not using Laravel
+#### Without Laravel
 
-You can use the `AuthUserProvider` class to manually authenticate a user :
+Authenticate with `AuthUserProvider` directly. Both `username` and `email` work as credentials:
 
 ```php
 $userProvider = new Pollora\Colt\Laravel\Auth\AuthUserProvider;
 $user = $userProvider->retrieveByCredentials(['username' => 'admin']);
-if(!is_null($user) && $userProvider->validateCredentials($user, ['password' => 'admin'])) {
-    // successfully login
+
+if (! is_null($user) && $userProvider->validateCredentials($user, ['password' => 'admin'])) {
+    // logged in
 }
 ```
 
-> Remember you can use both `username` and `email` as credentials for a User.
+## Documentation
 
-# <a id="tests"></a> Running Tests
+How Colt relates to Corcel and to Pollora's models: [pollora.dev/compare](https://pollora.dev/compare/).
 
-To run the phpunit tests, execute the following command :
+## Testing
 
-```
-./vendor/bin/phpunit
-```
-
-If you have the global `phpunit` command installed you can just type:
-
-```
-phpunit
+```bash
+composer test
 ```
 
-All tests were written using Sqlite with `:memory` database, so it runs in your memory. All tests use `factories` and `migrations`. Take a look on `tests/database/factories` and `tests/database/migrations` directories for more information.
+The suite uses Pest with an in-memory SQLite database, built from the factories and migrations in `tests/database`.
 
-# <a id="contrib"></a> Contributing
+A second suite runs against a real WordPress installation, in `.wordpress` or the path set in `WP_PATH` (see the `wordpress` job of `.github/workflows/ci.yml`):
 
-All contributions are welcome to help improve Colt.
+```bash
+composer test:wordpress
+```
 
-Before you submit your Pull Request (PR) consider the following guidelines:
+## Contributing
 
-- Fork https://github.com/Pollora/colt in Github;
+Contributions are welcome: see the [contributing guide](https://github.com/Pollora/.github/blob/main/CONTRIBUTING.md). Report security issues privately, as described in the [security policy](https://github.com/Pollora/.github/blob/main/SECURITY.md).
 
-- Clone your forked repository (not Colt's) locally and create your own branch based on the version you want to fix (`2.1`, `2.2`, `2.3`, `2.4` or `2.5`): `git checkout -b my-fix-branch 2.5`;
+## License
 
-- Make all code changes. Remember here to write at least one test case for any feature you add or any bugfix (if it's not tested yet). Our goal is to have 100% of the code covered by tests, so help us to write a better code ;-) If you don' have experience with tests it's a good opportunity to learn. Just take a look into our tests cases and you'll see how simple they are.
-
-- Run the unit tests locally to make sure your changes did not break any other piece of code;
-
-- Push your new branch to your forked repository, usually `git push origin HEAD` should work;
-
-- In GitHub again, create a Pull Request (PR) from your custom `my-fix-branch` branch (from your forked repository) to the related branch (`colt:9.0`, for example, not `colt:main`, please;
-
-- Wait for the approval :-)
-
-## <a id="license"></a> License
-
-Colt is released under the MIT License.
-
-This project is a fork of [Corcel](https://github.com/corcel/corcel), originally developed by [Junior Grossi](https://github.com/jgrossi). It continues to be distributed under the same MIT license.
-
-[MIT License](https://opensource.org/licenses/MIT) © 2019 Corcel, 2025 Pollora
+Colt is open-source software licensed under the [MIT license](LICENSE). © [RuBee group](https://rubee.group)
