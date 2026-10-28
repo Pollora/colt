@@ -14,7 +14,7 @@ use UnexpectedValueException;
 trait MetaFields
 {
     /**
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $builtInClasses = [
         \Pollora\Colt\Model\Comment::class => \Pollora\Colt\Model\Meta\CommentMeta::class,
