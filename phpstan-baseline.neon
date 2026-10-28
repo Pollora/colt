@@ -1,0 +1,313 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Trait Pollora\\Colt\\Concerns\\AdvancedCustomFields is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Concerns/AdvancedCustomFields.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$user_pass\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Laravel/Auth/AuthUserProvider.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:hasMeta\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Laravel/Auth/AuthUserProvider.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Laravel\\Auth\\AuthUserProvider\:\:retrieveByCredentials\(\) should return Illuminate\\Contracts\\Auth\\Authenticatable\|null but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Laravel/Auth/AuthUserProvider.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Laravel\\Auth\\AuthUserProvider\:\:retrieveById\(\) should return Illuminate\\Contracts\\Auth\\Authenticatable\|null but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Laravel/Auth/AuthUserProvider.php
+
+		-
+			message: '#^Trait Pollora\\Colt\\Laravel\\Auth\\ResetsPasswords is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Laravel/Auth/ResetsPasswords.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Builder\\PostBuilder\:\:typeIn\(\) should return Pollora\\Colt\\Model\\Builder\\PostBuilder but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Builder/PostBuilder.php
+
+		-
+			message: '#^Property Illuminate\\Support\\Collection\<int,Pollora\\Colt\\Model\\Meta\\Meta\>\:\:\$items \(array\<int, Pollora\\Colt\\Model\\Meta\\Meta\>\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: src/Model/Collection/MetaCollection.php
+
+		-
+			message: '#^Call to an undefined method Pollora\\Colt\\Model\\Comment\:\:where\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Model/Comment.php
+
+		-
+			message: '#^Return type \(void\) of method Pollora\\Colt\\Model\\Comment\:\:setUpdatedAt\(\) should be compatible with return type \(\$this\(Illuminate\\Database\\Eloquent\\Model\)\) of method Illuminate\\Database\\Eloquent\\Model\:\:setUpdatedAt\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/Comment.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: src/Model/Comment.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/CustomLink.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Menu\:\:items\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Menu.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_menu_item_parent\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/MenuItem.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_object\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/MenuItem.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_object_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/MenuItem.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\MenuItem\:\:instance\(\) should return Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/MenuItem.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\MenuItem\:\:parent\(\) should return Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/MenuItem.php
+
+		-
+			message: '#^Return type \(Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy\) of method Pollora\\Colt\\Model\\MenuItem\:\:parent\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\) of method Pollora\\Colt\\Model\\Post\:\:parent\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/MenuItem.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\Meta\\CommentMeta\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/Meta/CommentMeta.php
+
+		-
+			message: '#^Parameter \#1 \$items of class Pollora\\Colt\\Model\\Collection\\MetaCollection constructor expects Illuminate\\Contracts\\Support\\Arrayable\<int, Pollora\\Colt\\Model\\Meta\\Meta\>\|iterable\<int, Pollora\\Colt\\Model\\Meta\\Meta\>\|null, array\<Illuminate\\Database\\Eloquent\\Model\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Model/Meta/Meta.php
+
+		-
+			message: '#^Return type \(Pollora\\Colt\\Model\\Collection\\MetaCollection\) of method Pollora\\Colt\\Model\\Meta\\Meta\:\:newCollection\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), static\(Illuminate\\Database\\Eloquent\\Model\)\>\) of method Illuminate\\Database\\Eloquent\\Model\:\:newCollection\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/Meta/Meta.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\Meta\\PostMeta\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/Meta/PostMeta.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\Meta\\TermMeta\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/Meta/TermMeta.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_wp_attachment_metadata\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/Meta/ThumbnailMeta.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Meta\\ThumbnailMeta\:\:size\(\) should return array but returns string\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Model/Meta/ThumbnailMeta.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\Meta\\UserMeta\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/Meta/UserMeta.php
+
+		-
+			message: '#^Call to an undefined static method Pollora\\Colt\\Model\\Option\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Model/Option.php
+
+		-
+			message: '#^Call to an undefined static method Pollora\\Colt\\Model\\Option\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: src/Model/Option.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\Option\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/Option.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$term\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Term\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Term\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Access to an undefined static property Pollora\\Colt\\Model\:\:\$aliases\.$#'
+			identifier: staticProperty.notFound
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<static\(Pollora\\Colt\\Model\\Post\)\>\:\:type\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Post\:\:attachment\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany but returns Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Post\:\:getPostInstance\(\) should return static\(Pollora\\Colt\\Model\\Post\) but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Post\:\:revision\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany but returns Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Post\:\:scopeNewest\(\) should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Post\:\:scopeOldest\(\) should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Post\:\:thumbnail\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasOne but returns Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^PHPDoc tag @return with type bool\|string is not subtype of native type array\|string\|false\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\Post\:\:\$fillable is not covariant with PHPDoc type array\<int, string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$fillable\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Return type \(Pollora\\Colt\\Model\\Builder\\PostBuilder\) of method Pollora\\Colt\\Model\\Post\:\:newQuery\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Builder\<static\(Illuminate\\Database\\Eloquent\\Model\)\>\) of method Illuminate\\Database\\Eloquent\\Model\:\:newQuery\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\Taxonomy\:\:newQuery\(\) should return Pollora\\Colt\\Model\\Builder\\TaxonomyBuilder but returns Illuminate\\Database\\Eloquent\\Builder\<static\(Pollora\\Colt\\Model\\Taxonomy\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/Taxonomy.php
+
+		-
+			message: '#^Return type \(Pollora\\Colt\\Model\\Builder\\TaxonomyBuilder\) of method Pollora\\Colt\\Model\\Taxonomy\:\:newQuery\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Builder\<static\(Illuminate\\Database\\Eloquent\\Model\)\>\) of method Illuminate\\Database\\Eloquent\\Model\:\:newQuery\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/Taxonomy.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\TermRelationship\:\:\$primaryKey is not covariant with PHPDoc type string of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$primaryKey\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/TermRelationship.php
+
+		-
+			message: '#^Access to an undefined static property Pollora\\Colt\\Model\:\:\$aliases\.$#'
+			identifier: staticProperty.notFound
+			count: 1
+			path: src/Model/User.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\User\:\:scopeNewest\(\) should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/User.php
+
+		-
+			message: '#^Method Pollora\\Colt\\Model\\User\:\:scopeOldest\(\) should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Model/User.php
+
+		-
+			message: '#^PHPDoc type array of property Pollora\\Colt\\Model\\User\:\:\$hidden is not covariant with PHPDoc type array\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$hidden\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Model/User.php
+
+		-
+			message: '#^Return type \(void\) of method Pollora\\Colt\\Model\\User\:\:setUpdatedAt\(\) should be compatible with return type \(\$this\(Illuminate\\Database\\Eloquent\\Model\)\) of method Illuminate\\Database\\Eloquent\\Model\:\:setUpdatedAt\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/User.php
