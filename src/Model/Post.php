@@ -121,7 +121,7 @@ class Post extends Model
 
     /**
      * @param array $attributes
-     * @return mixed
+     * @return static
      */
     public function newFromBuilder($attributes = [], $connection = null)
     {
@@ -141,7 +141,7 @@ class Post extends Model
     }
 
     /**
-     * @return array
+     * @return static
      */
     protected function getPostInstance(array $attributes)
     {
@@ -293,13 +293,15 @@ class Post extends Model
      * Gets the featured image if any
      * Looks in meta the _thumbnail_id field.
      *
-     * @return string
+     * @return string|null The URL of the image, null when the post has none
      */
     public function getImageAttribute()
     {
         if ($this->thumbnail && $this->thumbnail->attachment) {
             return $this->thumbnail->attachment->guid;
         }
+
+        return null;
     }
 
     /**

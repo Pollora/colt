@@ -60,6 +60,7 @@ class AuthUserProvider implements UserProvider
     /**
      * Update the "remember me" token for the given user in storage.
      *
+     * @param \Illuminate\Database\Eloquent\Model&Authenticatable $user
      * @param string $token
      */
     public function updateRememberToken(Authenticatable $user, $token)

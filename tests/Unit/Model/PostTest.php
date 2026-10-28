@@ -554,3 +554,9 @@ function createPostWithPostFormatTaxonomy(): Post
 
     return $post;
 }
+
+test('its image is null when it has no thumbnail', function () {
+    $post = factory(Post::class)->create();
+
+    expect($post->image)->toBeNull();
+});
