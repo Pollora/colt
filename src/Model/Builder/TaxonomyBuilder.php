@@ -45,7 +45,7 @@ class TaxonomyBuilder extends Builder
     public function slug($slug = null)
     {
         if (!is_null($slug) && !empty($slug)) {
-            return $this->whereHas('term', function ($query) use ($slug) {
+            return $this->whereHas('term', function ($query) use ($slug): void {
                 $query->where('slug', $slug);
             });
         }
@@ -54,7 +54,6 @@ class TaxonomyBuilder extends Builder
     }
 
     /**
-     * @param null $slug
      * @return TaxonomyBuilder
      */
     public function term($slug = null)

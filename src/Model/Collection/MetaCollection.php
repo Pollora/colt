@@ -24,9 +24,7 @@ class MetaCollection extends Collection
         }
 
         if (isset($this->items) && count($this->items)) {
-            $meta = $this->first(function ($meta) use ($key) {
-                return $meta->meta_key === $key;
-            });
+            $meta = $this->first(fn($meta): bool => $meta->meta_key === $key);
 
             return $meta ? $meta->meta_value : null;
         }
@@ -35,10 +33,9 @@ class MetaCollection extends Collection
     }
 
     /**
-     * @param string $name
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
         return !is_null($this->__get($name));
     }

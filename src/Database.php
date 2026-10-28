@@ -23,11 +23,7 @@ class Database
         'prefix' => 'wp_',
     ];
 
-    /**
-     * @param array $params
-     * @return \Illuminate\Database\Capsule\Manager
-     */
-    public static function connect(array $params)
+    public static function connect(array $params): \Illuminate\Database\Capsule\Manager
     {
         $capsule = new Capsule();
 

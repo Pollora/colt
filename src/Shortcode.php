@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt;
 
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
@@ -13,7 +15,6 @@ use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 interface Shortcode
 {
     /**
-     * @param ShortcodeInterface $shortcode
      * @return string
      */
     public function render(ShortcodeInterface $shortcode);

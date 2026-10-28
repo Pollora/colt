@@ -19,6 +19,7 @@ class Comment extends Model
     use CustomTimestamps;
 
     const CREATED_AT = 'comment_date';
+
     const UPDATED_AT = null;
 
     /**
@@ -81,26 +82,17 @@ class Comment extends Model
         return $this->hasMany(Comment::class, 'comment_parent');
     }
 
-    /**
-     * @return bool
-     */
-    public function isApproved()
+    public function isApproved(): bool
     {
         return $this->attributes['comment_approved'] == 1;
     }
 
-    /**
-     * @return bool
-     */
-    public function isReply()
+    public function isReply(): bool
     {
         return $this->attributes['comment_parent'] > 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasReplies()
+    public function hasReplies(): bool
     {
         return $this->replies->count() > 0;
     }

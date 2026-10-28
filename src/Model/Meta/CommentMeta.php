@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Meta;
 
 use Pollora\Colt\Model\Comment;

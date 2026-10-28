@@ -110,10 +110,6 @@ class Option extends Model
      */
     public function toArray()
     {
-        if ($this instanceof Option) {
-            return [$this->option_name => $this->value];
-        }
-
-        return parent::toArray();
+        return [$this->option_name => $this->value];
     }
 }

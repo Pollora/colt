@@ -12,14 +12,11 @@ use Illuminate\Contracts\Foundation\Application;
  */
 class Colt
 {
-    /**
-     * @return bool
-     */
-    public static function isLaravel()
+    public static function isLaravel(): bool
     {
         return function_exists('app') && (
             app() instanceof Application ||
-            strpos(app()->version(), 'Lumen') === 0
+            str_starts_with(app()->version(), 'Lumen')
         );
     }
 }

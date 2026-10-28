@@ -58,7 +58,6 @@ trait MetaFields
     }
 
     /**
-     * @return string
      * @throws \UnexpectedValueException
      */
     protected function getMetaForeignKey(): string
@@ -76,13 +75,10 @@ trait MetaFields
     }
 
     /**
-     * @param Builder $query
      * @param string|array $meta
      * @param mixed $value
-     * @param string $operator
-     * @return Builder
      */
-    public function scopeHasMeta(Builder $query, $meta, $value = null, string $operator = '=')
+    public function scopeHasMeta(Builder $query, $meta, $value = null, string $operator = '='): Builder
     {
         if (!is_array($meta)) {
             $meta = [$meta => $value];
@@ -93,6 +89,7 @@ trait MetaFields
                 if (!is_string($key)) {
                     return $query->where('meta_key', $operator, $value);
                 }
+
                 $query->where('meta_key', $operator, $key);
 
                 return is_null($value) ? $query :
@@ -104,7 +101,6 @@ trait MetaFields
     }
 
     /**
-     * @param Builder $query
      * @param string $meta
      * @param mixed $value
      * @return Builder
@@ -136,6 +132,7 @@ trait MetaFields
             foreach ($key as $k => $v) {
                 $this->saveOneMeta($k, $v);
             }
+
             $this->load('meta');
 
             return true;
@@ -187,9 +184,7 @@ trait MetaFields
     public function createMeta($key, $value = null)
     {
         if (is_array($key)) {
-            return collect($key)->map(function ($value, $key) {
-                return $this->createOneMeta($key, $value);
-            });
+            return collect($key)->map(fn($value, $key) => $this->createOneMeta($key, $value));
         }
 
         return $this->createOneMeta($key, $value);
@@ -221,8 +216,6 @@ trait MetaFields
     /**
      * Writes go through WordPress's meta API when it is loaded, so that
      * sanitize callbacks, meta hooks and the object cache all apply.
-     *
-     * @return bool
      */
     protected function usesWordPressMetaApi(): bool
     {

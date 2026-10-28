@@ -28,6 +28,7 @@ class Post extends Model
     use CustomTimestamps;
 
     const CREATED_AT = 'post_date';
+
     const UPDATED_AT = 'post_modified';
 
     /**
@@ -111,7 +112,6 @@ class Post extends Model
 
     /**
      * @param array $attributes
-     * @param null $connection
      * @return mixed
      */
     public function newFromBuilder($attributes = [], $connection = null)
@@ -132,7 +132,6 @@ class Post extends Model
     }
 
     /**
-     * @param array $attributes
      * @return array
      */
     protected function getPostInstance(array $attributes)
@@ -250,9 +249,8 @@ class Post extends Model
      *
      * @param string $taxonomy
      * @param string $term
-     * @return bool
      */
-    public function hasTerm($taxonomy, $term)
+    public function hasTerm($taxonomy, $term): bool
     {
         return isset($this->terms[$taxonomy]) &&
             isset($this->terms[$taxonomy][$term]);
@@ -290,7 +288,7 @@ class Post extends Model
      */
     public function getImageAttribute()
     {
-        if ($this->thumbnail and $this->thumbnail->attachment) {
+        if ($this->thumbnail && $this->thumbnail->attachment) {
             return $this->thumbnail->attachment->guid;
         }
     }
@@ -302,14 +300,8 @@ class Post extends Model
      */
     public function getTermsAttribute()
     {
-        return $this->taxonomies->groupBy(function ($taxonomy) {
-            return $taxonomy->taxonomy == 'post_tag' ?
-                'tag' : $taxonomy->taxonomy;
-        })->map(function ($group) {
-            return $group->mapWithKeys(function ($item) {
-                return [$item->term->slug => $item->term->name];
-            });
-        })->toArray();
+        return $this->taxonomies->groupBy(fn($taxonomy) => $taxonomy->taxonomy == 'post_tag' ?
+            'tag' : $taxonomy->taxonomy)->map(fn($group) => $group->mapWithKeys(fn($item): array => [$item->term->slug => $item->term->name]))->toArray();
     }
 
     /**
@@ -340,17 +332,13 @@ class Post extends Model
      */
     public function getKeywordsAttribute()
     {
-        return collect($this->terms)->map(function ($taxonomy) {
-            return collect($taxonomy)->values();
-        })->collapse()->toArray();
+        return collect($this->terms)->map(fn($taxonomy) => collect($taxonomy)->values())->collapse()->toArray();
     }
 
     /**
      * Gets the keywords as string.
-     *
-     * @return string
      */
-    public function getKeywordsStrAttribute()
+    public function getKeywordsStrAttribute(): string
     {
         return implode(',', (array) $this->keywords);
     }
@@ -377,7 +365,7 @@ class Post extends Model
      *
      * @return bool|string
      */
-    public function getFormat()
+    public function getFormat(): string|array|false
     {
         $taxonomy = $this->taxonomies()
             ->where('taxonomy', 'post_format')

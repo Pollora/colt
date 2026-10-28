@@ -18,7 +18,6 @@ trait ResetsPasswords
     /**
      * Reset the given user's password.
      *
-     * @param CanResetPassword $user
      * @param string $password
      */
     protected function resetPassword(CanResetPassword $user, $password)

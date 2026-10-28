@@ -82,9 +82,7 @@ class Model extends Eloquent
             $relation = $caller['function'];
         }
 
-        if (is_null($foreignKey)) {
-            $foreignKey = Str::snake($relation).'_id';
-        }
+        $foreignKey ??= Str::snake($relation).'_id';
 
         $instance = $this->setInstanceConnection(
             new $related()
@@ -118,9 +116,7 @@ class Model extends Eloquent
         $relatedKey = null,
         $relation = null
     ) {
-        if (is_null($relation)) {
-            $relation = $this->guessBelongsToManyRelation();
-        }
+        $relation ??= $this->guessBelongsToManyRelation();
 
         $instance = $this->setInstanceConnection(
             $this->newRelatedInstance($related)
@@ -130,9 +126,7 @@ class Model extends Eloquent
 
         $relatedPivotKey = $relatedPivotKey ?: $instance->getForeignKey();
 
-        if (is_null($table)) {
-            $table = $this->joiningTable($related);
-        }
+        $table ??= $this->joiningTable($related);
 
         return new BelongsToMany(
             $instance->newQuery(),
@@ -157,7 +151,7 @@ class Model extends Eloquent
         $relation = parent::getRelationValue($key);
 
         if ($relation instanceof Collection) {
-            $relation->each(function ($model) {
+            $relation->each(function ($model): void {
                 $this->setRelationConnection($model);
             });
 
