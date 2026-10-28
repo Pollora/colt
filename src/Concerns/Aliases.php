@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Concerns;
 
 use Illuminate\Support\Arr;
@@ -7,7 +9,6 @@ use Illuminate\Support\Arr;
 /**
  * Trait AliasesTrait
  *
- * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait Aliases
@@ -25,8 +26,8 @@ trait Aliases
     }
 
     /**
-     * @param string $new
-     * @param string $old
+     * @param  string  $new
+     * @param  string  $old
      */
     public static function addAlias($new, $old)
     {
@@ -34,7 +35,7 @@ trait Aliases
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function getAttribute($key)
@@ -59,8 +60,8 @@ trait Aliases
     /**
      * Get alias value from mutator or directly from attribute
      *
-     * @param  string $key
-     * @param  mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return mixed
      */
     public function mutateAttribute($key, $value)

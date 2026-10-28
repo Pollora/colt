@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Concerns;
 
 use LogicException;
@@ -7,8 +9,8 @@ use LogicException;
 /**
  * Trait HasAcfFields
  *
- * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
  * @deprecated Colt ships no ACF integration: the Pollora\Colt\Acf\AdvancedCustomFields
  *             class this trait relied on was never part of the package. Read ACF values
  *             with get_field() or through the model's meta.
@@ -17,6 +19,7 @@ trait AdvancedCustomFields
 {
     /**
      * @return object
+     *
      * @throws LogicException
      */
     public function getAcfAttribute()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Concerns;
 
 use Pollora\Colt\Colt;
@@ -10,7 +12,6 @@ use Thunder\Shortcode\ShortcodeFacade;
 /**
  * Trait ShortcodesTrait
  *
- * @package Pollora\Colt\Traits
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -25,8 +26,8 @@ trait Shortcodes
     private $shortcodeParser;
 
     /**
-     * @param string $tag the shortcode tag
-     * @param \Closure $function the shortcode handling function
+     * @param  string  $tag  the shortcode tag
+     * @param  \Closure  $function  the shortcode handling function
      */
     public static function addShortcode($tag, $function)
     {
@@ -36,7 +37,7 @@ trait Shortcodes
     /**
      * Removes a shortcode handler.
      *
-     * @param string $tag the shortcode tag
+     * @param  string  $tag  the shortcode tag
      */
     public static function removeShortcode($tag)
     {
@@ -58,7 +59,7 @@ trait Shortcodes
     /**
      * Process the shortcodes.
      *
-     * @param string $content the content
+     * @param  string  $content  the content
      * @return string
      */
     public function stripShortcodes($content)
@@ -77,8 +78,8 @@ trait Shortcodes
             return app()->make(ShortcodeFacade::class);
         }
 
-        return tap(new ShortcodeFacade(), function (ShortcodeFacade $handler): void {
-            $parser = $this->shortcodeParser ?: new RegularParser();
+        return tap(new ShortcodeFacade, function (ShortcodeFacade $handler): void {
+            $parser = $this->shortcodeParser ?: new RegularParser;
             $handler->setParser($parser);
         });
     }

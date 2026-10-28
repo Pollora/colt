@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Services;
 
 use Hautelook\Phpass\PasswordHash;
@@ -7,7 +9,6 @@ use Hautelook\Phpass\PasswordHash;
 /**
  * Class PasswordService
  *
- * @package Pollora\Colt\Services
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -23,7 +24,7 @@ class PasswordService
     /**
      * Create a hash (encrypt) of a plain text password.
      *
-     * @param string $password Plain text user password to hash
+     * @param  string  $password  Plain text user password to hash
      * @return string The hash string of the password
      */
     public function makeHash($password)
@@ -34,8 +35,8 @@ class PasswordService
     /**
      * Checks the plaintext password against the encrypted Password.
      *
-     * @param string $password Plaintext password
-     * @param string $hash Hashed password
+     * @param  string  $password  Plaintext password
+     * @param  string  $hash  Hashed password
      * @return bool
      */
     public function check($password, $hash)
