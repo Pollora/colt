@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
 trait OrderScopes
 {
     /**
-     * @param Builder $query
      * @return Builder
      */
     public function scopeNewest(Builder $query)
@@ -22,7 +21,6 @@ trait OrderScopes
     }
 
     /**
-     * @param Builder $query
      * @return Builder
      */
     public function scopeOldest(Builder $query)

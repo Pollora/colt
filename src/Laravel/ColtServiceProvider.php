@@ -42,9 +42,7 @@ class ColtServiceProvider extends ServiceProvider
      */
     private function registerAuthProvider()
     {
-        Auth::provider('colt', function ($app, array $config) {
-            return new AuthUserProvider($config);
-        });
+        Auth::provider('colt', fn($app, array $config): \Pollora\Colt\Laravel\Auth\AuthUserProvider => new AuthUserProvider($config));
     }
 
     /**
@@ -52,11 +50,9 @@ class ColtServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ShortcodeFacade::class, function () {
-            return tap(new ShortcodeFacade(), function (ShortcodeFacade $facade) {
-                $parser_class = config('colt.shortcode_parser', RegularParser::class);
-                $facade->setParser(new $parser_class);
-            });
-        });
+        $this->app->bind(ShortcodeFacade::class, fn() => tap(new ShortcodeFacade(), function (ShortcodeFacade $facade): void {
+            $parser_class = config('colt.shortcode_parser', RegularParser::class);
+            $facade->setParser(new $parser_class);
+        }));
     }
 }

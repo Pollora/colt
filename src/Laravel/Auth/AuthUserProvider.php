@@ -22,9 +22,6 @@ class AuthUserProvider implements UserProvider
      */
     protected $config = [];
 
-    /**
-     * @param array $config
-     */
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -63,7 +60,6 @@ class AuthUserProvider implements UserProvider
     /**
      * Update the "remember me" token for the given user in storage.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
      * @param string $token
      */
     public function updateRememberToken(Authenticatable $user, $token)
@@ -75,7 +71,6 @@ class AuthUserProvider implements UserProvider
     /**
      * Retrieve a user by the given credentials.
      *
-     * @param array $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByCredentials(array $credentials)
@@ -97,10 +92,6 @@ class AuthUserProvider implements UserProvider
 
     /**
      * Validate a user against the given credentials.
-     *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param array $credentials
-     * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials): bool
     {
@@ -117,7 +108,7 @@ class AuthUserProvider implements UserProvider
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function createModel()
+    protected function createModel(): object
     {
         $model = Arr::get($this->config, 'model');
 

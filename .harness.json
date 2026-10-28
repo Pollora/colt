@@ -7,7 +7,6 @@
     "observed": [
         "Code style",
         "Static analysis",
-        "Rector",
         "Tests and architecture"
     ],
     "ratchet": {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Builder;
 
 use Illuminate\Database\Eloquent\Builder;

@@ -27,9 +27,9 @@ class PostBuilder extends Builder
      */
     public function published()
     {
-        return $this->where(function ($query) {
+        return $this->where(function ($query): void {
             $query->status('publish');
-            $query->orWhere(function ($query) {
+            $query->orWhere(function ($query): void {
                 $query->status('future');
                 $query->where('post_date', '<=', Carbon::now()->format('Y-m-d H:i:s'));
             });
@@ -46,7 +46,6 @@ class PostBuilder extends Builder
     }
 
     /**
-     * @param array $types
      * @return PostBuilder
      */
     public function typeIn(array $types)
@@ -79,9 +78,9 @@ class PostBuilder extends Builder
      */
     public function taxonomy($taxonomy, $terms)
     {
-        return $this->whereHas('taxonomies', function ($query) use ($taxonomy, $terms) {
+        return $this->whereHas('taxonomies', function ($query) use ($taxonomy, $terms): void {
             $query->where('taxonomy', $taxonomy)
-                ->whereHas('term', function ($query) use ($terms) {
+                ->whereHas('term', function ($query) use ($terms): void {
                     $query->whereIn('slug', is_array($terms) ? $terms : [$terms]);
                 });
         });
@@ -99,18 +98,14 @@ class PostBuilder extends Builder
 
         $terms = is_string($term) ? explode(' ', $term) : $term;
         
-        $terms = collect($terms)->map(function ($term) {
-            return trim(str_replace('%', '', $term));
-        })->filter()->map(function ($term) {
-            return '%' . $term . '%';
-        });
+        $terms = collect($terms)->map(fn($term): string => trim(str_replace('%', '', $term)))->filter()->map(fn($term): string => '%' . $term . '%');
 
         if ($terms->isEmpty()) {
             return $this;
         }
 
-        return $this->where(function ($query) use ($terms) {
-            $terms->each(function ($term) use ($query) {
+        return $this->where(function ($query) use ($terms): void {
+            $terms->each(function ($term) use ($query): void {
                 $query->orWhere('post_title', 'like', $term)
                     ->orWhere('post_excerpt', 'like', $term)
                     ->orWhere('post_content', 'like', $term);

@@ -14,8 +14,11 @@ use Illuminate\Support\Arr;
 class ThumbnailMeta extends PostMeta
 {
     const SIZE_THUMBNAIL = 'thumbnail';
+
     const SIZE_MEDIUM = 'medium';
+
     const SIZE_LARGE = 'large';
+
     const SIZE_FULL = 'full';
 
     /**
@@ -56,11 +59,8 @@ class ThumbnailMeta extends PostMeta
         ]);
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->attachment->guid;
+        return (string) $this->attachment->guid;
     }
 }

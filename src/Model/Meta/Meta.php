@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Meta;
 
 use Pollora\Colt\Concerns\SafeUnserialize;
@@ -40,7 +42,6 @@ abstract class Meta extends Model
     }
 
     /**
-     * @param array $models
      * @return MetaCollection
      */
     public function newCollection(array $models = [])

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +20,6 @@ class Page extends Post
     protected $postType = 'page';
 
     /**
-     * @param Builder $query
      * @return mixed
      */
     public function scopeHome(Builder $query)

@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 class User extends Model implements Authenticatable, CanResetPassword
 {
     const CREATED_AT = 'user_registered';
+
     const UPDATED_AT = null;
 
     use Aliases;
@@ -201,10 +202,8 @@ class User extends Model implements Authenticatable, CanResetPassword
 
     /**
      * Get the avatar url from Gravatar
-     *
-     * @return string
      */
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(): string
     {
         $hash = !empty($this->email) ? md5(strtolower(trim($this->email))) : '';
 

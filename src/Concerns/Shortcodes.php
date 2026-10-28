@@ -47,9 +47,6 @@ trait Shortcodes
 
     /**
      * Change the default shortcode parser
-     *
-     * @param ParserInterface $parser
-     * @return Shortcodes
      */
     public function setShortcodeParser(ParserInterface $parser): self
     {
@@ -74,24 +71,18 @@ trait Shortcodes
         return $handler->process($content);
     }
 
-    /**
-     * @return ShortcodeFacade
-     */
     private function getShortcodeHandlerInstance(): ShortcodeFacade
     {
         if (Colt::isLaravel()) {
             return app()->make(ShortcodeFacade::class);
         }
 
-        return tap(new ShortcodeFacade(), function (ShortcodeFacade $handler) {
+        return tap(new ShortcodeFacade(), function (ShortcodeFacade $handler): void {
             $parser = $this->shortcodeParser ?: new RegularParser();
             $handler->setParser($parser);
         });
     }
 
-    /**
-     * @param ShortcodeFacade $facade
-     */
     private function parseClassShortcodes(ShortcodeFacade $facade)
     {
         foreach (self::$shortcodes as $tag => $func) {
@@ -99,9 +90,6 @@ trait Shortcodes
         }
     }
 
-    /**
-     * @param ShortcodeFacade $facade
-     */
     private function parseConfigShortcodes(ShortcodeFacade $facade)
     {
         if (Colt::isLaravel()) {
