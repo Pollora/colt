@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use Thunder\Shortcode\Parser\RegularParser;
 
 return [
 
@@ -34,7 +35,7 @@ return [
     */
 
     'post_types' => [
-//        'video' => App\Models\Video::class,
+        //        'video' => App\Models\Video::class,
     ],
 
     /*
@@ -50,7 +51,7 @@ return [
     */
 
     'shortcodes' => [
-//        'foo' => App\Shortcodes\FooShortcode::class,
+        //        'foo' => App\Shortcodes\FooShortcode::class,
     ],
 
     /*
@@ -64,7 +65,7 @@ return [
     |
     */
 
-    'shortcode_parser' => Thunder\Shortcode\Parser\RegularParser::class,
+    'shortcode_parser' => RegularParser::class,
     // 'shortcode_parser' => Thunder\Shortcode\Parser\RegexParser::class,
     // 'shortcode_parser' => Thunder\Shortcode\Parser\WordpressParser::class,
 

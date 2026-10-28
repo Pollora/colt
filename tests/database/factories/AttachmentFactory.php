@@ -1,9 +1,12 @@
 <?php
 
-use Pollora\Colt\Model\Attachment;
-use Illuminate\Support\Str;
+declare(strict_types=1);
 
-$factory->define(Attachment::class, function (Faker\Generator $faker) {
+use Faker\Generator;
+use Illuminate\Support\Str;
+use Pollora\Colt\Model\Attachment;
+
+$factory->define(Attachment::class, function (Generator $faker) {
     return [
         'post_author' => $faker->name,
         'post_date' => $faker->dateTimeThisYear,
@@ -22,7 +25,7 @@ $factory->define(Attachment::class, function (Faker\Generator $faker) {
         'post_modified_gmt' => $faker->dateTimeThisMonth,
         'post_content_filtered' => '',
         'post_parent' => 0,
-        'guid' => 'http://example.com/?p=' . $faker->numberBetween(1, 100),
+        'guid' => 'http://example.com/?p='.$faker->numberBetween(1, 100),
         'menu_order' => 0,
         'post_type' => 'attachment',
         'post_mime_type' => 'image/jpeg',

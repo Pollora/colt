@@ -1,34 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Concerns;
 
 /**
  * Trait CustomTimestamps
  *
- * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait CustomTimestamps
 {
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     public function setCreatedAt($value)
     {
-        $gmt_field = static::CREATED_AT . '_gmt';
+        $gmt_field = static::CREATED_AT.'_gmt';
         $this->{$gmt_field} = $value;
 
         return parent::setCreatedAt($value);
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     public function setUpdatedAt($value)
     {
-        $gmt_field = static::UPDATED_AT . '_gmt';
+        $gmt_field = static::UPDATED_AT.'_gmt';
         $this->{$gmt_field} = $value;
 
         return parent::setUpdatedAt($value);

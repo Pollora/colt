@@ -1,35 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Pollora\Colt\Concerns\Aliases;
 use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Concerns\OrderScopes;
 use Pollora\Colt\Model;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\CanResetPassword;
+use Pollora\Colt\Model\Collection\MetaCollection;
 
 /**
  * Class User
  *
- * @package Pollora\Colt\Model
  * @author Ashwin Sureshkumar <ashwin.sureshkumar@gmail.com>
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  *
  * @property string $user_email
  * @property string $user_pass
- * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
+ * @property-read MetaCollection $meta
  */
 class User extends Model implements Authenticatable, CanResetPassword
 {
-    const CREATED_AT = 'user_registered';
-
-    const UPDATED_AT = null;
-
     use Aliases;
     use MetaFields;
     use OrderScopes;
+
+    const CREATED_AT = 'user_registered';
+
+    const UPDATED_AT = null;
 
     /**
      * @var string
@@ -89,14 +92,12 @@ class User extends Model implements Authenticatable, CanResetPassword
     ];
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      */
-    public function setUpdatedAtAttribute($value)
-    {
-    }
+    public function setUpdatedAtAttribute($value) {}
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function posts()
     {
@@ -104,7 +105,7 @@ class User extends Model implements Authenticatable, CanResetPassword
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function comments()
     {
@@ -168,7 +169,7 @@ class User extends Model implements Authenticatable, CanResetPassword
     /**
      * Set the token value for the "remember me" session.
      *
-     * @param string $value
+     * @param  string  $value
      */
     public function setRememberToken($value)
     {
@@ -198,24 +199,22 @@ class User extends Model implements Authenticatable, CanResetPassword
     }
 
     /**
-     * @param string $token
+     * @param  string  $token
      */
-    public function sendPasswordResetNotification($token)
-    {
-    }
+    public function sendPasswordResetNotification($token) {}
 
     /**
      * Get the avatar url from Gravatar
      */
     public function getAvatarAttribute(): string
     {
-        $hash = !empty($this->email) ? md5(strtolower(trim($this->email))) : '';
+        $hash = ! empty($this->email) ? md5(strtolower(trim($this->email))) : '';
 
         return sprintf('//secure.gravatar.com/avatar/%s?d=mm', $hash);
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return void
      */
     public function setUpdatedAt($value)

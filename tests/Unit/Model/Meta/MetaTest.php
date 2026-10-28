@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Model\Meta\PostMeta;
 
 test('it unserialize serialized values', function () {
@@ -13,9 +15,9 @@ test('it also works with unserialized values', function () {
 });
 
 test('it never instantiates serialized objects', function () {
-    $meta = factory(PostMeta::class)->create(['meta_value' => serialize(new \ArrayObject([1]))]);
+    $meta = factory(PostMeta::class)->create(['meta_value' => serialize(new ArrayObject([1]))]);
 
-    expect($meta->value)->toBeInstanceOf(\__PHP_Incomplete_Class::class);
+    expect($meta->value)->toBeInstanceOf(__PHP_Incomplete_Class::class);
 });
 
 test('it keeps a serialized false', function () {

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt;
 
+use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
  * Class Database
  *
- * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Database
@@ -23,9 +25,9 @@ class Database
         'prefix' => 'wp_',
     ];
 
-    public static function connect(array $params): \Illuminate\Database\Capsule\Manager
+    public static function connect(array $params): Manager
     {
-        $capsule = new Capsule();
+        $capsule = new Capsule;
 
         $params = array_merge(static::$baseParams, $params);
         $capsule->addConnection($params);

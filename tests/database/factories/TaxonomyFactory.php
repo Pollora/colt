@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use Faker\Generator;
 use Pollora\Colt\Model\Taxonomy;
 use Pollora\Colt\Model\Term;
 
-$factory->define(Taxonomy::class, function (Faker\Generator $faker) {
+$factory->define(Taxonomy::class, function (Generator $faker) {
     return [
         'taxonomy' => $faker->word,
         'description' => $faker->sentence(),

@@ -4,26 +4,16 @@ declare(strict_types=1);
 
 namespace Pollora\Colt\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Pollora\Colt\Model;
 
 /**
  * Class TermRelationship.
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class TermRelationship extends Model
 {
-    /**
-     * @var string
-     */
-    protected $table = 'term_relationships';
-
-    /**
-     * @var array
-     */
-    protected $primaryKey = ['object_id', 'term_taxonomy_id'];
-
     /**
      * @var bool
      */
@@ -35,7 +25,17 @@ class TermRelationship extends Model
     public $incrementing = false;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @var string
+     */
+    protected $table = 'term_relationships';
+
+    /**
+     * @var array
+     */
+    protected $primaryKey = ['object_id', 'term_taxonomy_id'];
+
+    /**
+     * @return BelongsTo
      */
     public function post()
     {
@@ -43,7 +43,7 @@ class TermRelationship extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function taxonomy()
     {

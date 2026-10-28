@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -7,7 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Trait OrderedTrait
  *
- * @package Pollora\Colt\Traits
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 trait OrderScopes

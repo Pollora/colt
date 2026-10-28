@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Pollora\Colt\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 /**
  * Class Menu
  *
- * @package Pollora\Colt\Model
  * @author Yoram de Langen <yoramdelangen@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -24,7 +25,7 @@ class Menu extends Taxonomy
     protected $with = ['term', 'items'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function items()
     {

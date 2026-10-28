@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Carbon\Carbon;
-use Pollora\Colt\Model\User;
 use Pollora\Colt\Tests\Unit\Concerns\FakeUser;
 
 test('it overrides the default timestamps fields', function () {
-    $fake = new FakeUser();
+    $fake = new FakeUser;
     $fake->setCreatedAt($created_at = Carbon::now()->toDateTimeString());
     $fake->setUpdatedAt($updated_at = Carbon::now()->toDateTimeString());
 

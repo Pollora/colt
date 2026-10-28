@@ -10,18 +10,16 @@ namespace Pollora\Colt\Concerns;
  * Unserializes values stored by WordPress without ever instantiating objects:
  * a serialized object comes back as __PHP_Incomplete_Class, never as a live
  * instance whose magic methods could run.
- *
- * @package Pollora\Colt\Concerns
  */
 trait SafeUnserialize
 {
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     protected function maybeUnserialize($value)
     {
-        if (!is_string($value)) {
+        if (! is_string($value)) {
             return $value;
         }
 

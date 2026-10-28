@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
 use Pollora\Colt\Concerns\SafeUnserialize;
@@ -8,7 +10,6 @@ use Pollora\Colt\Model;
 /**
  * Option class.
  *
- * @package Pollora\Colt\Model
  * @author José CI <josec89@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  *
@@ -21,6 +22,11 @@ class Option extends Model
     use SafeUnserialize;
 
     /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * @var string
      */
     protected $table = 'options';
@@ -29,11 +35,6 @@ class Option extends Model
      * @var string
      */
     protected $primaryKey = 'option_id';
-
-    /**
-     * @var bool
-     */
-    public $timestamps = false;
 
     /**
      * @var array
@@ -58,8 +59,8 @@ class Option extends Model
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return Option
      */
     public static function add($key, $value)
@@ -71,7 +72,7 @@ class Option extends Model
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return mixed
      */
     public static function get($name)
@@ -85,6 +86,7 @@ class Option extends Model
 
     /**
      * @return array
+     *
      * @deprecated
      */
     public static function getAll()
@@ -93,14 +95,14 @@ class Option extends Model
     }
 
     /**
-     * @param array $keys
+     * @param  array  $keys
      * @return array
      */
     public static function asArray($keys = [])
     {
         $query = static::query();
 
-        if (!empty($keys)) {
+        if (! empty($keys)) {
             $query->whereIn('option_name', $keys);
         }
 

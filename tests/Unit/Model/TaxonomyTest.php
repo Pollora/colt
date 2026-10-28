@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use Illuminate\Database\Eloquent\Builder;
 use Pollora\Colt\Model\Post;
-use Pollora\Colt\Tests\Unit\Model\Category;
 use Pollora\Colt\Model\Taxonomy;
 use Pollora\Colt\Model\Term;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
+use Pollora\Colt\Tests\Unit\Model\Category;
 
 test('it belongs to a term', function () {
     $taxonomy = factory(Taxonomy::class)->create([
@@ -115,7 +116,7 @@ function createTaxonomyWithTermsAndPosts(): Taxonomy
                 'name' => 'Bar',
                 'slug' => 'bar',
             ])->term_id;
-        }
+        },
     ]);
 
     $post = factory(Post::class)->create([

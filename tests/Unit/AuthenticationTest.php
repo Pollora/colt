@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+use Illuminate\Support\Facades\Auth;
 use Pollora\Colt\Laravel\Auth\AuthUserProvider;
 use Pollora\Colt\Model\User;
 use Pollora\Colt\Services\PasswordService;
-use Illuminate\Support\Facades\Auth;
 
 beforeEach(function () {
-    $this->checker = new PasswordService();
-    $this->provider = new AuthUserProvider();
+    $this->checker = new PasswordService;
+    $this->provider = new AuthUserProvider;
 });
 
 test('it can check passwords', function () {

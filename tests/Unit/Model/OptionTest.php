@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Model\Option;
-use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
 test('it can return all configs as array', function () {
     factory(Option::class)->create([
@@ -81,10 +82,10 @@ test('it can unserialize data if necessary', function () {
 test('it never instantiates serialized objects', function () {
     $option = factory(Option::class)->create([
         'option_name' => 'foo',
-        'option_value' => serialize(new \ArrayObject([1])),
+        'option_value' => serialize(new ArrayObject([1])),
     ]);
 
-    expect($option->value)->toBeInstanceOf(\__PHP_Incomplete_Class::class);
+    expect($option->value)->toBeInstanceOf(__PHP_Incomplete_Class::class);
 });
 
 test('it can be converted to simple array', function () {

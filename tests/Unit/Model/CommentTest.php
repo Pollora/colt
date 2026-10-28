@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Model\Comment;
 use Pollora\Colt\Model\Post;
 
@@ -140,7 +142,7 @@ function createCommentWithParent()
     return factory(Comment::class)->create([
         'comment_parent' => function () {
             return factory(Comment::class)->create()->comment_ID;
-        }
+        },
     ]);
 }
 

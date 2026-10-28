@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
 use Illuminate\Support\Arr;
@@ -7,7 +9,6 @@ use Illuminate\Support\Arr;
 /**
  * Class MenuItem
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class MenuItem extends Post

@@ -1,7 +1,9 @@
 <?php
 
-use Pollora\Colt\Model\User;
+declare(strict_types=1);
+
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Pollora\Colt\Model\User;
 
 test('get email for password reset', function () {
     /** @var CanResetPassword $user */

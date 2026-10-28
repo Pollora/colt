@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Laravel\Auth;
 
-use Pollora\Colt\Services\PasswordService;
-use Pollora\Colt\Model\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Services\PasswordService;
 
 /**
  * Class AuthUserProvider
  *
- * @package Pollora\Colt\Laravel\Auth
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -30,8 +32,8 @@ class AuthUserProvider implements UserProvider
     /**
      * Retrieve a user by their unique identifier.
      *
-     * @param mixed $identifier
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @param  mixed  $identifier
+     * @return Authenticatable|null
      */
     public function retrieveById($identifier)
     {
@@ -44,9 +46,9 @@ class AuthUserProvider implements UserProvider
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
      *
-     * @param mixed  $identifier
-     * @param string $token
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @param  mixed  $identifier
+     * @param  string  $token
+     * @return Authenticatable|null
      */
     public function retrieveByToken($identifier, $token)
     {
@@ -60,8 +62,8 @@ class AuthUserProvider implements UserProvider
     /**
      * Update the "remember me" token for the given user in storage.
      *
-     * @param \Illuminate\Database\Eloquent\Model&Authenticatable $user
-     * @param string $token
+     * @param  Model&Authenticatable  $user
+     * @param  string  $token
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
@@ -72,7 +74,7 @@ class AuthUserProvider implements UserProvider
     /**
      * Retrieve a user by the given credentials.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     * @return Authenticatable|null
      */
     public function retrieveByCredentials(array $credentials)
     {
@@ -96,28 +98,28 @@ class AuthUserProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials): bool
     {
-        if (!isset($credentials['password'])) {
+        if (! isset($credentials['password'])) {
             return false;
         }
 
-        return (new PasswordService())
+        return (new PasswordService)
             ->check($credentials['password'], $user->user_pass);
+    }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false)
+    {
+        //
     }
 
     /**
      * Create a new instance of the model.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     protected function createModel(): object
     {
         $model = Arr::get($this->config, 'model');
 
         return $model ? new $model : new User;
-    }
-
-    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false)
-    {
-        //
     }
 }

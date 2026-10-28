@@ -1,9 +1,12 @@
 <?php
 
-use Pollora\Colt\Model\User;
-use Illuminate\Support\Str;
+declare(strict_types=1);
 
-$factory->define(User::class, function (Faker\Generator $faker) {
+use Faker\Generator;
+use Illuminate\Support\Str;
+use Pollora\Colt\Model\User;
+
+$factory->define(User::class, function (Generator $faker) {
     return [
         'user_login' => 'admin',
         'user_pass' => 'secret',

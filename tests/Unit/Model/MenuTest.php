@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Model\CustomLink;
 use Pollora\Colt\Model\Menu;
 use Pollora\Colt\Model\MenuItem;
@@ -96,8 +98,8 @@ test('it can have pages', function () {
     });
 
     $pages->each(function (MenuItem $item) {
-        expect($item->instance()->post_title)->toEqual("page-title");
-        expect($item->instance()->post_content)->toEqual("page-content");
+        expect($item->instance()->post_title)->toEqual('page-title');
+        expect($item->instance()->post_content)->toEqual('page-content');
     });
 });
 
@@ -109,8 +111,8 @@ test('it can have posts', function () {
     });
 
     $posts->each(function (MenuItem $item) {
-        expect($item->instance()->title)->toEqual("post-title");
-        expect($item->instance()->content)->toEqual("post-content");
+        expect($item->instance()->title)->toEqual('post-title');
+        expect($item->instance()->content)->toEqual('post-content');
     });
 });
 
@@ -122,8 +124,8 @@ test('it can have custom links', function () {
     });
 
     $posts->each(function (MenuItem $item) {
-        expect($item->instance()->url)->toEqual("http://example.com");
-        expect($item->instance()->link_text)->toEqual("custom-link-text");
+        expect($item->instance()->url)->toEqual('http://example.com');
+        expect($item->instance()->link_text)->toEqual('custom-link-text');
     });
 });
 
@@ -135,8 +137,8 @@ test('it can have categories', function () {
     });
 
     $posts->each(function (MenuItem $item) {
-        expect($item->instance()->name)->toEqual("Bar");
-        expect($item->instance()->slug)->toEqual("bar");
+        expect($item->instance()->name)->toEqual('Bar');
+        expect($item->instance()->slug)->toEqual('bar');
     });
 });
 

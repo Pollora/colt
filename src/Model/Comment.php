@@ -1,25 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
 use Pollora\Colt\Concerns\CustomTimestamps;
 use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Builder\CommentBuilder;
+use Pollora\Colt\Model\Collection\MetaCollection;
 
 /**
  * Class Comment
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Pollora\Colt\Model\Comment> $replies
- * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
+ * @property-read Collection<int, Comment> $replies
+ * @property-read MetaCollection $meta
  */
 class Comment extends Model
 {
-    use MetaFields;
     use CustomTimestamps;
+    use MetaFields;
 
     const CREATED_AT = 'comment_date';
 
@@ -43,18 +49,18 @@ class Comment extends Model
     /**
      * Find a comment by post ID.
      *
-     * @param int $postId
+     * @param  int  $postId
      * @return Comment
      */
     public static function findByPostId($postId)
     {
-        return (new static())
+        return (new static)
             ->where('comment_post_ID', $postId)
             ->get();
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function post()
     {
@@ -62,7 +68,7 @@ class Comment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function parent()
     {
@@ -70,7 +76,7 @@ class Comment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function original()
     {
@@ -78,7 +84,7 @@ class Comment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function replies()
     {
@@ -101,7 +107,7 @@ class Comment extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param  Builder  $query
      * @return CommentBuilder
      */
     public function newEloquentBuilder($query)
@@ -110,7 +116,7 @@ class Comment extends Model
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      * @return void
      */
     public function setUpdatedAt($value)

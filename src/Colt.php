@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -7,7 +9,6 @@ use Illuminate\Contracts\Foundation\Application;
 /**
  * Class Colt
  *
- * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Colt

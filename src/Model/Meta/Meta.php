@@ -11,7 +11,6 @@ use Pollora\Colt\Model\Collection\MetaCollection;
 /**
  * Class Meta
  *
- * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  *
  * @property string $meta_key
@@ -22,14 +21,14 @@ abstract class Meta extends Model
     use SafeUnserialize;
 
     /**
-     * @var string
-     */
-    protected $primaryKey = 'meta_id';
-
-    /**
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'meta_id';
 
     /**
      * @var array

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use Thunder\Shortcode\Parser\RegularParser;
 
 test('it has all necessary keys', function () {
-    $file = __DIR__ . '/../../../src/Laravel/config.php';
+    $file = __DIR__.'/../../../src/Laravel/config.php';
     $content = require $file;
 
     // Database connection

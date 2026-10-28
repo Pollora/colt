@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Collection;
 
 use Illuminate\Database\Eloquent\Collection;
+use Pollora\Colt\Model\Meta\Meta;
 
 /**
  * Class MetaCollection
  *
- * @package Pollora\Colt\Model\Collection
  * @author Junior Grossi <juniorgro@gmail.com>
  *
- * @extends Collection<int, \Pollora\Colt\Model\Meta\Meta>
+ * @extends Collection<int, Meta>
  */
 class MetaCollection extends Collection
 {
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed
+     *
      * @throws \Exception
      */
     public function __get($key)
@@ -26,7 +29,7 @@ class MetaCollection extends Collection
         }
 
         if (isset($this->items) && count($this->items)) {
-            $meta = $this->first(fn($meta): bool => $meta->meta_key === $key);
+            $meta = $this->first(fn ($meta): bool => $meta->meta_key === $key);
 
             return $meta ? $meta->meta_value : null;
         }
@@ -39,6 +42,6 @@ class MetaCollection extends Collection
      */
     public function __isset(string $name)
     {
-        return !is_null($this->__get($name));
+        return ! is_null($this->__get($name));
     }
 }
