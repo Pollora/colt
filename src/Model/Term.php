@@ -12,6 +12,8 @@ use Pollora\Colt\Model;
  *
  * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
  */
 class Term extends Model
 {

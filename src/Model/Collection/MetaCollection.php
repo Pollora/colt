@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @package Pollora\Colt\Model\Collection
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @extends Collection<int, \Pollora\Colt\Model\Meta\Meta>
  */
 class MetaCollection extends Collection
 {

@@ -12,6 +12,9 @@ use Pollora\Colt\Model\Builder\CommentBuilder;
  *
  * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Pollora\Colt\Model\Comment> $replies
+ * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
  */
 class Comment extends Model
 {

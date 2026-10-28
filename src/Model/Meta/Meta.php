@@ -13,6 +13,9 @@ use Pollora\Colt\Model\Collection\MetaCollection;
  *
  * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property string $meta_key
+ * @property mixed $meta_value
  */
 abstract class Meta extends Model
 {

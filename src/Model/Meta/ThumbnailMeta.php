@@ -10,6 +10,8 @@ use Illuminate\Support\Arr;
  *
  * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property-read \Pollora\Colt\Model\Attachment|null $attachment
  */
 class ThumbnailMeta extends PostMeta
 {

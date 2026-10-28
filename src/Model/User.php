@@ -16,6 +16,10 @@ use Illuminate\Contracts\Auth\CanResetPassword;
  * @author Ashwin Sureshkumar <ashwin.sureshkumar@gmail.com>
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property string $user_email
+ * @property string $user_pass
+ * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
  */
 class User extends Model implements Authenticatable, CanResetPassword
 {

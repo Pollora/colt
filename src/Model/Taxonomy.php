@@ -11,6 +11,9 @@ use Pollora\Colt\Model\Meta\TermMeta;
  *
  * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property string $taxonomy
+ * @property-read \Pollora\Colt\Model\Term|null $term
  */
 class Taxonomy extends Model
 {
