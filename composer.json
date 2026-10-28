@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "illuminate/database": "^12.0 || ^13.0",
         "illuminate/filesystem": "^12.0 || ^13.0",
         "illuminate/support": "^12.0 || ^13.0",
@@ -25,21 +25,24 @@
         "thunderer/shortcode": "^0.7.3"
     },
     "require-dev": {
+        "cweagans/composer-patches": "^2.0",
         "laravel/legacy-factories": "^1.0",
-        "orchestra/testbench": "^10.0 || ^11.0",
-        "symfony/thanks": "^1.0",
         "mockery/mockery": "^1.4.4",
-        "pestphp/pest": "^3.8"
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "pestphp/pest": "^3.8",
+        "pollora/harness": "^0.1.11",
+        "symfony/thanks": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "Pollora\\Colt\\": "src/",
-            "Pollora\\Colt\\Tests\\": "tests/"
+            "Pollora\\Colt\\": "src/"
         }
     },
     "scripts": {
         "test": "pest",
-        "test:wordpress": "@php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/pest -c phpunit.wordpress.xml"
+        "test:wordpress": "@php -d auto_prepend_file=tests/WordPress/load.php vendor/bin/pest -c phpunit.wordpress.xml",
+        "qa": "@php vendor/bin/pollora-qa check",
+        "qa:fast": "@php vendor/bin/pollora-qa check --fast"
     },
     "extra": {
         "branch-alias": {
@@ -51,12 +54,23 @@
             "providers": [
                 "Pollora\\Colt\\Laravel\\ColtServiceProvider"
             ]
+        },
+        "patches": {
+            "php-stubs/wordpress-stubs": {
+                "Rename __ to __wp so Laravel can declare __()": "https://raw.githubusercontent.com/Pollora/framework/b26034b3306c96098f756c0ca80631a596db25c9/patches/wordpress-stubs.patch"
+            }
         }
     },
     "config": {
         "allow-plugins": {
-            "symfony/thanks": true,
-            "pestphp/pest-plugin": true
+            "cweagans/composer-patches": true,
+            "pestphp/pest-plugin": true,
+            "symfony/thanks": true
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pollora\\Colt\\Tests\\": "tests/"
         }
     }
 }

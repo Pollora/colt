@@ -23,7 +23,7 @@ Colt is a set of [Eloquent](https://laravel.com/docs/eloquent) models that read 
 composer require pollora/colt
 ```
 
-Requires PHP 8.2+.
+Requires PHP 8.3+.
 
 | Laravel | Colt |
 |:--------|:-----|
