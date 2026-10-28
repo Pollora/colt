@@ -1,0 +1,18 @@
+{
+    "profile": "integration",
+    "mode": "enforce",
+    "downstream": [
+        "framework"
+    ],
+    "observed": [
+        "Code style",
+        "Static analysis",
+        "Rector",
+        "Tests and architecture",
+        "Dependency analysis"
+    ],
+    "ratchet": {
+        "phpstan_level": 5,
+        "phpstan_baseline": 0
+    }
+}

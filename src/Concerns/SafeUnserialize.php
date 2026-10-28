@@ -23,7 +23,7 @@ trait SafeUnserialize
             return $value;
         }
 
-        $unserialized = @unserialize($value, ['allowed_classes' => false]);
+        $unserialized = @unserialize($value, ['allowed_classes' => false]); // nosemgrep -- allowed_classes is false: no object can be instantiated
 
         if ($unserialized === false && $value !== serialize(false)) {
             return $value;
