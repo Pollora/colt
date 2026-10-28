@@ -18,6 +18,15 @@ use Pollora\Colt\Model\Meta\ThumbnailMeta;
  * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  * @author Mickael Burguet <www.rundef.com>
+ *
+ * @property string $post_title
+ * @property string $post_content
+ * @property string $post_excerpt
+ * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
+ * @property-read \Pollora\Colt\Model\Meta\ThumbnailMeta|null $thumbnail
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Pollora\Colt\Model\Taxonomy> $taxonomies
+ * @property array<string, array<string, string>> $terms
+ * @property array<int, string>|string $keywords
  */
 class Post extends Model
 {

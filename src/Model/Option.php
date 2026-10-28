@@ -11,6 +11,10 @@ use Pollora\Colt\Model;
  * @package Pollora\Colt\Model
  * @author José CI <josec89@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property string $option_name
+ * @property string $option_value
+ * @property-read mixed $value
  */
 class Option extends Model
 {

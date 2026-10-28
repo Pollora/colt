@@ -12,6 +12,9 @@ use Pollora\Colt\Concerns\Aliases;
  * @package Pollora\Colt\Model
  * @author José CI <josec89@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
+ *
+ * @property string $guid
+ * @property-read string $url
  */
 class Attachment extends Post
 {
