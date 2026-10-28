@@ -13,7 +13,7 @@ use Hautelook\Phpass\PasswordHash;
  */
 class PasswordService
 {
-    private PasswordHash $hasher;
+    private readonly PasswordHash $hasher;
 
     public function __construct()
     {
