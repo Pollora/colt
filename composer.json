@@ -17,15 +17,16 @@
     ],
     "require": {
         "php": "^8.3",
-        "illuminate/database": "^12.0 || ^13.0",
-        "illuminate/filesystem": "^12.0 || ^13.0",
-        "illuminate/support": "^12.0 || ^13.0",
-        "fakerphp/faker": "^1.19",
         "bordoni/phpass": "0.3.*",
+        "illuminate/contracts": "^12.0 || ^13.0",
+        "illuminate/database": "^12.0 || ^13.0",
+        "illuminate/support": "^12.0 || ^13.0",
+        "nesbot/carbon": "^3.0",
         "thunderer/shortcode": "^0.7.3"
     },
     "require-dev": {
         "cweagans/composer-patches": "^2.0",
+        "fakerphp/faker": "^1.19",
         "laravel/legacy-factories": "^1.0",
         "mockery/mockery": "^1.4.4",
         "orchestra/testbench": "^10.0 || ^11.0",
