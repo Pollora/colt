@@ -8,8 +8,7 @@
         "Code style",
         "Static analysis",
         "Rector",
-        "Tests and architecture",
-        "Dependency analysis"
+        "Tests and architecture"
     ],
     "ratchet": {
         "phpstan_level": 5,
