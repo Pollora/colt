@@ -538,19 +538,6 @@ Auth::validate([
 ]);
 ```
 
-For password resets, the `Pollora\Colt\Laravel\Auth\ResetsPasswords` trait provides a `resetPassword()` method that stores the new password with WordPress's hashing. Use it in the class that resets passwords, in place of Laravel's own implementation:
-
-```php
-use Pollora\Colt\Laravel\Auth\ResetsPasswords as ColtResetsPasswords;
-
-class ResetPasswordController extends Controller
-{
-    use ResetsPasswords, ColtResetsPasswords {
-        ColtResetsPasswords::resetPassword insteadof ResetsPasswords;
-    }
-}
-```
-
 #### Without Laravel
 
 Authenticate with `AuthUserProvider` directly. Both `username` and `email` work as credentials:

@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Trait Pollora\\Colt\\Concerns\\AdvancedCustomFields is used zero times and is not analysed\.$#'
-			identifier: trait.unused
-			count: 1
-			path: src/Concerns/AdvancedCustomFields.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$user_pass\.$#'
 			identifier: property.notFound
 			count: 1
@@ -29,12 +23,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: src/Laravel/Auth/AuthUserProvider.php
-
-		-
-			message: '#^Trait Pollora\\Colt\\Laravel\\Auth\\ResetsPasswords is used zero times and is not analysed\.$#'
-			identifier: trait.unused
-			count: 1
-			path: src/Laravel/Auth/ResetsPasswords.php
 
 		-
 			message: '#^Method Pollora\\Colt\\Model\\Builder\\PostBuilder\:\:typeIn\(\) should return Pollora\\Colt\\Model\\Builder\\PostBuilder but returns Illuminate\\Database\\Query\\Builder\.$#'
