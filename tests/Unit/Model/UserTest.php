@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Carbon\Carbon;
-use Pollora\Colt\Tests\Unit\Model\Customer;
-use Pollora\Colt\Model\User;
 use Pollora\Colt\Model\Collection\MetaCollection;
 use Pollora\Colt\Model\Comment;
 use Pollora\Colt\Model\Post;
+use Pollora\Colt\Model\User;
+use Pollora\Colt\Tests\Unit\Model\Customer;
 
 test('it is instance of user', function () {
     $user = factory(User::class)->create();
@@ -106,7 +108,7 @@ test('it can have a different database connection', function () {
 test('it has meta scope with empty meta', function () {
     $id = factory(User::class)->create()->ID;
 
-    $user = (new User())->newQuery()
+    $user = (new User)->newQuery()
         ->where('ID', $id)
         ->hasMeta('foo', 'bar')
         ->first();
@@ -118,7 +120,7 @@ test('it has meta scope with valid meta', function () {
     $user = factory(User::class)->create();
     $user->saveMeta('foo', 'bar');
 
-    $validUser = (new User())->newQuery()
+    $validUser = (new User)->newQuery()
         ->where('ID', $user->ID)
         ->hasMeta('foo', 'bar')
         ->first();
@@ -144,7 +146,7 @@ test('it children has correct meta relation', function () {
     $user = factory(User::class)->create();
     $user->createMeta('bar', 'foo');
 
-    $customer = new Customer();
+    $customer = new Customer;
     $customer->ID = $user->ID;
 
     // post ID and customer ID are same

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Tests\TestCase;
 use Pollora\Colt\Tests\WordPress\TestCase as WordPressTestCase;
 

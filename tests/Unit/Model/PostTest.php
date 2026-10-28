@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Arr;
 use Pollora\Colt\Model\Collection\MetaCollection;
 use Pollora\Colt\Model\Page;
 use Pollora\Colt\Model\Post;
 use Pollora\Colt\Model\Taxonomy;
 use Pollora\Colt\Model\Term;
 use Pollora\Colt\Model\User;
-use Pollora\Colt\Shortcode;
-use Illuminate\Support\Arr;
-use Illuminate\Pagination\Paginator;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 test('it has the correct class name', function () {
@@ -254,7 +256,7 @@ test('it can be paginated', function () {
     factory(Post::class)->create();
     factory(Post::class)->create();
 
-    /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
+    /** @var LengthAwarePaginator $paginator */
     $paginator = Post::paginate(2);
     $firstPost = Arr::first($paginator->items());
 

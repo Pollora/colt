@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Tests;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Application;
 use Pollora\Colt\Laravel\ColtServiceProvider;
 use Pollora\Colt\Model\User;
 use Pollora\Colt\Tests\Unit\Model\FakePage;
 use Pollora\Colt\Tests\Unit\Model\FakePost;
 use Pollora\Colt\Tests\Unit\Model\FakeShortcode;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
  * Class TestCase
@@ -16,6 +19,25 @@ use Illuminate\Contracts\Auth\Authenticatable;
  */
 class TestCase extends \Orchestra\Testbench\TestCase
 {
+    /**
+     * @param  Application  $app
+     */
+    public function configureShortcodes($app)
+    {
+        $app['config']->set('colt.shortcodes', [
+            'fake' => FakeShortcode::class,
+        ]);
+    }
+
+    /**
+     * @param  string  $driver
+     * @return void
+     */
+    public function be(Authenticatable $user, $driver = null)
+    {
+        // TODO: Implement be() method.
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -23,20 +45,20 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->loadMigrationsFrom([
             '--database' => 'foo',
             '--realpath' => true,
-            '--path' => __DIR__ . '/database/migrations',
+            '--path' => __DIR__.'/database/migrations',
         ]);
 
         $this->loadMigrationsFrom([
             '--database' => 'wp',
             '--realpath' => true,
-            '--path' => __DIR__ . '/database/migrations',
+            '--path' => __DIR__.'/database/migrations',
         ]);
 
-        $this->withFactories(__DIR__ . '/database/factories');
+        $this->withFactories(__DIR__.'/database/factories');
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  Application  $app
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -47,27 +69,37 @@ class TestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  Application  $app
+     */
+    protected function getPackageProviders($app): array
+    {
+        return [
+            ColtServiceProvider::class,
+        ];
+    }
+
+    /**
+     * @param  Application  $app
      */
     private function configureDatabaseConfig($app)
     {
         $app['config']->set('database.connections.wp', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => 'wp_',
+            'prefix' => 'wp_',
         ]);
 
         $app['config']->set('database.connections.foo', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => 'foo_',
+            'prefix' => 'foo_',
         ]);
 
         $app['config']->set('database.default', 'wp');
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  Application  $app
      */
     private function configureAuthProvider($app)
     {
@@ -78,7 +110,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  Application  $app
      */
     private function configureCustomPostTypes($app)
     {
@@ -86,36 +118,5 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'fake_post' => FakePost::class,
             'fake_page' => FakePage::class,
         ]);
-    }
-
-    /**
-     * @param \Illuminate\Foundation\Application $app
-     */
-    public function configureShortcodes($app)
-    {
-        $app['config']->set('colt.shortcodes', [
-            'fake' => FakeShortcode::class,
-        ]);
-    }
-
-    /**
-     * @param \Illuminate\Foundation\Application $app
-     * @return array
-     */
-    protected function getPackageProviders($app): array
-    {
-        return [
-            ColtServiceProvider::class,
-        ];
-    }
-
-    /**
-     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param  string $driver
-     * @return void
-     */
-    public function be(Authenticatable $user, $driver = null)
-    {
-        // TODO: Implement be() method.
     }
 }

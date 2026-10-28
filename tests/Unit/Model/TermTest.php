@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Model\Term;
 
 test('it can create term meta', function () {

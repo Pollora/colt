@@ -1,8 +1,8 @@
 <?php
 
-use Pollora\Colt\Model\Meta\PostMeta;
+declare(strict_types=1);
+
 use Pollora\Colt\Model\Meta\TermMeta;
-use Pollora\Colt\Model\Post;
 use Pollora\Colt\Model\Term;
 
 test('term relation', function () {

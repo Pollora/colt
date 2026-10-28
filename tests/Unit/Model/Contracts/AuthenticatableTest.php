@@ -1,7 +1,9 @@
 <?php
 
-use Pollora\Colt\Model\User;
+declare(strict_types=1);
+
 use Illuminate\Contracts\Auth\Authenticatable;
+use Pollora\Colt\Model\User;
 
 test('get auth identifier name', function () {
     /** @var Authenticatable $user */

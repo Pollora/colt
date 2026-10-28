@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+use Illuminate\Support\Collection;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Post;
 use Pollora\Colt\Model\User;
-use Illuminate\Support\Collection;
 
 test('it can update meta', function () {
     $post = factory(Post::class)->create();

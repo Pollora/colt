@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pollora\Colt\Model\Comment;
 use Pollora\Colt\Model\Option;
 use Pollora\Colt\Model\Post;
@@ -89,7 +91,7 @@ describe('createMeta()', function (): void {
 
 describe('meta types', function (): void {
     it('writes user meta through the user meta API', function (): void {
-        $userId = wp_insert_user(['user_login' => 'colt_' . uniqid(), 'user_pass' => wp_generate_password()]);
+        $userId = wp_insert_user(['user_login' => 'colt_'.uniqid(), 'user_pass' => wp_generate_password()]);
         $this->cleanup(fn () => wp_delete_user($userId));
         get_user_meta($userId, 'colt_key', true);
 
@@ -99,7 +101,7 @@ describe('meta types', function (): void {
     });
 
     it('writes term meta through the term meta API', function (): void {
-        $termId = wp_insert_term('Colt ' . uniqid(), 'category')['term_id'];
+        $termId = wp_insert_term('Colt '.uniqid(), 'category')['term_id'];
         $this->cleanup(fn () => wp_delete_term($termId, 'category'));
         get_term_meta($termId, 'colt_key', true);
 

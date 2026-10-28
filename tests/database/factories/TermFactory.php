@@ -1,9 +1,12 @@
 <?php
 
-use Pollora\Colt\Model\Term;
-use Illuminate\Support\Str;
+declare(strict_types=1);
 
-$factory->define(Term::class, function (Faker\Generator $faker) {
+use Faker\Generator;
+use Illuminate\Support\Str;
+use Pollora\Colt\Model\Term;
+
+$factory->define(Term::class, function (Generator $faker) {
     return [
         'name' => $name = $faker->word,
         'slug' => Str::slug($name),

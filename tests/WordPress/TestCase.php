@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Tests\WordPress;
 
+use Illuminate\Foundation\Application;
 use Pollora\Colt\Laravel\ColtServiceProvider;
 use Pollora\Colt\Model\Post;
 
@@ -47,7 +50,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  Application  $app
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -69,8 +72,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
-     * @return array
+     * @param  Application  $app
      */
     protected function getPackageProviders($app): array
     {

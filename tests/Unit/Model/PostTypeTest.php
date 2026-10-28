@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Event;
+declare(strict_types=1);
 
+use Illuminate\Support\Facades\Event;
+use Pollora\Colt\Model\Post;
 use Pollora\Colt\Tests\Unit\Model\FakePage;
 use Pollora\Colt\Tests\Unit\Model\FakePost;
 use Pollora\Colt\Tests\Unit\Model\Video;
-use Pollora\Colt\Model\Post;
 
 test('it still has post type', function () {
     /** @var Post $post */
@@ -54,8 +55,8 @@ test('it has fire retrieved event using custom class builder', function () {
 
     Video::first();
 
-    Event::assertDispatched('eloquent.retrieved: ' . Video::class, 1);
-    Event::assertNotDispatched('eloquent.retrieved: ' . Post::class);
+    Event::assertDispatched('eloquent.retrieved: '.Video::class, 1);
+    Event::assertNotDispatched('eloquent.retrieved: '.Post::class);
 });
 
 test('it is configurable by the config file', function () {

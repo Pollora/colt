@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Container\Container;
 use Pollora\Colt\Colt;
 use Pollora\Colt\Model;
@@ -21,10 +23,11 @@ test('it can change in the config file if laravel', function () {
 test('it can change the parser in runtime', function () {
     /** @var Post $post */
     $post = factory(Post::class)->create();
-    $post->setShortcodeParser(new WordpressParser());
+    $post->setShortcodeParser(new WordpressParser);
 
     // Outside Laravel: app() returns a container that is not a Laravel application.
-    Container::setInstance(new class extends Container {
+    Container::setInstance(new class extends Container
+    {
         public function version(): string
         {
             return 'standalone';
@@ -44,7 +47,7 @@ test('it can change the parser in runtime', function () {
 
 function getHandler(Model $post): ShortcodeFacade
 {
-    $method = new \ReflectionMethod($post, 'getShortcodeHandlerInstance');
+    $method = new ReflectionMethod($post, 'getShortcodeHandlerInstance');
     $method->setAccessible(true);
 
     return $method->invoke($post);
@@ -52,7 +55,7 @@ function getHandler(Model $post): ShortcodeFacade
 
 function getParserValue(ShortcodeFacade $handler): ParserInterface
 {
-    $property = new \ReflectionProperty($handler, 'parser');
+    $property = new ReflectionProperty($handler, 'parser');
     $property->setAccessible(true);
 
     return $property->getValue($handler);

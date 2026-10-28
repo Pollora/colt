@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use Faker\Generator;
 use Pollora\Colt\Model\Comment;
 use Pollora\Colt\Model\Post;
 
-$factory->define(Comment::class, function (Faker\Generator $faker) {
+$factory->define(Comment::class, function (Generator $faker) {
     return [
         'comment_post_ID' => function () {
             return factory(Post::class)->create()->ID;

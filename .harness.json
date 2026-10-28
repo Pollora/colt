@@ -4,10 +4,6 @@
     "downstream": [
         "framework"
     ],
-    "observed": [
-        "Code style",
-        "Tests and architecture"
-    ],
     "ratchet": {
         "phpstan_level": 5,
         "phpstan_baseline": 54
