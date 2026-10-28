@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
 /**
  * Class CustomLink
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class CustomLink extends Post
@@ -21,7 +22,7 @@ class CustomLink extends Post
     protected $primaryKey = 'ID';
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function __get($key)

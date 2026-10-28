@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace Pollora\Colt\Model;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Model;
+use Pollora\Colt\Model\Collection\MetaCollection;
 
 /**
  * Class Term.
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  *
- * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
+ * @property-read MetaCollection $meta
  */
 class Term extends Model
 {
     use MetaFields;
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * @var string
@@ -30,12 +36,7 @@ class Term extends Model
     protected $primaryKey = 'term_id';
 
     /**
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function taxonomy()
     {

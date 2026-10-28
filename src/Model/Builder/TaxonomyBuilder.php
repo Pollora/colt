@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Builder;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -7,7 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class TaxonomyBuilder
  *
- * @package Pollora\Colt
  * @author Junior Grossi <juniorgro@gmail.com>
  * @author Yoram de Langen <yoramdelangen@gmail.com>
  */
@@ -30,7 +31,7 @@ class TaxonomyBuilder extends Builder
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return TaxonomyBuilder
      */
     public function name($name)
@@ -39,12 +40,12 @@ class TaxonomyBuilder extends Builder
     }
 
     /**
-     * @param string $slug
+     * @param  string  $slug
      * @return TaxonomyBuilder
      */
     public function slug($slug = null)
     {
-        if (!is_null($slug) && !empty($slug)) {
+        if (! is_null($slug) && ! empty($slug)) {
             return $this->whereHas('term', function ($query) use ($slug): void {
                 $query->where('slug', $slug);
             });

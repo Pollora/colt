@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Builder;
 
 use Carbon\Carbon;
@@ -8,13 +10,12 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class PostBuilder
  *
- * @package Pollora\Colt\Model\Builder
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class PostBuilder extends Builder
 {
     /**
-     * @param string $status
+     * @param  string  $status
      * @return PostBuilder
      */
     public function status($status)
@@ -37,7 +38,7 @@ class PostBuilder extends Builder
     }
 
     /**
-     * @param string $type
+     * @param  string  $type
      * @return PostBuilder
      */
     public function type($type)
@@ -54,16 +55,16 @@ class PostBuilder extends Builder
     }
 
     /**
-     * @param string $slug
+     * @param  string  $slug
      * @return PostBuilder
      */
     public function slug($slug)
     {
         return $this->where('post_name', $slug);
     }
-    
+
     /**
-     * @param string $postParentId
+     * @param  string  $postParentId
      * @return PostBuilder
      */
     public function parent($postParentId)
@@ -72,8 +73,8 @@ class PostBuilder extends Builder
     }
 
     /**
-     * @param string $taxonomy
-     * @param mixed $terms
+     * @param  string  $taxonomy
+     * @param  mixed  $terms
      * @return PostBuilder
      */
     public function taxonomy($taxonomy, $terms)
@@ -87,7 +88,7 @@ class PostBuilder extends Builder
     }
 
     /**
-     * @param mixed $term
+     * @param  mixed  $term
      * @return PostBuilder
      */
     public function search($term = false)
@@ -97,8 +98,8 @@ class PostBuilder extends Builder
         }
 
         $terms = is_string($term) ? explode(' ', $term) : $term;
-        
-        $terms = collect($terms)->map(fn($term): string => trim(str_replace('%', '', $term)))->filter()->map(fn($term): string => '%' . $term . '%');
+
+        $terms = collect($terms)->map(fn ($term): string => trim(str_replace('%', '', $term)))->filter()->map(fn ($term): string => '%'.$term.'%');
 
         if ($terms->isEmpty()) {
             return $this;

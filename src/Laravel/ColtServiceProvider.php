@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Laravel;
 
-use Pollora\Colt\Colt;
-use Pollora\Colt\Laravel\Auth\AuthUserProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Pollora\Colt\Laravel\Auth\AuthUserProvider;
 use Thunder\Shortcode\Parser\RegularParser;
 use Thunder\Shortcode\ShortcodeFacade;
 
 /**
  * Class ColtServiceProvider
  *
- * @package Pollora\Colt\Providers\Laravel
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -30,10 +30,21 @@ class ColtServiceProvider extends ServiceProvider
     /**
      * @return void
      */
+    public function register()
+    {
+        $this->app->bind(ShortcodeFacade::class, fn () => tap(new ShortcodeFacade, function (ShortcodeFacade $facade): void {
+            $parser_class = config('colt.shortcode_parser', RegularParser::class);
+            $facade->setParser(new $parser_class);
+        }));
+    }
+
+    /**
+     * @return void
+     */
     private function publishConfigFile()
     {
         $this->publishes([
-            __DIR__ . '/config.php' => base_path('config/colt.php'),
+            __DIR__.'/config.php' => base_path('config/colt.php'),
         ]);
     }
 
@@ -42,17 +53,6 @@ class ColtServiceProvider extends ServiceProvider
      */
     private function registerAuthProvider()
     {
-        Auth::provider('colt', fn($app, array $config): \Pollora\Colt\Laravel\Auth\AuthUserProvider => new AuthUserProvider($config));
-    }
-
-    /**
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->bind(ShortcodeFacade::class, fn() => tap(new ShortcodeFacade(), function (ShortcodeFacade $facade): void {
-            $parser_class = config('colt.shortcode_parser', RegularParser::class);
-            $facade->setParser(new $parser_class);
-        }));
+        Auth::provider('colt', fn ($app, array $config): AuthUserProvider => new AuthUserProvider($config));
     }
 }

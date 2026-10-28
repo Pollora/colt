@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 /**
  * Class Model
  *
- * @package Pollora\Colt
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -27,9 +28,9 @@ class Model extends Eloquent
     /**
      * Replace the original hasMany function to forward the connection name.
      *
-     * @param string $related
-     * @param string $foreignKey
-     * @param string $localKey
+     * @param  string  $related
+     * @param  string  $foreignKey
+     * @param  string  $localKey
      * @return HasMany
      */
     public function hasMany($related, $foreignKey = null, $localKey = null)
@@ -37,7 +38,7 @@ class Model extends Eloquent
         $foreignKey = $foreignKey ?: $this->getForeignKey();
 
         $instance = $this->setInstanceConnection(
-            new $related()
+            new $related
         );
 
         $localKey = $localKey ?: $this->getKeyName();
@@ -48,9 +49,9 @@ class Model extends Eloquent
     /**
      * Replace the original hasOne function to forward the connection name.
      *
-     * @param string $related
-     * @param string $foreignKey
-     * @param string $localKey
+     * @param  string  $related
+     * @param  string  $foreignKey
+     * @param  string  $localKey
      * @return HasOne
      */
     public function hasOne($related, $foreignKey = null, $localKey = null)
@@ -58,7 +59,7 @@ class Model extends Eloquent
         $foreignKey = $foreignKey ?: $this->getForeignKey();
 
         $instance = $this->setInstanceConnection(
-            new $related()
+            new $related
         );
 
         $localKey = $localKey ?: $this->getKeyName();
@@ -69,23 +70,23 @@ class Model extends Eloquent
     /**
      * Replace the original belongsTo function to forward the connection name.
      *
-     * @param string $related
-     * @param string $foreignKey
-     * @param string $otherKey
-     * @param string $relation
+     * @param  string  $related
+     * @param  string  $foreignKey
+     * @param  string  $otherKey
+     * @param  string  $relation
      * @return BelongsTo
      */
     public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
     {
         if (is_null($relation)) {
-            list(, $caller) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            [, $caller] = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
             $relation = $caller['function'];
         }
 
         $foreignKey ??= Str::snake($relation).'_id';
 
         $instance = $this->setInstanceConnection(
-            new $related()
+            new $related
         );
 
         $query = $instance->newQuery();
@@ -98,13 +99,13 @@ class Model extends Eloquent
     /**
      * Replace the original belongsToMany function to forward the connection name.
      *
-     * @param string $related
-     * @param string $table
-     * @param string $foreignPivotKey
-     * @param string $relatedPivotKey
-     * @param string $parentKey
-     * @param string $relatedKey
-     * @param string $relation
+     * @param  string  $related
+     * @param  string  $table
+     * @param  string  $foreignPivotKey
+     * @param  string  $relatedPivotKey
+     * @param  string  $parentKey
+     * @param  string  $relatedKey
+     * @param  string  $relation
      * @return BelongsToMany
      */
     public function belongsToMany(
@@ -143,7 +144,7 @@ class Model extends Eloquent
     /**
      * Get the relation value setting the connection name.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function getRelationValue($key)
@@ -164,23 +165,11 @@ class Model extends Eloquent
     }
 
     /**
-     * Set the connection name to model.
-     *
-     * @param $model
-     */
-    protected function setRelationConnection($model)
-    {
-        if ($model instanceof Eloquent) {
-            $model->setConnection($this->getConnectionName());
-        }
-    }
-
-    /**
      * @return string
      */
     public function getConnectionName()
     {
-        if (!isset($this->connection) && Colt::isLaravel()) {
+        if (! isset($this->connection) && Colt::isLaravel()) {
             if ($connection = config('colt.connection')) {
                 $this->connection = $connection;
             }
@@ -190,8 +179,15 @@ class Model extends Eloquent
     }
 
     /**
-     * @param $instance
+     * Set the connection name to model.
      */
+    protected function setRelationConnection($model)
+    {
+        if ($model instanceof Eloquent) {
+            $model->setConnection($this->getConnectionName());
+        }
+    }
+
     protected function setInstanceConnection($instance)
     {
         return $instance->setConnection(

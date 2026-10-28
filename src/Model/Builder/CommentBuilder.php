@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class CommentBuilder
  *
- * @package Pollora\Colt\Model\Builder
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class CommentBuilder extends Builder

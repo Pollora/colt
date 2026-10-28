@@ -9,7 +9,6 @@ use Pollora\Colt\Concerns\Aliases;
 /**
  * Class Attachment
  *
- * @package Pollora\Colt\Model
  * @author José CI <josec89@gmail.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  *

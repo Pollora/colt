@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Pollora\Colt\Model\Meta;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Pollora\Colt\Model\User;
 
 /**
  * Class UserMeta
  *
- * @package Pollora\Colt\Model\Meta
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -31,7 +31,7 @@ class UserMeta extends Meta
     protected $fillable = ['meta_key', 'meta_value', 'user_id'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {

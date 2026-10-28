@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Meta;
 
-use Pollora\Colt\Model\Term;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Pollora\Colt\Model\Term;
 
 /**
  * Class TermMeta
  *
- * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class TermMeta extends Meta

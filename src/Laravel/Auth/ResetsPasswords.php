@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Laravel\Auth;
 
-use Pollora\Colt\Services\PasswordService;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Support\Facades\Auth;
+use Pollora\Colt\Services\PasswordService;
 
 /**
  * Trait ResetsPasswords
  *
- * @package Pollora\Colt\Laravel\Auth
  * @author Mickael Burguet <www.rundef.com>
  * @author Junior Grossi <juniorgro@gmail.com>
  */
@@ -18,11 +19,11 @@ trait ResetsPasswords
     /**
      * Reset the given user's password.
      *
-     * @param string $password
+     * @param  string  $password
      */
     protected function resetPassword(CanResetPassword $user, $password)
     {
-        $user->user_pass = (new PasswordService())->makeHash($password);
+        $user->user_pass = (new PasswordService)->makeHash($password);
         $user->save();
 
         $this->guard()->login($user);

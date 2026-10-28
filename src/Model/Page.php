@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Class Page
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  */
 class Page extends Post

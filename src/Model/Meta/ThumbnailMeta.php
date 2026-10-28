@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model\Meta;
 
-use Pollora\Colt\Model\Attachment;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
+use Pollora\Colt\Model\Attachment;
 
 /**
  * Class ThumbnailMeta
  *
- * @package Pollora\Colt\Model\Meta
  * @author Junior Grossi <juniorgro@gmail.com>
  *
- * @property-read \Pollora\Colt\Model\Attachment|null $attachment
+ * @property-read Attachment|null $attachment
  */
 class ThumbnailMeta extends PostMeta
 {
@@ -29,7 +31,7 @@ class ThumbnailMeta extends PostMeta
     protected $with = ['attachment'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function attachment()
     {
@@ -37,8 +39,9 @@ class ThumbnailMeta extends PostMeta
     }
 
     /**
-     * @param string $size
+     * @param  string  $size
      * @return array
+     *
      * @throws \Exception
      */
     public function size($size)
@@ -50,7 +53,7 @@ class ThumbnailMeta extends PostMeta
         $meta = $this->maybeUnserialize($this->attachment->meta->_wp_attachment_metadata);
         $sizes = Arr::get($meta, 'sizes');
 
-        if (!isset($sizes[$size])) {
+        if (! isset($sizes[$size])) {
             return $this->attachment->url;
         }
 

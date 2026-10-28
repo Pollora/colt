@@ -1,40 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
+use Pollora\Colt\Colt;
 use Pollora\Colt\Concerns\Aliases;
 use Pollora\Colt\Concerns\CustomTimestamps;
 use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Concerns\OrderScopes;
 use Pollora\Colt\Concerns\Shortcodes;
-use Pollora\Colt\Colt;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Builder\PostBuilder;
+use Pollora\Colt\Model\Collection\MetaCollection;
 use Pollora\Colt\Model\Meta\ThumbnailMeta;
 
 /**
  * Class Post
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  * @author Mickael Burguet <www.rundef.com>
  *
  * @property string $post_title
  * @property string $post_content
  * @property string $post_excerpt
- * @property-read \Pollora\Colt\Model\Collection\MetaCollection $meta
- * @property-read \Pollora\Colt\Model\Meta\ThumbnailMeta|null $thumbnail
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Pollora\Colt\Model\Taxonomy> $taxonomies
+ * @property-read MetaCollection $meta
+ * @property-read ThumbnailMeta|null $thumbnail
+ * @property-read Collection<int, Taxonomy> $taxonomies
  * @property array<string, array<string, string>> $terms
  * @property array<int, string>|string $keywords
  */
 class Post extends Model
 {
     use Aliases;
-    use MetaFields;
-    use Shortcodes;
-    use OrderScopes;
     use CustomTimestamps;
+    use MetaFields;
+    use OrderScopes;
+    use Shortcodes;
 
     const CREATED_AT = 'post_date';
 
@@ -120,16 +128,16 @@ class Post extends Model
     ];
 
     /**
-     * @param array $attributes
+     * @param  array  $attributes
      * @return static
      */
     public function newFromBuilder($attributes = [], $connection = null)
     {
-        $model = $this->getPostInstance((array)$attributes);
+        $model = $this->getPostInstance((array) $attributes);
 
         $model->exists = true;
 
-        $model->setRawAttributes((array)$attributes, true);
+        $model->setRawAttributes((array) $attributes, true);
 
         $model->setConnection(
             $connection ?: $this->getConnectionName()
@@ -141,29 +149,7 @@ class Post extends Model
     }
 
     /**
-     * @return static
-     */
-    protected function getPostInstance(array $attributes)
-    {
-        $class = static::class;
-
-        // Check if it should be instantiated with a custom post type class
-        if (isset($attributes['post_type']) && $attributes['post_type']) {
-            if (isset(static::$postTypes[$attributes['post_type']])) {
-                $class = static::$postTypes[$attributes['post_type']];
-            } elseif (Colt::isLaravel()) {
-                $postTypes = config('colt.post_types');
-                if (is_array($postTypes) && isset($postTypes[$attributes['post_type']])) {
-                    $class = $postTypes[$attributes['post_type']];
-                }
-            }
-        }
-
-        return new $class();
-    }
-
-    /**
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param  Builder  $query
      * @return PostBuilder
      */
     public function newEloquentBuilder($query)
@@ -182,7 +168,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function thumbnail()
     {
@@ -191,7 +177,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function taxonomies()
     {
@@ -204,7 +190,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function comments()
     {
@@ -212,7 +198,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function author()
     {
@@ -220,7 +206,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function parent()
     {
@@ -228,7 +214,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function children()
     {
@@ -236,7 +222,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function attachment()
     {
@@ -245,7 +231,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function revision()
     {
@@ -256,8 +242,8 @@ class Post extends Model
     /**
      * Whether the post contains the term or not.
      *
-     * @param string $taxonomy
-     * @param string $term
+     * @param  string  $taxonomy
+     * @param  string  $term
      */
     public function hasTerm($taxonomy, $term): bool
     {
@@ -311,8 +297,8 @@ class Post extends Model
      */
     public function getTermsAttribute()
     {
-        return $this->taxonomies->groupBy(fn($taxonomy) => $taxonomy->taxonomy == 'post_tag' ?
-            'tag' : $taxonomy->taxonomy)->map(fn($group) => $group->mapWithKeys(fn($item): array => [$item->term->slug => $item->term->name]))->toArray();
+        return $this->taxonomies->groupBy(fn ($taxonomy) => $taxonomy->taxonomy == 'post_tag' ?
+            'tag' : $taxonomy->taxonomy)->map(fn ($group) => $group->mapWithKeys(fn ($item): array => [$item->term->slug => $item->term->name]))->toArray();
     }
 
     /**
@@ -324,10 +310,10 @@ class Post extends Model
     {
         $mainCategory = 'Uncategorized';
 
-        if (!empty($this->terms)) {
+        if (! empty($this->terms)) {
             $taxonomies = array_values($this->terms);
 
-            if (!empty($taxonomies[0])) {
+            if (! empty($taxonomies[0])) {
                 $terms = array_values($taxonomies[0]);
                 $mainCategory = $terms[0];
             }
@@ -343,7 +329,7 @@ class Post extends Model
      */
     public function getKeywordsAttribute()
     {
-        return collect($this->terms)->map(fn($taxonomy) => collect($taxonomy)->values())->collapse()->toArray();
+        return collect($this->terms)->map(fn ($taxonomy) => collect($taxonomy)->values())->collapse()->toArray();
     }
 
     /**
@@ -355,8 +341,8 @@ class Post extends Model
     }
 
     /**
-     * @param string $name The post type slug
-     * @param string $class The class to be instantiated
+     * @param  string  $name  The post type slug
+     * @param  string  $class  The class to be instantiated
      */
     public static function registerPostType($name, $class)
     {
@@ -394,17 +380,39 @@ class Post extends Model
     }
 
     /**
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function __get($key)
     {
         $value = parent::__get($key);
 
-        if ($value === null && !property_exists($this, $key)) {
+        if ($value === null && ! property_exists($this, $key)) {
             return $this->meta->$key;
         }
 
         return $value;
+    }
+
+    /**
+     * @return static
+     */
+    protected function getPostInstance(array $attributes)
+    {
+        $class = static::class;
+
+        // Check if it should be instantiated with a custom post type class
+        if (isset($attributes['post_type']) && $attributes['post_type']) {
+            if (isset(static::$postTypes[$attributes['post_type']])) {
+                $class = static::$postTypes[$attributes['post_type']];
+            } elseif (Colt::isLaravel()) {
+                $postTypes = config('colt.post_types');
+                if (is_array($postTypes) && isset($postTypes[$attributes['post_type']])) {
+                    $class = $postTypes[$attributes['post_type']];
+                }
+            }
+        }
+
+        return new $class;
     }
 }

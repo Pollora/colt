@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pollora\Colt\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Builder\TaxonomyBuilder;
 use Pollora\Colt\Model\Meta\TermMeta;
@@ -9,14 +15,18 @@ use Pollora\Colt\Model\Meta\TermMeta;
 /**
  * Class Taxonomy
  *
- * @package Pollora\Colt\Model
  * @author Junior Grossi <juniorgro@gmail.com>
  *
  * @property string $taxonomy
- * @property-read \Pollora\Colt\Model\Term|null $term
+ * @property-read Term|null $term
  */
 class Taxonomy extends Model
 {
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+
     /**
      * @var string
      */
@@ -33,20 +43,15 @@ class Taxonomy extends Model
     protected $with = ['term'];
 
     /**
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function meta()
     {
         return $this->hasMany(TermMeta::class, 'term_id');
     }
-    
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function term()
     {
@@ -54,7 +59,7 @@ class Taxonomy extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function parent()
     {
@@ -62,7 +67,7 @@ class Taxonomy extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function posts()
     {
@@ -75,7 +80,7 @@ class Taxonomy extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param  Builder  $query
      * @return TaxonomyBuilder
      */
     public function newEloquentBuilder($query)
@@ -96,12 +101,12 @@ class Taxonomy extends Model
     /**
      * Magic method to return the meta data like the post original fields.
      *
-     * @param string $key
+     * @param  string  $key
      * @return string
      */
     public function __get($key)
     {
-        if (!isset($this->$key)) {
+        if (! isset($this->$key)) {
             if (isset($this->term->$key)) {
                 return $this->term->$key;
             }
