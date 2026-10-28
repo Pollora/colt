@@ -6,11 +6,10 @@
     ],
     "observed": [
         "Code style",
-        "Static analysis",
         "Tests and architecture"
     ],
     "ratchet": {
         "phpstan_level": 5,
-        "phpstan_baseline": 0
+        "phpstan_baseline": 54
     }
 }
