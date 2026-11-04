@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b44d10bbf66fd45f1e40c3cbd2ea5ab",
+    "content-hash": "2147897b043262a28f320bb1fa63d6e5",
     "packages": [
         {
             "name": "bordoni/phpass",
@@ -9001,16 +9001,16 @@
         },
         {
             "name": "pollora/harness",
-            "version": "v0.1.16",
+            "version": "v0.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pollora/harness.git",
-                "reference": "bddc7d286f09e1499edeb09336d9ba132f68bebe"
+                "reference": "ef48542e7f5257fbfc9410c076c83f2579c0cd34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pollora/harness/zipball/bddc7d286f09e1499edeb09336d9ba132f68bebe",
-                "reference": "bddc7d286f09e1499edeb09336d9ba132f68bebe",
+                "url": "https://api.github.com/repos/Pollora/harness/zipball/ef48542e7f5257fbfc9410c076c83f2579c0cd34",
+                "reference": "ef48542e7f5257fbfc9410c076c83f2579c0cd34",
                 "shasum": ""
             },
             "require": {
@@ -9065,9 +9065,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Pollora/harness/issues",
-                "source": "https://github.com/Pollora/harness/tree/v0.1.16"
+                "source": "https://github.com/Pollora/harness/tree/v0.1.18"
             },
-            "time": "2026-10-30T15:25:12+00:00"
+            "time": "2026-11-04T10:10:23+00:00"
         },
         {
             "name": "psy/psysh",
