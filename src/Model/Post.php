@@ -19,6 +19,7 @@ use Pollora\Colt\Concerns\Shortcodes;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Builder\PostBuilder;
 use Pollora\Colt\Model\Collection\MetaCollection;
+use Pollora\Colt\Model\Collection\PostCollection;
 use Pollora\Colt\Model\Meta\ThumbnailMeta;
 
 /**
@@ -128,6 +129,13 @@ class Post extends Model
     ];
 
     /**
+     * The collection this post was loaded with (the first one only: a filtered
+     * copy must not narrow the batch). Lets the computed attributes load their
+     * relation for all the posts at once.
+     */
+    protected ?PostCollection $siblings = null;
+
+    /**
      * @param  array  $attributes
      * @return static
      */
@@ -149,12 +157,33 @@ class Post extends Model
     }
 
     /**
+     * Remembers the collection that holds this post.
+     *
+     * @internal called by PostCollection
+     */
+    public function joinSiblings(PostCollection $siblings): void
+    {
+        $this->siblings ??= $siblings;
+    }
+
+    /**
      * @param  Builder  $query
      * @return PostBuilder
      */
     public function newEloquentBuilder($query)
     {
         return new PostBuilder($query);
+    }
+
+    /**
+     * Posts come back in a collection that loads the relations read by the
+     * appended attributes in bulk when it is serialised (no N+1 on toArray/toJson).
+     *
+     * @param  array<int, static>  $models
+     */
+    public function newCollection(array $models = []): PostCollection
+    {
+        return new PostCollection($models);
     }
 
     /**
@@ -283,6 +312,8 @@ class Post extends Model
      */
     public function getImageAttribute()
     {
+        $this->loadRelationFromSiblings('thumbnail');
+
         if ($this->thumbnail && $this->thumbnail->attachment) {
             return $this->thumbnail->attachment->guid;
         }
@@ -297,6 +328,8 @@ class Post extends Model
      */
     public function getTermsAttribute()
     {
+        $this->loadRelationFromSiblings('taxonomies');
+
         return $this->taxonomies->groupBy(fn ($taxonomy) => $taxonomy->taxonomy == 'post_tag' ?
             'tag' : $taxonomy->taxonomy)->map(fn ($group) => $group->mapWithKeys(fn ($item): array => [$item->term->slug => $item->term->name]))->toArray();
     }
@@ -414,5 +447,16 @@ class Post extends Model
         }
 
         return new $class;
+    }
+
+    /**
+     * Loads a relation for the whole collection this post comes from, unless it
+     * is already loaded here: one query instead of one per post in a loop.
+     */
+    private function loadRelationFromSiblings(string $relation): void
+    {
+        if ($this->siblings instanceof PostCollection && ! $this->relationLoaded($relation)) {
+            $this->siblings->loadRelationForAll($relation);
+        }
     }
 }

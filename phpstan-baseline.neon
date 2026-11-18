@@ -67,37 +67,13 @@ parameters:
 			path: src/Model/Menu.php
 
 		-
-			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_menu_item_parent\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Model/MenuItem.php
-
-		-
 			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_object\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Model/MenuItem.php
 
 		-
-			message: '#^Access to an undefined property Pollora\\Colt\\Model\\Collection\\MetaCollection\:\:\$_menu_item_object_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Model/MenuItem.php
-
-		-
-			message: '#^Method Pollora\\Colt\\Model\\MenuItem\:\:instance\(\) should return Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy but returns null\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Model/MenuItem.php
-
-		-
-			message: '#^Method Pollora\\Colt\\Model\\MenuItem\:\:parent\(\) should return Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy but returns null\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Model/MenuItem.php
-
-		-
-			message: '#^Return type \(Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy\) of method Pollora\\Colt\\Model\\MenuItem\:\:parent\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\) of method Pollora\\Colt\\Model\\Post\:\:parent\(\)$#'
+			message: '#^Return type \(Pollora\\Colt\\Model\\Post\|Pollora\\Colt\\Model\\Taxonomy\|null\) of method Pollora\\Colt\\Model\\MenuItem\:\:parent\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\) of method Pollora\\Colt\\Model\\Post\:\:parent\(\)$#'
 			identifier: method.childReturnType
 			count: 1
 			path: src/Model/MenuItem.php
@@ -109,13 +85,7 @@ parameters:
 			path: src/Model/Meta/CommentMeta.php
 
 		-
-			message: '#^Parameter \#1 \$items of class Pollora\\Colt\\Model\\Collection\\MetaCollection constructor expects Illuminate\\Contracts\\Support\\Arrayable\<int, Pollora\\Colt\\Model\\Meta\\Meta\>\|iterable\<int, Pollora\\Colt\\Model\\Meta\\Meta\>\|null, array\<Illuminate\\Database\\Eloquent\\Model\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Model/Meta/Meta.php
-
-		-
-			message: '#^Return type \(Pollora\\Colt\\Model\\Collection\\MetaCollection\) of method Pollora\\Colt\\Model\\Meta\\Meta\:\:newCollection\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Collection\<\(int\|string\), static\(Illuminate\\Database\\Eloquent\\Model\)\>\) of method Illuminate\\Database\\Eloquent\\Model\:\:newCollection\(\)$#'
+			message: '#^Return type \(Pollora\\Colt\\Model\\Collection\\MetaCollection\) of method Pollora\\Colt\\Model\\Meta\\Meta\:\:newCollection\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Collection\<int, static\(Pollora\\Colt\\Model\)\>\) of method Pollora\\Colt\\Model\:\:newCollection\(\)$#'
 			identifier: method.childReturnType
 			count: 1
 			path: src/Model/Meta/Meta.php
@@ -248,6 +218,12 @@ parameters:
 
 		-
 			message: '#^Return type \(Pollora\\Colt\\Model\\Builder\\PostBuilder\) of method Pollora\\Colt\\Model\\Post\:\:newQuery\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Builder\<static\(Illuminate\\Database\\Eloquent\\Model\)\>\) of method Illuminate\\Database\\Eloquent\\Model\:\:newQuery\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/Model/Post.php
+
+		-
+			message: '#^Return type \(Pollora\\Colt\\Model\\Collection\\PostCollection\) of method Pollora\\Colt\\Model\\Post\:\:newCollection\(\) should be compatible with return type \(Illuminate\\Database\\Eloquent\\Collection\<int, static\(Pollora\\Colt\\Model\)\>\) of method Pollora\\Colt\\Model\:\:newCollection\(\)$#'
 			identifier: method.childReturnType
 			count: 1
 			path: src/Model/Post.php
