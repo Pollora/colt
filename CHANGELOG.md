@@ -14,6 +14,7 @@ Earlier releases are listed on the [releases page](https://github.com/Pollora/co
   - `$menuItem->instance()` and `$menuItem->parent()` in a loop over `$menu->items`: 204 then 6 (one query per target class). A second call on the same item queries again, as before.
   - `$term->meta` / `$comment->meta` in a loop over a collection: 201 then 2. Meta is still not loaded, nor serialised, until something reads it.
   - Posts now come back in a `PostCollection`, menu items in a `MenuItemCollection`, terms and comments in a `MetaSiblingsCollection`; all extend Eloquent's `Collection`.
+- `$comment->hasReplies()` in a loop over a collection of comments no longer runs one query per comment: the replies of the whole collection load in one query on the first call (2 queries for 100 comments, 101 before). Same result, same API.
 - Reading a lazy relation (`author`, `comments`, `taxonomies`, `thumbnail`) in a loop is still one query per post, as with any Eloquent model: load them with `with()` (12 queries for 100 posts).
 
 ### Added
