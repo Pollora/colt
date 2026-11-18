@@ -179,9 +179,6 @@ class Model extends Eloquent
     }
 
     /**
-     * @return string
-     */
-    /**
      * Models that have meta without loading it by default come back in a collection that batches it.
      *
      * @param  array<int, static>  $models
@@ -206,6 +203,12 @@ class Model extends Eloquent
         $this->metaSiblings ??= $siblings;
     }
 
+    /**
+     * Name of the connection, the `colt.connection` config value when Laravel is
+     * present and none was set on the model.
+     *
+     * @return string|null
+     */
     public function getConnectionName()
     {
         if (! isset($this->connection) && Colt::isLaravel()) {

@@ -14,6 +14,8 @@ declare(strict_types=1);
  * The reusable part is Pollora\Colt\Tests\Support\QueryCounter.
  */
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Pollora\Colt\Model\Collection\MenuItemCollection;
 use Pollora\Colt\Model\Collection\PostCollection;
 use Pollora\Colt\Model\Comment;
@@ -181,6 +183,55 @@ it('loads the meta of terms and comments for the whole collection when one reads
         ->and($counts[100])->toBeLessThanOrEqual(2);
 });
 
+it('asks every comment whether it has replies in a constant number of queries', function () use ($posts): void {
+    $withReplies = function (int $size) use ($posts): void {
+        $posts($size);
+
+        foreach (DB::table('comments')->where('comment_parent', 0)->pluck('comment_ID') as $id) {
+            if ($id % 2 === 0) {
+                DB::table('comments')->insert([
+                    'comment_post_ID' => 1, 'comment_author' => 'a', 'comment_author_email' => '',
+                    'comment_author_url' => '', 'comment_author_IP' => '', 'comment_date' => '2026-01-01 00:00:00',
+                    'comment_date_gmt' => '2026-01-01 00:00:00', 'comment_content' => 'r', 'comment_karma' => 0,
+                    'comment_approved' => '1', 'comment_agent' => '', 'comment_type' => '',
+                    'comment_parent' => $id, 'user_id' => 0,
+                ]);
+            }
+        }
+    };
+
+    $counts = colt_counts($withReplies, fn () => Comment::where('comment_parent', 0)->get()->map(fn (Comment $c) => $c->hasReplies())->all());
+
+    expect(QueryCounter::isConstant($counts))->toBeTrue(json_encode($counts))
+        ->and($counts[100])->toBeLessThanOrEqual(2);
+});
+
+it('answers hasReplies() as it does one comment at a time', function () use ($posts): void {
+    $posts(3);
+    $parent = Comment::orderBy('comment_ID')->first();
+    DB::table('comments')->where('comment_ID', $parent->getKey() + 1)
+        ->update(['comment_parent' => $parent->getKey()]);
+
+    $batched = Comment::orderBy('comment_ID')->get()->map(fn (Comment $c): bool => $c->hasReplies())->all();
+    $oneByOne = Comment::orderBy('comment_ID')->get()->map(fn (Comment $c): bool => Comment::find($c->getKey())->hasReplies())->all();
+
+    expect($batched)->toBe($oneByOne)
+        ->and($batched[0])->toBeTrue()
+        ->and(array_filter(array_slice($batched, 1)))->toBeEmpty();
+});
+
+it('still answers hasReplies() for a comment outside a collection and keeps loaded replies', function () use ($posts): void {
+    $posts(2);
+    $comment = Comment::first();
+
+    expect($comment->hasReplies())->toBeFalse();
+
+    $comment->setRelation('replies', new Collection([new Comment]));
+
+    expect($comment->hasReplies())->toBeTrue()
+        ->and(QueryCounter::count(fn () => $comment->hasReplies()))->toBe(0);
+});
+
 it('does not load term meta nor serialise it when nobody reads it', function () use ($posts): void {
     $posts(3);
 
@@ -200,6 +251,16 @@ it('detects an N+1 on a lazy relation read in a loop', function () use ($posts):
 
     expect(QueryCounter::isConstant($counts))->toBeFalse()
         ->and($counts[100] - $counts[10])->toBe(90);
+});
+
+it('detects an N+1 on hasReplies() read comment by comment', function () use ($posts): void {
+    $counts = colt_counts($posts, function () {
+        foreach (Comment::where('comment_parent', 0)->pluck('comment_ID') as $id) {
+            Comment::find($id)->hasReplies();
+        }
+    });
+
+    expect(QueryCounter::isConstant($counts))->toBeFalse();
 });
 
 it('detects an N+1 written as one query per id', function () use ($posts): void {

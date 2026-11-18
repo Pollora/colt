@@ -13,6 +13,7 @@ use Pollora\Colt\Concerns\MetaFields;
 use Pollora\Colt\Model;
 use Pollora\Colt\Model\Builder\CommentBuilder;
 use Pollora\Colt\Model\Collection\MetaCollection;
+use Pollora\Colt\Model\Collection\MetaSiblingsCollection;
 
 /**
  * Class Comment
@@ -101,8 +102,20 @@ class Comment extends Model
         return $this->attributes['comment_parent'] > 0;
     }
 
+    /**
+     * Whether other comments answer this one.
+     *
+     * When the comment comes from a collection (`Comment::all()`, `get()`, a
+     * post's comments) and its replies are not loaded yet, they are loaded for
+     * the whole collection in one query, so asking every comment in a loop
+     * costs a fixed number of queries instead of one per comment.
+     */
     public function hasReplies(): bool
     {
+        if ($this->metaSiblings instanceof MetaSiblingsCollection && ! $this->relationLoaded('replies')) {
+            $this->metaSiblings->loadMissing('replies');
+        }
+
         return $this->replies->count() > 0;
     }
 
