@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
+use Pollora\Colt\Concerns\MetaFields;
+use Pollora\Colt\Model\Collection\MetaSiblingsCollection;
 
 /**
  * Class Model
@@ -24,6 +26,14 @@ class Model extends Eloquent
      * @var string
      */
     protected $postType;
+
+    /**
+     * The collection this model was loaded with, for models that have meta but
+     * do not load it with their query (terms, comments): reading `meta` then
+     * loads it for the whole collection at once. First collection wins, so a
+     * filtered copy does not narrow the batch.
+     */
+    protected ?MetaSiblingsCollection $metaSiblings = null;
 
     /**
      * Replace the original hasMany function to forward the connection name.
@@ -149,6 +159,10 @@ class Model extends Eloquent
      */
     public function getRelationValue($key)
     {
+        if ($key === 'meta' && $this->metaSiblings instanceof MetaSiblingsCollection && ! $this->relationLoaded('meta')) {
+            $this->metaSiblings->loadMissing('meta');
+        }
+
         $relation = parent::getRelationValue($key);
 
         if ($relation instanceof Collection) {
@@ -167,6 +181,31 @@ class Model extends Eloquent
     /**
      * @return string
      */
+    /**
+     * Models that have meta without loading it by default come back in a collection that batches it.
+     *
+     * @param  array<int, static>  $models
+     * @return Collection<int, static>
+     */
+    public function newCollection(array $models = [])
+    {
+        if (in_array(MetaFields::class, class_uses_recursive($this), true)) {
+            return new MetaSiblingsCollection($models);
+        }
+
+        return parent::newCollection($models);
+    }
+
+    /**
+     * Remembers the collection that holds this model.
+     *
+     * @internal called by MetaSiblingsCollection
+     */
+    public function joinMetaSiblings(MetaSiblingsCollection $siblings): void
+    {
+        $this->metaSiblings ??= $siblings;
+    }
+
     public function getConnectionName()
     {
         if (! isset($this->connection) && Colt::isLaravel()) {

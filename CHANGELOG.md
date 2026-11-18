@@ -6,6 +6,20 @@ Earlier releases are listed on the [releases page](https://github.com/Pollora/co
 
 ## [Unreleased]
 
+### Changed
+
+- **No more N+1 queries** (harness rule PERF-03), without changing the API. Query counts measured on 100 posts, each with its own author, image, terms and comments, before then after:
+  - `Post::get()->toArray()` / `toJson()`: 502 then 7 queries (the `image`, `terms`, `main_category`, `keywords` attributes now load their relations once for the whole collection before serialising).
+  - Reading `$post->terms` (or `main_category`, `keywords`) in a loop: 202 then 4. Reading `$post->image` in a loop: 302 then 5.
+  - `$menuItem->instance()` and `$menuItem->parent()` in a loop over `$menu->items`: 204 then 6 (one query per target class). A second call on the same item queries again, as before.
+  - `$term->meta` / `$comment->meta` in a loop over a collection: 201 then 2. Meta is still not loaded, nor serialised, until something reads it.
+  - Posts now come back in a `PostCollection`, menu items in a `MenuItemCollection`, terms and comments in a `MetaSiblingsCollection`; all extend Eloquent's `Collection`.
+- Reading a lazy relation (`author`, `comments`, `taxonomies`, `thumbnail`) in a loop is still one query per post, as with any Eloquent model: load them with `with()` (12 queries for 100 posts).
+
+### Added
+
+- Tests that lock the query counts (`tests/Unit/QueryCountTest.php`) and a reusable query counter (`tests/Support/QueryCounter.php`).
+
 ## [11.0.0] - 2026-10-28
 
 A major release: the package requires PHP 8.3 and drops two traits. Read **Upgrading** below before updating.
