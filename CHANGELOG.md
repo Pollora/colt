@@ -6,6 +6,8 @@ Earlier releases are listed on the [releases page](https://github.com/Pollora/co
 
 ## [Unreleased]
 
+## [11.1.0] - 2026-11-19
+
 ### Changed
 
 - **No more N+1 queries** (harness rule PERF-03), without changing the API. Query counts measured on 100 posts, each with its own author, image, terms and comments, before then after:
