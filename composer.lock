@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61555871e1507dafe5b8705b69589b16",
+    "content-hash": "0e7afc12ece0043fdfb141f0b83ba278",
     "packages": [
         {
             "name": "bordoni/phpass",
@@ -3836,8 +3836,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-24T18:01:43+00:00",
-            "published-time": "2026-11-25T09:30:44+00:00"
+            "time": "2026-11-24T18:01:43+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -3947,8 +3946,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-25T09:27:11+00:00",
-            "published-time": "2026-11-25T09:29:59+00:00"
+            "time": "2026-11-25T09:27:11+00:00"
         },
         {
             "name": "symfony/mailer",
@@ -4028,8 +4026,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-24T18:01:43+00:00",
-            "published-time": "2026-11-25T09:30:34+00:00"
+            "time": "2026-11-24T18:01:43+00:00"
         },
         {
             "name": "symfony/mime",
@@ -5252,8 +5249,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-24T18:01:43+00:00",
-            "published-time": "2026-11-25T09:30:48+00:00"
+            "time": "2026-11-24T18:01:43+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -9008,16 +9004,16 @@
         },
         {
             "name": "pollora/harness",
-            "version": "v0.1.39",
+            "version": "v0.1.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pollora/harness.git",
-                "reference": "f26b214415a82d0b33d2746cd5965a61286b82b1"
+                "reference": "692a473c5a35eea871f8074599967ab2982cda09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pollora/harness/zipball/f26b214415a82d0b33d2746cd5965a61286b82b1",
-                "reference": "f26b214415a82d0b33d2746cd5965a61286b82b1",
+                "url": "https://api.github.com/repos/Pollora/harness/zipball/692a473c5a35eea871f8074599967ab2982cda09",
+                "reference": "692a473c5a35eea871f8074599967ab2982cda09",
                 "shasum": ""
             },
             "require": {
@@ -9075,10 +9071,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Pollora/harness/issues",
-                "source": "https://github.com/Pollora/harness/tree/v0.1.39"
+                "source": "https://github.com/Pollora/harness/tree/v0.1.40"
             },
-            "time": "2026-11-26T16:23:40+00:00",
-            "published-time": "2026-11-26T16:31:38+00:00"
+            "time": "2026-11-27T08:37:09+00:00"
         },
         {
             "name": "psy/psysh",
@@ -10789,5 +10784,5 @@
         "php": "^8.3"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.11.0"
+    "plugin-api-version": "2.9.0"
 }
